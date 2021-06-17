@@ -30,19 +30,6 @@
                             <p>Employees</p>
                         </a>
                     </li>
-                    <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/reports/">
-                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/reports/">
-                            <i class="material-icons">search</i>
-                            <p>Search Print Report</p>
-                        </a>
-                    </li>
-                    <hr style="width: 230px;">
-                    <li class="nav-item ">
-                        <a class="nav-link" href="#0">
-                            <i class="material-icons">playlist_add_check</i>
-                            <p style="font-size: 13px;">Employee's Payroll Verification</p>
-                        </a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#0">
                             <i class="material-icons">monetization_on</i>
@@ -50,10 +37,16 @@
                         </a>
                     </li>
                     <hr style="width: 230px;">
+                    <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/reports/">
+                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/reports/">
+                            <i class="material-icons">receipt</i>
+                            <p>Payroll Report</p>
+                        </a>
+                    </li>
                     <li class="nav-item ">
                         <a class="nav-link" href="#0">
-                            <i class="material-icons">playlist_add</i>
-                            <p>Import Excel Database</p>
+                            <i class="material-icons">playlist_add_check</i>
+                            <p style="font-size: 13px;">Employee's Payroll Verification</p>
                         </a>
                     </li>
                     <li class="nav-item ">
@@ -74,13 +67,19 @@
         </div>
         <div class="main-panel">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top">
+            <nav class="navbar navbar-expand-lg navbar-light navbar-absolute fixed-top" style="max-height: 55px; z-index: 1; box-shadow: 0px 0px 5px 0px rgb(167, 167, 167)">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
                         <a class="navbar-brand" href="javascript:;"><?php echo $page_title; ?></a>
                     </div>
                     <div class="collapse navbar-collapse justify-content-end">
                         <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">monetization_on</i> Update employee salary</a>
+                            </li>
+                            <li class="nav-item" style="margin-left: 20px;">
+                                <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">playlist_add</i> Import Excel Data File</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="material-icons">person</i>
@@ -313,7 +312,7 @@
                 "searchable": true,
                 "orderable": true,
                 "sort": false,
-                "pageLength": 5,
+                "pageLength": 10,
             });
 
             // Data Table for removed employees
@@ -327,7 +326,7 @@
                 "searchable": true,
                 "orderable": true,
                 "sort": false,
-                "pageLength": 5,
+                "pageLength": 10,
             });
 
             // add class active in li .nav-item on curren url
@@ -357,6 +356,9 @@
                     ContactPerson: $("#contactPerson").val(),
                     ContactPersonNumber: $("#contactPersonNumber").val(),
                     Relationship: $("#relationship").val(),
+                    DurationDate: $("#durationDate").val(),
+                    StartDate: $("startDate").val(),
+                    EndDate: $("#endDate").val(),
                     SSSNumber: $("#sssNumber").val(),
                     EmployeeER: $("#employeeER").val(),
                     EmployeeEE: $("#employeeEE").val(),
@@ -458,8 +460,27 @@
                     moment(this.value, "YYYY-MM-DD")
                     .format(this.getAttribute("data-date-format"))
                 )
-            }).trigger("change")
+            }).trigger("change");
+
+            $("#durationDate").change(function() {
+                var date = new Date();
+                var year = Number(date.getFullYear());
+
+                switch (this.value) {
+                    case '3 Months':
+                        $("#endDate").val("")
+                        break;
+
+                    default:
+                        $("#endDate").val("");
+                        alert(year);
+                        break;
+                }
+            });
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
         });
     </script>
 </body>
+
 </html>

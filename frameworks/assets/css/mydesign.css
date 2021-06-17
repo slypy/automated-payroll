@@ -170,12 +170,17 @@ img {
 }
 
 .material-textfield input:focus {
-  border-color: #1271c9;
+  border-color: #2d9c91;
 }
+
+.material-textfield input:valid {
+  border-color: #2d9c91;
+}
+
 
 .material-textfield input:focus + label,
 input:valid + label {
-  color: #1271c9;
+  color: #2d9c91;
   top: 0;
   transform: translateY(-50%) scale(0.9);
 }
@@ -306,6 +311,7 @@ input:valid + label {
 /* Remove focus */
 .select-text:focus {
   outline: none;
+  border-color: #2d9c91;
   /* border-bottom: 1px solid rgba(0,0,0, 0); */
 }
 
@@ -348,10 +354,14 @@ input:valid + label {
 /* active state */
 .select-text:focus ~ .select-label,
 .select-text:valid ~ .select-label {
-  color: #2f80ed;
+  color: #2d9c91;
   background-color: white;
   transform: translateY(-110%) scale(1);
   font-size: 14px;
+}
+
+.select-text:valid{
+  border-color: #2d9c91;
 }
 
 /* BOTTOM BARS ================================= */
@@ -368,7 +378,7 @@ input:valid + label {
   width: 0;
   bottom: 1px;
   position: absolute;
-  background: #2f80ed;
+  background: #2d9c91;
   transition: 0.2s ease all;
 }
 
@@ -384,6 +394,7 @@ input:valid + label {
 .select-text:focus ~ .select-bar:before,
 .select-text:focus ~ .select-bar:after {
   width: 50%;
+  border-color: #2d9c91;
 }
 
 /* HIGHLIGHTER ================================== */

@@ -1,9 +1,19 @@
+<?php
+
+############# TODO ###############
+
+#  Update the StartDate and EndDate im
+#  Employment Conctract Duration
+
+?>
+
+
 <!------------------------------------------------->
 <!-- Display active employees in Form Data Table -->
 <!------------------------------------------------->
 
 <!-- Pass the form data table on remove employee in controller.php type{action} case: remove -->
-<form action="controller.php?action=remove" Method="POST" style="margin-top: -50px;">
+<form action="controller.php?action=remove" Method="POST" style="margin-top: -45px;">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -15,16 +25,18 @@
                                 List of active Employees
                             </h3>
                         </div>
-                        <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-md"> <i class="material-icons">monetization_on</i> Update employee salary</a>
-                        <!-- Load Form Modal Add new Employee -->
-                        <a href="#registration-form" data-target="#registration-form" data-toggle="modal" data-backdrop="static" class="btn btn-info btn-md"> <i class="material-icons">add</i> Add new Employee</a>
+
+                        <div>
+                            <!-- Load Form Modal Add new Employee -->
+                            <a href="#registration-form" data-target="#registration-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-md"> <i class="material-icons">add</i> Add new Employee</a>
+                        </div>
                     </div>
                     <div class="header-line">
                         <hr>
                     </div>
                     <div class="table-responsive">
                         <table id="active-table" class="table table-sm table-hover" cellspacing="0">
-                            <thead class="text-info">
+                            <thead class="text-primary text-sm">
                                 <th>
                                     #
                                 </th>
@@ -38,13 +50,13 @@
                                     Last Name
                                 </th>
                                 <th>
-                                    Card #
+                                    Card No.
                                 </th>
                                 <th>
-                                    FingerPrint #
+                                    FingerPrint No.
                                 </th>
                                 <th>
-                                    Contact #
+                                    Contact No.
                                 </th>
                                 <th>
                                     Email Address
@@ -85,16 +97,21 @@
                                     <td class="text-danger">
                                         Software Engineer
                                     </td>
-                                    <td>
-                                        <a title="Edit" class="btn btn-info btn-sm" href="' . web_root . 'admin/products/index.php?view=edit&id=' . $result->PROID . '" data-target="#update-form" data-toggle="modal" data-backdrop="static"><i class="fa fa-pencil"></i></a>
-                                        <a title="More Details" class="btn btn-info btn-sm" href="' . web_root . 'admin/products/index.php?view=show&id=' . $result->PROID . '" data-target="#info-form" data-toggle="modal" data-backdrop="static"><i class="material-icons">info</i></a>
+                                    <td class="td-actions text-left">
+                                        <button title="Edit" type="button" rel="tooltip" class="btn btn-success" data-target="#update-form" data-toggle="modal" data-backdrop="static">
+                                            <i class="material-icons">edit</i>
+                                        </button>
+
+                                        <button title="Edit" type="button" rel="tooltip" class="btn btn-info" data-target="#info-form" data-toggle="modal" data-backdrop="static">
+                                            <i class="material-icons">info</i>
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="btn-group">
-                        <button type="submit" class="btn btn-danger" name="delete"><i class="fa fa-trash fw-fa"></i> Remove Selected</button>
+                        <button type="submit" class="btn btn-danger" name="delete"><i class="material-icons">delete</i> Remove Selected</button>
                     </div>
                 </div>
             </div>
@@ -114,76 +131,76 @@
         <div class="col-md-12">
             <div class="card card-plain">
                 <div id="remove-employees" class="card-header card-header-info" style="cursor: pointer;">
-                    <h4 class="card-title mt-0" ">Click to show/hide Removed Employees</h4>
+                    <h4 class="card-title mt-0">Click to show/hide Removed Employees</h4>
                 </div>
-                <div id=" display-employee" class="card-body" style="display: none;">
-                        <div class="table-responsive">
-                            <table id="removed-table" class="table table-hover">
-                                <thead class="text-info">
-                                    <th>
-                                        #
-                                    </th>
-                                    <th>
-                                        Profile
-                                    </th>
-                                    <th>
-                                        First Name
-                                    </th>
-                                    <th>
-                                        Last Name
-                                    </th>
-                                    <th>
-                                        Card #
-                                    </th>
-                                    <th>
-                                        FingerPrint #
-                                    </th>
-                                    <th>
-                                        Email Address
-                                    </th>
-                                    <th>
-                                        Position
-                                    </th>
-                                    <th>
-                                        Action
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" name="selector[]" id="selector[]" value="' . $result->PROID . '" />
-                                        </td>
-                                        <td>
-                                            <img src="<?php echo $web_root; ?>res/sly.jpg" alt="" height="50" width="50">
-                                        </td>
-                                        <td>
-                                            Sly
-                                        </td>
-                                        <td>
-                                            Bacalso
-                                        </td>
-                                        <td>
-                                            1025
-                                        </td>
-                                        <td>
-                                            120
-                                        </td>
-                                        <td>
-                                            nasa.sly14@gmail.com
-                                        </td>
-                                        <td class="text-danger">
-                                            Software Engineer
-                                        </td>
-                                        <td>
-                                            <a title="edit" class="btn btn-info btn-sm" href="' . web_root . 'admin/products/index.php?view=edit&id=' . $result->PROID . '">Print <i class="material-icons">print</i></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-danger" name="delete"><i class="fa fa-trash fw-fa"></i> Remove Selected</button>
-                        </div>
+                <div id="display-employee" class="card-body" style="display: none;">
+                    <div class="table-responsive">
+                        <table id="removed-table" class="table table-hover">
+                            <thead class="text-info">
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    Profile
+                                </th>
+                                <th>
+                                    First Name
+                                </th>
+                                <th>
+                                    Last Name
+                                </th>
+                                <th>
+                                    Card #
+                                </th>
+                                <th>
+                                    FingerPrint #
+                                </th>
+                                <th>
+                                    Email Address
+                                </th>
+                                <th>
+                                    Position
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="selector[]" id="selector[]" value="' . $result->PROID . '" />
+                                    </td>
+                                    <td>
+                                        <img src="<?php echo $web_root; ?>res/sly.jpg" alt="" height="50" width="50">
+                                    </td>
+                                    <td>
+                                        Sly
+                                    </td>
+                                    <td>
+                                        Bacalso
+                                    </td>
+                                    <td>
+                                        1025
+                                    </td>
+                                    <td>
+                                        120
+                                    </td>
+                                    <td>
+                                        nasa.sly14@gmail.com
+                                    </td>
+                                    <td class="text-danger">
+                                        Software Engineer
+                                    </td>
+                                    <td>
+                                        <a title="edit" class="btn btn-info btn-sm" href="' . web_root . 'admin/products/index.php?view=edit&id=' . $result->PROID . '">Print <i class="material-icons">print</i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-danger" name="delete"><i class="fa fa-trash fw-fa"></i> Remove Selected</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -208,6 +225,8 @@
 
                 <div class="modal-body">
                     <!-- TODO: create a custom table for employee's update salary -->
+
+
                 </div>
 
                 <!-- Footer Buttons -->
@@ -406,12 +425,12 @@
                         </div>
                     </div>
 
-                    <div class="employee-name" style="background-color: #fe8484; border-radius: 5px; padding: 10px; color: white;">
+                    <div class="employee-name" style="background-color: #fe8484; border-radius: 5px; padding: 10px; color: white; margin-top: 20px;">
                         <h5 style="font-weight: bold;margin-top: 0px;">Employment Contract Duration</h5>
                         <div class="input-6" style="justify-content: start">
 
                             <div class="select" style="margin-right: 5px;">
-                                <select id="relationship" name="Relationship" class="select-text" style="background-color: white;">
+                                <select id="durationDate" name="DurationDate" class="select-text" style="background-color: white;">
                                     <option value="Open Time" selected>Open Time</option>
                                     <option value="3 Months">3 Months</option>
                                     <option value="6 Months">6 Months</option>
@@ -422,14 +441,14 @@
                             </div>
                             <div class="input-date">
                                 <div class="material-textfield">
-                                    <input id="durationStart" placeholder=" " name="DurationStart" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;" value="2015-08-09">
+                                    <input id="startDate" placeholder=" " name="StartDate" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;" value="<?php echo date("Y-m-d", strtotime(date('Y-m-d'))); ?>">
                                     <label>Start Date</label>
                                 </div>
                                 <p>click the calendar button</p>
                             </div>
                             <div class="input-date">
                                 <div class="material-textfield">
-                                    <input id="philhealth_perMonth" placeholder=" " name="Philhealth_PerMonth" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;">
+                                    <input id="endDate" placeholder=" " name="EndDate" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;" val="">
                                     <label>End Date</label>
                                 </div>
                                 <p>click the calendar button</p>
