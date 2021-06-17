@@ -1,2 +1,1 @@
-# AOLtrades
-Online Trading Journal
+# Sample-P
