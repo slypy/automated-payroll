@@ -1,0 +1,264 @@
+body {
+    height:  100vh;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+img, h5, h5{
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+
+.navbar{
+    width: 100%;
+    position: fixed;
+    z-index: 99;
+}
+.navhead {
+    display: flex;
+    height: 20px;
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+
+.navhead .aol-title{
+    position: relative;
+    top:4px;
+    left: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: white
+}
+
+.m-container{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.m-container  .wrap {
+    width: 340px;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0 0px 2px 0px gray;
+}
+
+.form-title{
+    position: relative;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+
+.form-title .cmp-logo{
+    padding: 5px;
+}
+
+.form-title .cmp-name>h3{
+    font-weight: bold;
+}
+.form-title h3 {
+    font-weight: bold;
+}
+.aol-reg{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.aol-reg .fn{
+    width: 150px;
+}
+
+.aol-reg .usr{
+    width: 310px;
+}
+
+.aol-reg .picker{
+    color: gray;
+    width: 310px;
+}
+
+.aol-reg .usr1{
+    position: relative;
+    left: -5px;
+    width: 310px;
+}
+.terms{
+    display: flex;
+    width: auto;
+    height: 50px;
+    flex-direction: column;
+    font-size: 12px;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+}
+
+.terms p{
+    width: 90%;
+    padding: 0px;
+}
+
+.log{
+    display: flex;
+    width: 100%;
+    text-align: center;
+    justify-content: center;  
+    font-size: 14px;
+}
+
+.log p{
+    padding-right: 5px;
+}
+.log a{
+    font-weight: bold;
+}
+
+
+.material-textfield {
+    position: relative;
+    margin: 0px;
+}
+
+label {
+    position: absolute;
+    font-size: 1rem;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    color: gray;
+    padding: 0 0.3rem;
+    margin: 0 0.5rem;
+    transition: .1s ease-out;
+    transform-origin: left top;
+    pointer-events: none;
+}
+
+input {
+    height: 50px;
+    font-size: 1rem;
+    outline: none;
+    border: 1px solid #c9c9c9;
+    border-radius: 5px;
+    padding: 1rem 0.7rem;
+    color: gray;
+    margin: 0px 5px;
+    transition: 0.1s ease-out;
+}
+
+input:focus {
+    border-color: #1271c9;
+}
+
+
+input:focus+label {
+    color: #1271c9;
+    top: 0;
+    transform: translateY(-50%) scale(.9);
+}
+
+input:not(:placeholder-shown)+label {
+    top: 0;
+    transform: translateY(-50%) scale(.9);
+}
+
+footer{
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+}
+
+
+.sidebar{
+	position: relative;
+}
+
+.sidebar .sidebar-container{
+    z-index: 2;
+	position: fixed;
+	top: 50px;
+	width: 250px;
+	height: 100%;
+	padding: 100px 10px 10px 10px;
+	left: 0;
+	top: 0;
+	min-height: 500px;
+    background-color: white;
+    box-shadow: 0px 0px 5px 0 rgb(175, 175, 175);
+}
+
+.sidebar-container .side-menu{
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    position: relative;
+    display: flex;
+    height: 100%;
+    top: 53px;
+    margin-left: 250px;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    right: 0;
+}
+
+.main-content .content-area{
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    padding: 20px;
+    z-index: 1;
+}
+
+.content-body{
+	background: inherit;
+	background-size: cover; 
+	background-repeat: none; 
+	background-position: center;  
+	min-height: 300px;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
