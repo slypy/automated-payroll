@@ -426,20 +426,10 @@
                         $("#start-time").val("08:00");
                         $("#end-time").val("20:00");
                         break;
-                    case 'First Shift':
+                    case 'Regular Shift':
                         $("div[data-id='time'").show();
-                        $("#start-time").val("06:00");
-                        $("#end-time").val("14:00");
-                        break;
-                    case 'Second Shift':
-                        $("div[data-id='time'").show();
-                        $("#start-time").val("14:00");
-                        $("#end-time").val("22:00");
-                        break;
-                    case 'Third Shift':
-                        $("div[data-id='time'").show();
-                        $("#start-time").val("22:00");
-                        $("#end-time").val("06:00");
+                        $("#start-time").val("08:00");
+                        $("#end-time").val("20:00");
                         break;
                     default:
                         $("div[data-id='time'").hide();
@@ -469,6 +459,8 @@
                 )
             }).trigger("change");
 
+
+            // TODO
             $("#durationDate").change(function() {
                 var date = new Date();
                 var year = Number(date.getFullYear());

@@ -14,7 +14,6 @@ switch($action){
         setcookie("usr", "" ,time()-(60*60*24*7*30),"/", "","",TRUE);
         Page::redir("../index.php");
         break;
-
 }
 
 ?>

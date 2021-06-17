@@ -5,8 +5,9 @@
 #  Update the StartDate and EndDate im
 #  Employment Conctract Duration
 
-?>
+##################################
 
+?>
 
 <!------------------------------------------------->
 <!-- Display active employees in Form Data Table -->
@@ -622,11 +623,7 @@
                                 <!-- TimeType: $("#time-type").val() -->
                                 <select id="time-type" class="select-text" name="TimeType" required>
                                     <option value="Open Time" selected>Open Time</option>
-                                    <option value="Other Shift">Other Shift</option>
-                                    <option value="First Shift">First Shift</option>
-                                    <option value="Second Shift">Second Shift</option>
-
-                                    <option value="Third Shift">Third Shift</option>
+                                    <option value="Regular Shift">Regular Shift</option>
                                 </select>
                                 <label class="select-label">Type</label>
                             </div>
