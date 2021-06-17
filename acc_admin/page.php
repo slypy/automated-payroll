@@ -24,6 +24,13 @@
             </div>
             <div id="sidebar-scroll" class="sidebar-wrapper" onmouseover="this.style.overflow='overlay'" onmouseout="this.style.overflow='hidden'">
                 <ul class="nav">
+                    <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/dashboard/">
+                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/dashboard/">
+                            <i class="material-icons">dashboard</i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <hr style="width: 230px;">
                     <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/employee/">
                         <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/employee/">
                             <i class="material-icons">assignment_ind</i>
@@ -31,7 +38,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#0">
+                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/staffcashadvance/">
                             <i class="material-icons">monetization_on</i>
                             <p>Staff Cash Advances</p>
                         </a>
@@ -44,20 +51,20 @@
                         </a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" href="#0">
+                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/EVpayroll/">
                             <i class="material-icons">playlist_add_check</i>
                             <p style="font-size: 13px;">Employee's Payroll Verification</p>
                         </a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" href="#0">
+                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/SApayroll/">
                             <i class="material-icons">event_note</i>
                             <p style="font-size: 14px;">Schedule AutoPrint Payroll</p>
                         </a>
                     </li>
                     <hr style="width: 230px;">
                     <li class="nav-item ">
-                        <a class="nav-link" href="#0">
+                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/clockupdate/">
                             <i class="material-icons">schedule</i>
                             <p>Update Clock-in/out</p>
                         </a>

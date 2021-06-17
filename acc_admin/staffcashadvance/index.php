@@ -2,8 +2,8 @@
 require_once("../../important.php");
 
 if(Account::loggedIn()){
-	$page_title = "Employee's Payroll Verification";
-	$page_content    = 'EVpayroll.php';
+	$page_title = "Staff Cash Advance";
+	$page_content    = 'staffcashadvance.php';
 	
 	require_once('../page.php');
 } else {

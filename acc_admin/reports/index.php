@@ -5,8 +5,8 @@ $view = (isset($_GET['view']) && $_GET['view'] != '') ? $_GET['view'] : '';
 switch ($view) {
   
   	default :
-	    $page_title = "Reports";
-		$page_content    = 'report.php';
+	    $page_title = "Payroll";
+		$page_content    = 'payrollreport.php';
 
 	}
 

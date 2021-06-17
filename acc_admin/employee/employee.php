@@ -130,7 +130,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card card-plain">
-                <div id="remove-employees" class="card-header card-header-info" style="cursor: pointer;">
+                <div id="remove-employees" class="card-header card-header-primary" style="cursor: pointer;">
                     <h4 class="card-title mt-0">Click to show/hide Removed Employees</h4>
                 </div>
                 <div id="display-employee" class="card-body" style="display: none;">
@@ -232,7 +232,7 @@
                 <!-- Footer Buttons -->
                 <div class="modal-footer" style="height: 60px">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                    <button type="submit" name="EmployeeRegister" class="btn btn-success">Register</button>
+                    <button type="submit" name="UpdateSalary" class="btn btn-success btn-md">update</button>
                 </div>
             </div>
         </div>
@@ -1188,8 +1188,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="modal-header-title">
-                        <h3 class="modal-title" id="exampleModalLabel">Employee Registration</h3>
-                        <p class="modal-title" id="exampleModalLabel">Register new employee</p>
+                        <h3 class="modal-title" id="exampleModalLabel">Employe Information</h3>
+                        <p class="modal-title" id="exampleModalLabel">you can print the employee's information</p>
                     </div>
 
                     <button class="close" id="btnclose" type="button" data-dismiss="modal">×</button>
