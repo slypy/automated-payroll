@@ -38,7 +38,7 @@
     </div>
     <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
+            <div class="card-header card-header-warning card-header-icon">
                 <div class="card-icon">
                     <i class="material-icons">info_outline</i>
                 </div>
@@ -71,13 +71,13 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="card card-chart">
             <div class="card-header card-header-success">
-                <div class="ct-chart" id="dailySalesChart"></div>
+                <div class="ct-chart ct-golden-section" id="dailySalesChart"></div>
             </div>
             <div class="card-body">
-                <h4 class="card-title">Net Pay</h4>
+                <h4 class="card-title">Net Pay and Gross Pay</h4>
                 <p class="card-category">
                     <span class="text-success"><i class="material-icons">arrow_drop_up</i> 55% </span> increase today.
                 </p>
@@ -89,7 +89,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <!-- <div class="col-md-4">
         <div class="card card-chart">
             <div class="card-header card-header-warning">
                 <div class="ct-chart" id="completedTasksChart"></div>
@@ -106,11 +106,11 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
+    </div> -->
+    <div class="col-lg-6">
         <div class="card card-chart">
             <div class="card-header card-header-primary">
-                <div class="ct-chart" id="websiteViewsChart"></div>
+                <div class="ct-chart ct-golden-section" id="websiteViewsChart"></div>
             </div>
             <div class="card-body">
                 <h4 class="card-title">Attendance Chart</h4>
@@ -210,7 +210,7 @@
                                 <tbody>
                                     <tr>
                                         <td>1</td>
-                                        <td>Dakota Rice</td>
+                                        <td>Sly Kint Bacalso</td>
                                         <td><?php echo date('m-d-y', strtotime(date('Y-m-d'))); ?></td>
                                     </tr>
                                 </tbody>

@@ -482,49 +482,16 @@
     </script>
     <script>
         demo = {
-            initDocumentationCharts: function() {
-                if ($('#dailySalesChart').length != 0 && $('#websiteViewsChart').length != 0) {
-                    /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
-
-                    dataDailySalesChart = {
-                        labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-                        series: [
-                            [12, 17, 7, 17, 23, 18, 38]
-                        ]
-                    };
-
-                    optionsDailySalesChart = {
-                        lineSmooth: Chartist.Interpolation.cardinal({
-                            tension: 0
-                        }),
-                        
-                        low: 0,
-                        high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-                        width: '200px',
-                        height: '200px',
-                        chartPadding: {
-                            top: 0,
-                            right: 0,
-                            bottom: 0,
-                            left: 0
-                        },
-                    }
-
-                    var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
-
-                    var animationHeaderChart = new Chartist.Line('#websiteViewsChart', dataDailySalesChart, optionsDailySalesChart);
-                }
-            },
-
             initDashboardPageCharts: function() {
 
                 if ($('#dailySalesChart').length != 0 || $('#completedTasksChart').length != 0 || $('#websiteViewsChart').length != 0) {
                     /* ----------==========     Daily Sales Chart initialization    ==========---------- */
 
                     dataDailySalesChart = {
-                        labels: ['M', 'T', 'W', 'TH', 'F', 'S', 'S'],
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                         series: [
-                            [12252, 100007, 752003, 152227, 211553, 105002, 210200]
+                            [12252, 100007, 752003, 152227, 211553, 105002, 210200],
+                            [212252, 620007, 745003, 202227, 201553, 405002, 310200]
                         ]
                     };
 
@@ -533,9 +500,7 @@
                             tension: 5
                         }),
                         low: 0,
-                        high: 1000000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
                         showArea: true,
-                        height: '200px',
                         chartPadding: {
                             top: 20,
                             right: 0,
@@ -544,46 +509,12 @@
                         },
                     }
 
-                    var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+                    var DailyNetGrossPay = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
 
-                    md.startAnimationForLineChart(dailySalesChart);
-
-
-
-                    /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
-
-                    dataCompletedTasksChart = {
-                        labels: ['M', 'T', 'W', 'TH', 'F', 'S', 'S'],
-                        series: [
-                            [230, 750, 450, 1000, 280, 240, 20],
-                        ]
-                    };
-
-                    optionsCompletedTasksChart = {
-                        lineSmooth: Chartist.Interpolation.cardinal({
-                            tension: 5
-                        }),
-                        low: 0,
-                        height: '200px',
-                        showArea: true,
-                        chartPadding: {
-                            top: 20,
-                            right: 0,
-                            bottom: 0,
-                            left: 0
-                        }
-                    }
-
-                    var completedTasksChart = new Chartist.Line('#completedTasksChart', dataCompletedTasksChart, optionsCompletedTasksChart);
-
-                    // start animation for the Completed Tasks Chart - Line Chart
-                    md.startAnimationForLineChart(completedTasksChart);
-
-
-                    /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
+                    md.startAnimationForLineChart(DailyNetGrossPay);
 
                     var dataWebsiteViewsChart = {
-                        labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                         series: [
                             [50, 20, 32, 56, 67, 3, 22, 11, 15, 9, 10, 30],
                             [50, 20, 32, 56, 67, 3, 22, 11, 15, 9, 10, 30],
@@ -596,12 +527,11 @@
                         axisX: {
                             showGrid: false
                         },
-                        height: '200px',
                         chartPadding: {
                             top: 20,
                             right: 0,
                             bottom: 0,
-                            left: 0
+                            left: -5
                         }
                     };
                     var responsiveOptions = [
@@ -614,115 +544,22 @@
                             }
                         }]
                     ];
-                    var websiteViewsChart = Chartist.Bar('#websiteViewsChart', dataWebsiteViewsChart, optionsWebsiteViewsChart, responsiveOptions);
+                    var AttendaceViewChart = Chartist.Bar('#websiteViewsChart', dataWebsiteViewsChart, optionsWebsiteViewsChart, responsiveOptions).on('draw', function(data) {
+                        if (data.type === 'bar') {
+                            data.element.attr({
+                                style: 'stroke-width: 20px'
+                            });
+                        }
+                    });
 
                     //start animation for the Emails Subscription Chart
-                    md.startAnimationForBarChart(websiteViewsChart);
+                    md.startAnimationForBarChart(AttendaceViewChart);
+                    
+                    $(window).on('resize', function() {
+                        AttendaceViewChart.update();
+                        DailyNetGrossPay.update();
+                    });
                 }
-            },
-
-            initGoogleMaps: function() {
-                var myLatlng = new google.maps.LatLng(40.748817, -73.985428);
-                var mapOptions = {
-                    zoom: 13,
-                    center: myLatlng,
-                    scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
-                    styles: [{
-                        "featureType": "water",
-                        "stylers": [{
-                            "saturation": 43
-                        }, {
-                            "lightness": -11
-                        }, {
-                            "hue": "#0088ff"
-                        }]
-                    }, {
-                        "featureType": "road",
-                        "elementType": "geometry.fill",
-                        "stylers": [{
-                            "hue": "#ff0000"
-                        }, {
-                            "saturation": -100
-                        }, {
-                            "lightness": 99
-                        }]
-                    }, {
-                        "featureType": "road",
-                        "elementType": "geometry.stroke",
-                        "stylers": [{
-                            "color": "#808080"
-                        }, {
-                            "lightness": 54
-                        }]
-                    }, {
-                        "featureType": "landscape.man_made",
-                        "elementType": "geometry.fill",
-                        "stylers": [{
-                            "color": "#ece2d9"
-                        }]
-                    }, {
-                        "featureType": "poi.park",
-                        "elementType": "geometry.fill",
-                        "stylers": [{
-                            "color": "#ccdca1"
-                        }]
-                    }, {
-                        "featureType": "road",
-                        "elementType": "labels.text.fill",
-                        "stylers": [{
-                            "color": "#767676"
-                        }]
-                    }, {
-                        "featureType": "road",
-                        "elementType": "labels.text.stroke",
-                        "stylers": [{
-                            "color": "#ffffff"
-                        }]
-                    }, {
-                        "featureType": "poi",
-                        "stylers": [{
-                            "visibility": "off"
-                        }]
-                    }, {
-                        "featureType": "landscape.natural",
-                        "elementType": "geometry.fill",
-                        "stylers": [{
-                            "visibility": "on"
-                        }, {
-                            "color": "#b8cb93"
-                        }]
-                    }, {
-                        "featureType": "poi.park",
-                        "stylers": [{
-                            "visibility": "on"
-                        }]
-                    }, {
-                        "featureType": "poi.sports_complex",
-                        "stylers": [{
-                            "visibility": "on"
-                        }]
-                    }, {
-                        "featureType": "poi.medical",
-                        "stylers": [{
-                            "visibility": "on"
-                        }]
-                    }, {
-                        "featureType": "poi.business",
-                        "stylers": [{
-                            "visibility": "simplified"
-                        }]
-                    }]
-
-                };
-                var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-                var marker = new google.maps.Marker({
-                    position: myLatlng,
-                    title: "Hello World!"
-                });
-
-                // To add the marker to the map, call setMap();
-                marker.setMap(map);
             }
         }
         $(document).ready(function() {

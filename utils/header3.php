@@ -9,7 +9,8 @@
 <link href="<?php echo $web_root; ?>frameworks/assets/css/material-dashboard.css?v=<?php echo time(); ?>" rel="stylesheet" />
 <link href="<?php echo $web_root; ?>frameworks/assets/css/mydesign.css?v=<?php echo time(); ?>" rel="stylesheet" />
 <link href="<?php echo $web_root; ?>frameworks/assets/css/dataTables.bootstrap5.min.css?v=<?php echo time(); ?>" rel="stylesheet" />
-<link href="<?php echo $web_root; ?>frameworks/assets/css/font-awesome.min.css?v=<?php echo time(); ?>" rel="stylesheet" />
+<link href="<?php echo $web_root; ?>frameworks/assets/css/chartist.css?v=<?php echo time(); ?>" rel="stylesheet" />
+
 
 <!-- -------------------------------- -->
 <!-- JavaScript Functions and Plugins -->
@@ -32,5 +33,5 @@
 <script src="<?php echo $web_root; ?>frameworks/assets/js/plugins/perfect-scrollbar.jquery.min.js?v=<?php echo time(); ?>"></script>
 
 
-<script src="<?php echo $web_root; ?>frameworks/assets/js/material-dashboard.min.js?v=2.1.2" type="text/javascript"></script>
+<script src="<?php echo $web_root; ?>frameworks/assets/js/material-dashboard.min.js?v=<?php echo time(); ?>" type="text/javascript"></script>
 
