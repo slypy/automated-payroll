@@ -11,7 +11,7 @@
 
 <body>
     <div class="wrapper">
-        <div class="sidebar" data-color="torquoise" data-background-color="white">
+        <div class="sidebar" data-color="torquoise" data-background-color="white" style="z-index: 999;">
             <div class="logo">
 
                 <a href="#" class="simple-text logo-normal">
@@ -74,7 +74,7 @@
         </div>
         <div class="main-panel">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light navbar-absolute fixed-top" style="max-height: 55px; z-index: 1; box-shadow: 0px 0px 5px 0px rgb(167, 167, 167)">
+            <nav class="navbar navbar-expand-lg navbar-light navbar-absolute fixed-top" style="max-height: 55px; z-index: 99; box-shadow: 0px 0px 5px 0px rgb(167, 167, 167)">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
                         <a class="navbar-brand" href="javascript:;"><?php echo $page_title; ?></a>
@@ -132,7 +132,7 @@
                             document.write(new Date().getFullYear());
                         </script>
                         , made by
-                        <a href="" target="_blank">Sly Bacalso</a> <i class="material-icons">favorite</i>
+                        <a href="https://www.facebook.com/sly.018" target="_blank">Sly Bacalso</a> <i class="material-icons">favorite</i>
                         for interactive UI
                     </div>
                     <!-- your footer here -->
@@ -497,8 +497,11 @@
                         lineSmooth: Chartist.Interpolation.cardinal({
                             tension: 0
                         }),
+                        
                         low: 0,
                         high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+                        width: '200px',
+                        height: '200px',
                         chartPadding: {
                             top: 0,
                             right: 0,
@@ -519,23 +522,25 @@
                     /* ----------==========     Daily Sales Chart initialization    ==========---------- */
 
                     dataDailySalesChart = {
-                        labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                        labels: ['M', 'T', 'W', 'TH', 'F', 'S', 'S'],
                         series: [
-                            [12, 17, 7, 17, 23, 18, 38]
+                            [12252, 100007, 752003, 152227, 211553, 105002, 210200]
                         ]
                     };
 
                     optionsDailySalesChart = {
                         lineSmooth: Chartist.Interpolation.cardinal({
-                            tension: 0
+                            tension: 5
                         }),
                         low: 0,
-                        high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+                        high: 1000000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+                        showArea: true,
+                        height: '200px',
                         chartPadding: {
-                            top: 0,
+                            top: 20,
                             right: 0,
                             bottom: 0,
-                            left: 0
+                            left: 25
                         },
                     }
 
@@ -548,20 +553,21 @@
                     /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
 
                     dataCompletedTasksChart = {
-                        labels: ['12p', '3p', '6p', '9p', '12p', '3a', '6a', '9a'],
+                        labels: ['M', 'T', 'W', 'TH', 'F', 'S', 'S'],
                         series: [
-                            [230, 750, 450, 300, 280, 240, 200, 190]
+                            [230, 750, 450, 1000, 280, 240, 20],
                         ]
                     };
 
                     optionsCompletedTasksChart = {
                         lineSmooth: Chartist.Interpolation.cardinal({
-                            tension: 0
+                            tension: 5
                         }),
                         low: 0,
-                        high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+                        height: '200px',
+                        showArea: true,
                         chartPadding: {
-                            top: 0,
+                            top: 20,
                             right: 0,
                             bottom: 0,
                             left: 0
@@ -579,19 +585,21 @@
                     var dataWebsiteViewsChart = {
                         labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
                         series: [
-                            [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]
+                            [50, 20, 32, 56, 67, 3, 22, 11, 15, 9, 10, 30],
+                            [50, 20, 32, 56, 67, 3, 22, 11, 15, 9, 10, 30],
+                            [50, 20, 32, 56, 67, 3, 22, 11, 15, 9, 10, 30]
 
                         ]
                     };
                     var optionsWebsiteViewsChart = {
+                        stackBars: true,
                         axisX: {
                             showGrid: false
                         },
-                        low: 0,
-                        high: 1000,
+                        height: '200px',
                         chartPadding: {
-                            top: 0,
-                            right: 5,
+                            top: 20,
+                            right: 0,
                             bottom: 0,
                             left: 0
                         }
@@ -716,7 +724,6 @@
                 // To add the marker to the map, call setMap();
                 marker.setMap(map);
             }
-
         }
         $(document).ready(function() {
             // Javascript method's body can be found in assets/js/demos.js

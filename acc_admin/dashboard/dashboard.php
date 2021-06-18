@@ -5,19 +5,17 @@
 <div class="row">
     <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-            <div class="card-header card-header-warning card-header-icon">
+            <div class="card-header card-header-primary card-header-icon">
                 <div class="card-icon">
-                    <i class="material-icons">content_copy</i>
+                    <i class="material-icons">credit_card</i>
                 </div>
-                <p class="card-category">Used Space</p>
-                <h3 class="card-title">49/50
-                    <small>GB</small>
+                <p class="card-category">Total Net Pay</p>
+                <h3 class="card-title">201,200
                 </h3>
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    <i class="material-icons text-danger">warning</i>
-                    <a href="javascript:;">Get More Space...</a>
+                    <i class="material-icons">account_balance</i> Update Today
                 </div>
             </div>
         </div>
@@ -26,30 +24,14 @@
         <div class="card card-stats">
             <div class="card-header card-header-success card-header-icon">
                 <div class="card-icon">
-                    <i class="material-icons">store</i>
+                    <i class="material-icons">assignment_ind</i>
                 </div>
-                <p class="card-category">Revenue</p>
-                <h3 class="card-title">$34,245</h3>
+                <p class="card-category">Employees</p>
+                <h3 class="card-title">34/50</h3>
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    <i class="material-icons">date_range</i> Last 24 Hours
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-            <div class="card-header card-header-danger card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">info_outline</i>
-                </div>
-                <p class="card-category">Fixed Issues</p>
-                <h3 class="card-title">75</h3>
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons">local_offer</i> Tracked from Github
+                    <a href="<?php echo $web_root ?>acc_admin/employee/" style="display: flex;"><i class="material-icons">info</i> More Info</a>
                 </div>
             </div>
         </div>
@@ -58,14 +40,31 @@
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
                 <div class="card-icon">
-                    <i class="fa fa-twitter"></i>
+                    <i class="material-icons">info_outline</i>
                 </div>
-                <p class="card-category">Followers</p>
-                <h3 class="card-title">+245</h3>
+                <p class="card-category">Late Today</p>
+                <h3 class="card-title">4</h3>
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    <i class="material-icons">update</i> Just Updated
+                    <i class="material-icons">update</i>
+                    Tracked Employees today
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">assignment_late</i>
+                </div>
+                <p class="card-category">Absent Today</p>
+                <h3 class="card-title">5</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">update</i> Tracked Employees today
                 </div>
             </div>
         </div>
@@ -78,14 +77,14 @@
                 <div class="ct-chart" id="dailySalesChart"></div>
             </div>
             <div class="card-body">
-                <h4 class="card-title">Daily Sales</h4>
+                <h4 class="card-title">Net Pay</h4>
                 <p class="card-category">
-                    <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.
+                    <span class="text-success"><i class="material-icons">arrow_drop_up</i> 55% </span> increase today.
                 </p>
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    <i class="material-icons">access_time</i> updated 4 minutes ago
+                    <i class="material-icons">access_time</i> update today
                 </div>
             </div>
         </div>
@@ -93,59 +92,62 @@
     <div class="col-md-4">
         <div class="card card-chart">
             <div class="card-header card-header-warning">
-                <div class="ct-chart" id="websiteViewsChart"></div>
+                <div class="ct-chart" id="completedTasksChart"></div>
             </div>
             <div class="card-body">
-                <h4 class="card-title">Email Subscriptions</h4>
-                <p class="card-category">Last Campaign Performance</p>
+                <h4 class="card-title">Gross Pay</h4>
+                <p class="card-category">
+                    <span class="text-warning"><i class="material-icons">arrow_drop_down</i> 20% </span> decrease today.
+                </p>
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    <i class="material-icons">access_time</i> campaign sent 2 days ago
+                    <i class="material-icons">access_time</i> update today
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="card card-chart">
-            <div class="card-header card-header-danger">
-                <div class="ct-chart" id="completedTasksChart"></div>
+            <div class="card-header card-header-primary">
+                <div class="ct-chart" id="websiteViewsChart"></div>
             </div>
             <div class="card-body">
-                <h4 class="card-title">Completed Tasks</h4>
-                <p class="card-category">Last Campaign Performance</p>
+                <h4 class="card-title">Attendance Chart</h4>
+                <p class="card-category">Monthly Attendance Report</p>
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    <i class="material-icons">access_time</i> campaign sent 2 days ago
+                    <i class="material-icons">access_time</i> update today
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <div class="row">
     <div class="col-lg-6 col-md-12">
         <div class="card">
             <div class="card-header card-header-tabs card-header-primary">
                 <div class="nav-tabs-navigation">
                     <div class="nav-tabs-wrapper">
-                        <span class="nav-tabs-title">Tasks:</span>
+                        <span class="nav-tabs-title">Employee Logs:</span>
                         <ul class="nav nav-tabs" data-tabs="tabs">
                             <li class="nav-item">
                                 <a class="nav-link active" href="#profile" data-toggle="tab">
-                                    <i class="material-icons">bug_report</i> Bugs
+                                    <i class="material-icons">how_to_reg</i> Online
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#messages" data-toggle="tab">
-                                    <i class="material-icons">code</i> Website
+                                    <i class="material-icons">local_hotel</i> Late
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#settings" data-toggle="tab">
-                                    <i class="material-icons">cloud</i> Server
+                                    <i class="material-icons">assignment_late</i> Absent
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>
@@ -156,214 +158,64 @@
             <div class="card-body">
                 <div class="tab-content">
                     <div class="tab-pane active" id="profile">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="" checked>
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>Sign contract for "What are conference organizers afraid of?"</td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="" checked>
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>Create 4 Invisible User Experiences you Never Knew About</td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="text-primary">
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Time in</th>
+                                    <th>Attendance</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Sly Kint Bacalso</td>
+                                        <td><?php echo date('m-d-y', strtotime(date('Y-m-d'))); ?></td>
+                                        <td><?php echo date('h:i A', strtotime(date('Y-m-d'))); ?> </td>
+                                        <td>Not late</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="tab-pane" id="messages">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="" checked>
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>Sign contract for "What are conference organizers afraid of?"</td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="text-primary">
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Time In (late)</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Sly Kint Bacalso</td>
+                                        <td><?php echo date('m-d-y', strtotime(date('Y-m-d'))); ?></td>
+                                        <td><?php echo date('h:i A', strtotime(date('Y-m-d'))); ?> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="tab-pane" id="settings">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="" checked>
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="" checked>
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>Sign contract for "What are conference organizers afraid of?"</td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="text-primary">
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Date Absent</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Dakota Rice</td>
+                                        <td><?php echo date('m-d-y', strtotime(date('Y-m-d'))); ?></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -373,40 +225,22 @@
         <div class="card">
             <div class="card-header card-header-warning">
                 <h4 class="card-title">Employees Stats</h4>
-                <p class="card-category">New employees on 15th September, 2016</p>
+                <p class="card-category">Daily Rate</p>
             </div>
             <div class="card-body table-responsive">
                 <table class="table table-hover">
                     <thead class="text-warning">
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Salary</th>
-                        <th>Country</th>
+                        <th>Hourly Rate</th>
+                        <th>Daily Rate</th>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>Dakota Rice</td>
-                            <td>$36,738</td>
-                            <td>Niger</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Minerva Hooper</td>
-                            <td>$23,789</td>
-                            <td>Curaçao</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Sage Rodriguez</td>
-                            <td>$56,142</td>
-                            <td>Netherlands</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Philip Chaney</td>
-                            <td>$38,735</td>
-                            <td>Korea, South</td>
+                            <td>Sly Kint Bacalso</td>
+                            <td>₱ 100</td>
+                            <td>₱ 2,400</td>
                         </tr>
                     </tbody>
                 </table>

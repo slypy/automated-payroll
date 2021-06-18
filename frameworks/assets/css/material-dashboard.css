@@ -4851,6 +4851,7 @@ tbody.collapse.show {
 
 .card-header {
   padding: 0.75rem 1.25rem;
+  /* padding: 5px; */
   margin-bottom: 0;
   background-color: #fff;
   border-bottom: 1px solid #eeeeee;
@@ -15048,7 +15049,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .footer {
-  padding: 0.9375rem 0;
+  padding: 0px;
   text-align: center;
   display: -webkit-flex;
   /* Safari */
