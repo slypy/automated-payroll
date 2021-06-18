@@ -16,8 +16,21 @@
 <!-- -------------------------------- -->
 
 <script src="<?php echo $web_root; ?>frameworks/assets/js/core/jquery.min.js?v=<?php echo time(); ?>"></script>
+
 <script src="<?php echo $web_root; ?>frameworks/assets/js/core/popper.min.js?v=<?php echo time(); ?>"></script>
+
 <script src="<?php echo $web_root; ?>frameworks/assets/js/plugins/moment.min.js?v=<?php echo time(); ?>"></script>
+
 <script src="<?php echo $web_root; ?>frameworks/assets/js/core/bootstrap-material-design.min.js?v=<?php echo time(); ?>"></script>
+
 <script src="<?php echo $web_root; ?>frameworks/js/addons/jquery.dataTables.min.js?v=<?php echo time(); ?>"></script>
+
 <script defer src="<?php echo $web_root; ?>frameworks/assets/js/plugins/dataTables.bootstrap5.min.js?v=<?php echo time(); ?>" type="text/javascript"></script>
+
+<script src="<?php echo $web_root; ?>frameworks/assets/js/plugins/chartist.min.js?v=<?php echo time(); ?>"></script>
+
+<script src="<?php echo $web_root; ?>frameworks/assets/js/plugins/perfect-scrollbar.jquery.min.js?v=<?php echo time(); ?>"></script>
+
+
+<script src="<?php echo $web_root; ?>frameworks/assets/js/material-dashboard.min.js?v=2.1.2" type="text/javascript"></script>
+
