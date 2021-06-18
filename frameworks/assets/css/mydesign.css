@@ -3,7 +3,7 @@
   font-style: normal;
   font-weight: 400;
   src: local("Material Icons"), local("MaterialIcons-Regular"),
-    url("../../material-design-icons/font/MaterialIcons-Regular.ttf")
+    url("../../icons/font/MaterialIcons-Regular.ttf")
       format("truetype");
 }
 
@@ -12,7 +12,7 @@
   font-style: normal;
   font-weight: 400;
   src: local("Roboto"), local("Roboto-Regular"),
-    url("../../material-design-icons/font/Roboto-Regular.ttf")
+    url("../../icons/font/Roboto-Regular.ttf")
       format("truetype");
 }
 
@@ -21,7 +21,7 @@
   font-style: normal;
   font-weight: 400;
   src: local("Roboto Slab"), local("RobotoSlab-Regular"),
-    url("../../material-design-icons/font/RobotoSlab-Regular.ttf")
+    url("../../icons/font/RobotoSlab-Regular.ttf")
       format("truetype");
 }
 
