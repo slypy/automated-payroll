@@ -555,3 +555,48 @@ input[type="date"]:before {
 input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spin-button, input[type="date"]::-webkit-clear-button {
   display: none;
 }
+
+@keyframes width-pulse {
+  0% {
+    stroke-width: 6px
+  }
+  50% {
+    stroke-width: 10px;
+  }
+  100% {
+    stroke-width: 6px;
+  }
+}
+
+@keyframes dashoffset-seven {
+  0% {
+    stroke-dashoffset: 7px;
+  }
+  100% {
+    stroke-dashoffset: 0px;
+  }
+}
+
+.ct-chart .ct-label.ct-vertical,
+.ct-chart .ct-label.ct-horizontal {
+  color: rgba(255, 255, 255, 0.5);
+} 
+.ct-chart .ct-grid.ct-vertical,
+.ct-chart .ct-grid.ct-horizontal {
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-dasharray: 2px;
+  shape-rendering: crispEdges;
+}
+
+.ct-chart .ct-series.ct-series-a .ct-line {
+  stroke: #4ECDC4;
+  stroke-width: 5px;
+  stroke-linecap: round;
+  animation: width-pulse 2s infinite;
+}
+
+.ct-chart .ct-series.ct-series-b .ct-line {
+  stroke-width: 5px;
+  stroke-dasharray: 5px 2px;
+  animation: dashoffset-seven 300ms infinite linear;
+}

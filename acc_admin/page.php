@@ -476,22 +476,18 @@
                         break;
                 }
             });
-
-            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
         });
     </script>
     <script>
-        demo = {
-            initDashboardPageCharts: function() {
-
-                if ($('#dailySalesChart').length != 0 || $('#completedTasksChart').length != 0 || $('#websiteViewsChart').length != 0) {
-                    /* ----------==========     Daily Sales Chart initialization    ==========---------- */
-
+        
+        $(document).ready(function() {
+            var dashboard = {
+                initDashboardPageCharts: function() {
                     dataDailySalesChart = {
                         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                         series: [
                             [12252, 100007, 752003, 152227, 211553, 105002, 210200],
-                            [212252, 620007, 745003, 202227, 201553, 405002, 310200]
+                            [212252, 620007, 700003, 202227, 201553, 405002, 310200]
                         ]
                     };
 
@@ -499,11 +495,12 @@
                         lineSmooth: Chartist.Interpolation.cardinal({
                             tension: 5
                         }),
+                        fullWidth: true,
                         low: 0,
                         showArea: true,
                         chartPadding: {
                             top: 20,
-                            right: 0,
+                            right: 25,
                             bottom: 0,
                             left: 25
                         },
@@ -511,7 +508,7 @@
 
                     var DailyNetGrossPay = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
 
-                    md.startAnimationForLineChart(DailyNetGrossPay);
+                    dashboard.startAnimationForLineChart(DailyNetGrossPay);
 
                     var dataWebsiteViewsChart = {
                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -553,18 +550,71 @@
                     });
 
                     //start animation for the Emails Subscription Chart
-                    md.startAnimationForBarChart(AttendaceViewChart);
-                    
-                    $(window).on('resize', function() {
-                        AttendaceViewChart.update();
-                        DailyNetGrossPay.update();
+                    dashboard.startAnimationForBarChart(AttendaceViewChart);
+                },
+
+                startAnimationForLineChart: function(chart) {
+
+                    chart.on('draw', function(data) {
+                        if (data.type === 'line' || data.type === 'area') {
+                            data.element.animate({
+                                d: {
+                                    begin: 600,
+                                    dur: 700,
+                                    from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+                                    to: data.path.clone().stringify(),
+                                    easing: Chartist.Svg.Easing.easeOutQuint
+                                }
+                            });
+                        } else if (data.type === 'point') {
+                            seq++;
+                            data.element.animate({
+                                opacity: {
+                                    begin: seq * delays,
+                                    dur: durations,
+                                    from: 0,
+                                    to: 1,
+                                    easing: 'ease'
+                                }
+                            });
+                        }
                     });
-                }
+
+                    seq = 0;
+                },
+                startAnimationForBarChart: function(chart) {
+
+                    chart.on('draw', function(data) {
+                        if (data.type === 'bar') {
+                            seq2++;
+                            data.element.animate({
+                                opacity: {
+                                    begin: seq2 * delays2,
+                                    dur: durations2,
+                                    from: 0,
+                                    to: 1,
+                                    easing: 'ease'
+                                }
+                            });
+                        }
+                    });
+
+                    seq2 = 0;
+                },
             }
-        }
-        $(document).ready(function() {
-            // Javascript method's body can be found in assets/js/demos.js
-            demo.initDashboardPageCharts();
+
+            dashboard.initDashboardPageCharts();
+
+            $(window).resize(function() {
+                md.initSidebarsCheck();
+
+                // reset the seq for charts drawing animations
+                seq = seq2 = 0;
+
+                setTimeout(function() {
+                    dashboard.initDashboardPageCharts();
+                }, 500);
+            });
 
         });
     </script>
