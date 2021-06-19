@@ -29,6 +29,5 @@
 
 <script src="<?php echo $web_root; ?>frameworks/assets/js/plugins/chartist.min.js?v=<?php echo time(); ?>"></script>
 
-
 <script src="<?php echo $web_root; ?>frameworks/assets/js/material-dashboard.js?v=<?php echo time(); ?>" type="text/javascript"></script>
 

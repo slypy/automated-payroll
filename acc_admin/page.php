@@ -14,11 +14,11 @@
         <div class="sidebar" data-color="torquoise" data-background-color="white" style="z-index: 999;">
             <div class="logo">
 
-                <a href="#" class="simple-text logo-normal">
+                <a href="<?php echo $web_root ?>acc_admin/dashboard/" class="simple-text logo-normal">
                     <img src="<?php echo web_root; ?>res/cmp_logo.png" alt="logo" height="50" width="50">
 
                 </a>
-                <a href="#" class="simple-text logo-normal">
+                <a href="<?php echo $web_root ?>acc_admin/dashboard/" class="simple-text logo-normal">
                     El Pardo
                 </a>
             </div>
@@ -81,12 +81,25 @@
                     </div>
                     <div class="collapse navbar-collapse justify-content-end">
                         <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">monetization_on</i> Update employee salary</a>
-                            </li>
-                            <li class="nav-item" style="margin-left: 20px;">
-                                <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">playlist_add</i> Import Excel Data File</a>
-                            </li>
+
+                            <?php
+                            $url = $_SERVER['REQUEST_URI'];
+                            $employee_url = $web_root . 'acc_admin/employee/';
+
+                            if (strval($url) == strval($employee_url)) {
+                                echo '<li class="nav-item">
+                                    <a href="#registration-form" data-target="#add-position-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">monetization_on</i> Add Position</a>
+                                </li>
+                                <li class="nav-item" style="margin-left: 20px;">
+                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">monetization_on</i> Update employee salary</a>
+                                </li>
+                                <li class="nav-item" style="margin-left: 20px;">
+                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">playlist_add</i> Import Excel Data File</a>
+                                </li>';
+                            }
+
+                            ?>
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="material-icons">person</i>
@@ -336,6 +349,19 @@
                 "pageLength": 10,
             });
 
+            $('#position-table').DataTable({
+                "responsive": true,
+                "bPaginate": true,
+                "bFilter": true,
+                "bInfo": false,
+                "dom": 'ftipr',
+                "bAutoWidth": false,
+                "searchable": true,
+                "orderable": true,
+                "sort": false,
+                "pageLength": 5,
+            });
+
             // add class active in li .nav-item on curren url
             $(function() {
                 $('.nav-item a[href^="/PayRoll2/acc_admin/' + location.pathname.split("/")[3] + '"]').closest('li').addClass("active");
@@ -472,14 +498,12 @@
 
                     default:
                         $("#endDate").val("");
-                        alert(year);
                         break;
                 }
             });
         });
     </script>
     <script>
-        
         $(document).ready(function() {
             var dashboard = {
                 initDashboardPageCharts: function() {

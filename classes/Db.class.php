@@ -422,11 +422,6 @@ class Db extends mysqli implements Config{
 		return $query; 
 	}
 	
-	public static function table($table, array $cols){
-		// coming soon
-	}
-
-
 	public static function count($query){
 		return $query->rowCount();
 	}

@@ -1,6 +1,4 @@
 <?php
-
-
 function Error($message, $type){
 
     switch($type){

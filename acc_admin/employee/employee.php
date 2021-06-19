@@ -103,7 +103,7 @@
                                             <i class="material-icons">edit</i>
                                         </button>
 
-                                        <button title="Edit" type="button" rel="tooltip" class="btn btn-info" data-target="#info-form" data-toggle="modal" data-backdrop="static">
+                                        <button title="More info" type="button" rel="tooltip" class="btn btn-info" data-target="#info-form" data-toggle="modal" data-backdrop="static">
                                             <i class="material-icons">info</i>
                                         </button>
                                     </td>
@@ -240,6 +240,111 @@
     </div>
 </form>
 
+<!-- ------------------------------- -->
+<!-- Form modal for add new position -->
+<!-- ------------------------------- -->
+<form action="controller.php?action=add" id="registerEmployee" method="POST" autocomplete="off">
+    <div id="add-position-form" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-header-title">
+                        <h3 class="modal-title" id="exampleModalLabel">Positions</h3>
+                        <p class="modal-title" id="exampleModalLabel">Add new position</p>
+                    </div>
+
+                    <button class="close" id="btnclose" type="button" data-dismiss="modal">×</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row" style="margin-top: -20px;">
+                        <div class="col-md">
+                            <div class="input-wrapper">
+                                <div class="table-responsive">
+                                    <table id="position-table" class="table table-hover">
+                                        <thead class="text-info">
+                                            <th>
+                                                #
+                                            </th>
+                                            <th>
+                                                Position List
+                                            </th>
+                                            <th>
+                                                ₱ Per Hour
+                                            </th>
+                                            <th>
+                                                ₱ Per Day
+                                            </th>
+                                            <th>
+                                                ₱ Per Week
+                                            </th>
+                                            <th>
+                                                ₱ Per Month
+                                            </th>
+                                            <th width="50">Action</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" name="selector[]" id="selector[]" value="' . $result->PROID . '" />
+                                                </td>
+                                                <td>
+                                                    Software Engineer
+                                                </td>
+                                                <td class="text-center">
+                                                    12.5
+                                                </td>
+                                                <td class="text-center">
+                                                    300
+                                                </td>
+                                                <td class="text-center">
+                                                    1500
+                                                </td>
+                                                <td class="text-center">
+                                                    6000
+                                                </td>
+                                                <td class="td-actions text-center">
+                                                    <a title="edit" class="btn btn-danger btn-sm" href="' . web_root . 'admin/products/index.php?view=edit&id=' . $result->PROID . '"> <i class="material-icons">delete</i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Buttons -->
+                <div class="modal-footer" style="height: 75px">
+                    <div class="material-textfield" style="margin-right: 0px;">
+                        <!-- CardID: $("#cardID").val() -->
+                        <input id="cardID" placeholder=" " name="CardID" type="text" required style="width: 180px;">
+                        <label>Position Name</label>
+                    </div>
+                    <div class="select">
+                        <!--  WorkerType: $("#worker-type").val() -->
+                        <select id="worker-type" class="select-text" name="WorkerType" required>
+                            <option value="Per Hour" selected>Per Hour</option>
+                            <option value="Regular">Per Day</option>
+                            <option value="OJT">Per Week</option>
+                            <option value="Contractual">Per Month</option>
+                        </select>
+                        <label class="select-label">Wages</label>
+                    </div>
+                    <div class="material-textfield" style="margin-right: 0px;">
+                        <!-- CardID: $("#cardID").val() -->
+                        <input id="cardID" placeholder=" " name="CardID" type="text" required style="width: 130px;">
+                        <label>₱</label>
+                    </div>
+                    <button type="submit" name="UpdateSalary" class="btn btn-success btn-md">Add</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 <!-- ---------------------------------->
 <!-- Form modal for add new employee -->
 <!-- ------------------------------- -->
@@ -258,14 +363,24 @@
 
                 <div class="modal-body">
                     <div class="input-container-1">
-                        <div class="input-1-5">
+                        <div class="input-1-5" style="margin-bottom: 20px;">
                             <div class="input-date">
                                 <div class="material-textfield">
                                     <!-- CardID: $("#cardID").val() -->
                                     <input id="cardID" placeholder=" " name="CardID" type="text" required style="width: 200px;" value="0015077572">
+                                    <label>Employee Number</label>
+                                </div>
+                                <p>Input your format</p>
+                            </div>
+                        </div>
+                        <div class="input-1-5">
+                            <div class="input-date">
+                                <div class="material-textfield">
+                                    <!-- CardID: $("#cardID").val() -->
+                                    <input id="cardID" placeholder=" " name="CardID" type="text" required style="width: 200px;">
                                     <label>Employee Card ID</label>
                                 </div>
-                                <p>eg. 0015077572</p>
+                                <p>eg. Input the card number</p>
                             </div>
                             <div class="input-date">
                                 <div class="material-textfield">
@@ -288,15 +403,15 @@
                                         <option value="Contractual">Contractual</option>
                                         <option value="Concession Worker">Concession Worker</option>
                                     </select>
-                                    <label class="select-label">Select Position</label>
+                                    <label class="select-label">Select Job Contract</label>
                                 </div>
-                                <div class="input-date" style="margin-left: 20px;">
-                                    <div class="material-textfield">
-                                        <!-- JobTitle: $("#jobTitle").val() -->
-                                        <input id="jobTitle" placeholder=" " name="JobTitle" type="text" required style="width: auto;">
-                                        <label>Job title</label>
-                                    </div>
-                                    <p>eg. Driver, Conductor</p>
+                                <div class="select" style="margin-left: 5px;">
+                                    <!--  WorkerType: $("#worker-type").val() -->
+                                    <select id="worker-type" class="select-text" name="WorkerType" required>
+                                        <option value="" selected></option>
+                                        <option value="Regular">Software Engineer</option>
+                                    </select>
+                                    <label class="select-label">Select Job Position</label>
                                 </div>
                             </div>
                         </div>
