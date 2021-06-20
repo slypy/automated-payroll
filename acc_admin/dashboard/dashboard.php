@@ -117,7 +117,7 @@
                         <ul class="nav nav-tabs" data-tabs="tabs">
                             <li class="nav-item">
                                 <a class="nav-link active" href="#profile" data-toggle="tab">
-                                    <i class="material-icons">how_to_reg</i> Online
+                                    <i class="material-icons">how_to_reg</i> On job
                                     <div class="ripple-container"></div>
                                 </a>
                             </li>

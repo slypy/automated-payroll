@@ -324,7 +324,7 @@
                     </div>
                     <div class="select">
                         <!--  WorkerType: $("#worker-type").val() -->
-                        <select id="worker-type" class="select-text" name="WorkerType" required>
+                        <select class="select-text" name="WorkerType" required>
                             <option value="Per Hour" selected>Per Hour</option>
                             <option value="Regular">Per Day</option>
                             <option value="OJT">Per Week</option>
@@ -407,7 +407,7 @@
                                 </div>
                                 <div class="select" style="margin-left: 5px;">
                                     <!--  WorkerType: $("#worker-type").val() -->
-                                    <select id="worker-type" class="select-text" name="WorkerType" required>
+                                    <select class="select-text" name="WorkerType" required>
                                         <option value="" selected></option>
                                         <option value="Regular">Software Engineer</option>
                                     </select>
@@ -540,7 +540,34 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="container-2" style="background-color: #7c5295; border-radius: 5px; padding: 10px; color: white; margin-top: 20px;">
+                        <h5 style="font-weight: bold;margin-top: 0px;">Time Shifting</h5>
+                        
+                        <div class="input-6" style="margin-top: 20px;">
+                            <div class="select">
+                                <!-- TimeType: $("#time-type").val() -->
+                                <select id="time-type" class="select-text" name="TimeType" required style="background-color: white;">
+                                    <option value="Open Time" selected>Open Time</option>
+                                    <option value="Regular Shift">Regular Shift</option>
+                                </select>
+                                <label class="select-label" style="border-radius: 5px;">Type</label>
+                            </div>
+                            <div data-id="time" class="input-date" style="margin-left: 5px; display: none;">
+                                <div class="material-textfield">
+                                    <!-- StartTime: $("#start-time").val() -->
+                                    <input id="start-time" placeholder=" " name="StartTime" type="time" required style="width: 170px;">
+                                    <label>Start</label>
+                                </div>
+                            </div>
+                            <div data-id="time" class="input-date" style="display: none;">
+                                <div class="material-textfield">
+                                    <!-- EndTime: $("end-time").val() -->
+                                    <input id="end-time" placeholder=" " name="EndTime" type="time" required style="width: 170px;">
+                                    <label>End</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="employee-name" style="background-color: #fe8484; border-radius: 5px; padding: 10px; color: white; margin-top: 20px;">
                         <h5 style="font-weight: bold;margin-top: 0px;">Employment Contract Duration</h5>
                         <div class="input-6" style="justify-content: start">
@@ -660,7 +687,7 @@
                             <div class="line"></div>
                             <div class="line"></div>
                         </div>
-                        <h3>Admin Parameter</h3>
+                        <h3>Important Parameter</h3>
                     </div>
 
                     <div class="container-1" style="margin-bottom: 30px;">
@@ -733,30 +760,6 @@
                     <!-- TIME-IN/OUT section -->
                     <div class="container-2">
                         <h4>Time-IN/Time-OUT Policy Adjustment as of <?php echo date('(D) M d, Y', strtotime(date('Y-m-d'))); ?></h4>
-                        <div class="input-6" style="margin-top: 20px;">
-                            <div class="select">
-                                <!-- TimeType: $("#time-type").val() -->
-                                <select id="time-type" class="select-text" name="TimeType" required>
-                                    <option value="Open Time" selected>Open Time</option>
-                                    <option value="Regular Shift">Regular Shift</option>
-                                </select>
-                                <label class="select-label">Type</label>
-                            </div>
-                            <div data-id="time" class="input-date" style="margin-left: 100px; display: none;">
-                                <div class="material-textfield">
-                                    <!-- StartTime: $("#start-time").val() -->
-                                    <input id="start-time" placeholder=" " name="StartTime" type="time" required style="width: auto;">
-                                    <label>Start</label>
-                                </div>
-                            </div>
-                            <div data-id="time" class="input-date" style="display: none;">
-                                <div class="material-textfield">
-                                    <!-- EndTime: $("end-time").val() -->
-                                    <input id="end-time" placeholder=" " name="EndTime" type="time" required style="width: auto;">
-                                    <label>End</label>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Late Policy input -->
                         <div class="inside-container" style="margin-top: 20px;">
@@ -877,7 +880,7 @@
                             <div class="input-1-5">
                                 <div class="select" style="margin-left: 5px;">
                                     <!--  WorkerType: $("#worker-type").val() -->
-                                    <select id="worker-type" class="select-text" name="WorkerType" required>
+                                    <select id="worker-type-update" class="select-text" name="WorkerType" required>
                                         <option value="" selected></option>
                                         <option value="Regular">Regular</option>
                                         <option value="OJT">On-the-Job Training (OJT)</option>
@@ -1283,7 +1286,7 @@
                 <!-- Footer Buttons -->
                 <div class="modal-footer" style="height: 60px">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                    <button type="submit" name="EmployeeRegister" class="btn btn-success">Register</button>
+                    <button type="submit" name="EmployeeRegister" class="btn btn-success">Update</button>
                 </div>
             </div>
         </div>
@@ -1332,7 +1335,7 @@
                             <div class="input-1-5">
                                 <div class="select" style="margin-left: 5px;">
                                     <!--  WorkerType: $("#worker-type").val() -->
-                                    <select id="worker-type" class="select-text" name="WorkerType" required>
+                                    <select id="worker-type-info" class="select-text" name="WorkerType" required>
                                         <option value="" selected></option>
                                         <option value="Regular">Regular</option>
                                         <option value="OJT">On-the-Job Training (OJT)</option>

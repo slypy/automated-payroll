@@ -15,7 +15,7 @@
             <div class="logo">
 
                 <a href="<?php echo $web_root ?>acc_admin/dashboard/" class="simple-text logo-normal">
-                    <img src="<?php echo web_root; ?>res/cmp_logo.png" alt="logo" height="50" width="50">
+                    <img src="<?php echo web_root; ?>res/cmp_logo.png" alt="logo" height="80" width="80">
 
                 </a>
                 <a href="<?php echo $web_root ?>acc_admin/dashboard/" class="simple-text logo-normal">
@@ -63,12 +63,6 @@
                         </a>
                     </li>
                     <hr style="width: 230px;">
-                    <li class="nav-item ">
-                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/clockupdate/">
-                            <i class="material-icons">schedule</i>
-                            <p>Update Clock-in/out</p>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -88,10 +82,13 @@
 
                             if (strval($url) == strval($employee_url)) {
                                 echo '<li class="nav-item">
-                                    <a href="#registration-form" data-target="#add-position-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">monetization_on</i> Add Position</a>
+                                    <a href="#registration-form" data-target="#add-position-form" data-toggle="modal" data-backdrop="static" class="btn btn-info btn-sm"> <i class="material-icons">add</i> Add Position</a>
                                 </li>
                                 <li class="nav-item" style="margin-left: 20px;">
-                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">monetization_on</i> Update employee salary</a>
+                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-info btn-sm"> <i class="material-icons">monetization_on</i> Salary Adjustment</a>
+                                </li>
+                                <li class="nav-item" style="margin-left: 20px;">
+                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-info btn-sm"> <i class="material-icons">update</i> Update employee time in/out</a>
                                 </li>
                                 <li class="nav-item" style="margin-left: 20px;">
                                     <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">playlist_add</i> Import Excel Data File</a>
@@ -157,7 +154,7 @@
         /**
          * Design functions by Sly Kint A. Bacalso
          * 2021
-         * jQuery -- Bootstrap -- WoW -- Material Design
+         * jQuery -- Material Design
          */
 
         $(document).ready(function() {
@@ -436,8 +433,10 @@
             $("#worker-type").on('change', function() {
                 if ($("#worker-type").val() === "Regular" || $("#worker-type").val() === "Contractual") {
                     $("div[data-id='employee-gov'").show();
+                    $("div[data-id='employee-gov'] input").attr("disabled", false);
                 } else {
                     $("div[data-id='employee-gov'").hide();
+                    $("div[data-id='employee-gov'] input").attr("disabled", true);
                 }
             });
 
@@ -501,10 +500,7 @@
                         break;
                 }
             });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
+
             var dashboard = {
                 initDashboardPageCharts: function() {
                     dataDailySalesChart = {
