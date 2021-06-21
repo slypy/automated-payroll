@@ -1,13 +1,16 @@
 <?php
 
-############# TODO ###############
-
-#  Update the StartDate and EndDate im
-#  Employment Conctract Duration
-
-##################################
+################ TODO #################
+#  Update all POST input for back end #
+#######################################
 
 ?>
+
+
+<!-- ------------------------------------------------------------------------------------- -->
+<!-- ------------------------------- Main Body Content ----------------------------------- -->
+<!-- ------------------------------------------------------------------------------------- -->
+
 
 <!------------------------------------------------->
 <!-- Display active employees in Form Data Table -->
@@ -28,9 +31,12 @@
                         </div>
 
                         <div>
+                            <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">playlist_add</i> Import Excel Data File</a>
                             <!-- Load Form Modal Add new Employee -->
-                            <a href="#registration-form" data-target="#registration-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-md"> <i class="material-icons">add</i> Add new Employee</a>
+                            <a href="#registration-form" data-target="#registration-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">add</i> Add new Employee</a>
+
                         </div>
+
                     </div>
                     <div class="header-line">
                         <hr>
@@ -208,6 +214,11 @@
     </div>
 </form>
 
+
+<!-- ----------------------------------------------------------------------------------------- -->
+<!-- ------------------------------- Navagition Top modals ----------------------------------- -->
+<!-- ----------------------------------------------------------------------------------------- -->
+
 <!-- -------------------------------- -->
 <!-- Form modal for update new salary -->
 <!-- -------------------------------- -->
@@ -217,7 +228,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="modal-header-title">
-                        <h3 class="modal-title" id="exampleModalLabel">Update Salary</h3>
+                        <h3 class="modal-title" id="exampleModalLabel">Salary Adjustment</h3>
                         <p class="modal-title" id="exampleModalLabel">This form will update the employee's salary</p>
                     </div>
 
@@ -225,9 +236,166 @@
                 </div>
 
                 <div class="modal-body">
-                    <!-- TODO: create a custom table for employee's update salary -->
+                    <div class="update-position-salary-container">
+                        <div class="select" style="margin-left: 5px;">
+                            <!--  WorkerType: $("#worker-type").val() -->
+                            <select class="select-text" name="WorkerType" required>
+                                <option value="" selected></option>
+                                <option value="Regular">SOftware Engineer</option>
+                            </select>
+                            <label class="select-label">Select Position</label>
+                        </div>
+                        <div class="select" style="margin-left: 5px;">
+                            <select class="select-text" name="WorkerType" required>
+                                <option value="" selected></option>
+                                <option value="Per Hour">Per Hour</option>
+                                <option value="Per Day">Per Day</option>
+                                <option value="Per Week">Per Week</option>
+                                <option value="Per Month">Per Month</option>
+                            </select>
+                            <label class="select-label">Wages</label>
+                        </div>
+                        <div class="material-textfield" height="30">
+                            <input id="cardID" placeholder=" " name="CardID" type="text" required style="width: 200px;">
+                            <label>₱</label>
+                        </div>
+                    </div>
+                    <div class="container-1" style="margin-bottom: 20px;">
+                        <h4>Holiday Pay Policy Adjustment as <?php echo date('(D) M d, Y', strtotime(date('Y-m-d'))); ?> </h4>
 
+                        <div class="inside-container">
+                            <!-- title -->
+                            <h5 class="title">
+                                Overtime Cost Adjustment
+                            </h5>
 
+                            <!-- input container -->
+                            <div class="input-6">
+                                <h5 style="margin-top: 10px">
+                                    Regular Rate with Overtime:
+                                </h5>
+                                <div class="input-date">
+                                    <div class="material-textfield">
+                                        <!-- RegularRateWOvertime: $("#regularrateWOvertime").val() -->
+                                        <input id="regularrateWOvertime" placeholder=" " name="RegularRateWOvertime" type="text" required style="width: auto;">
+                                        <label>₱</label>
+                                    </div>
+                                    <p>
+                                        PerHour
+                                    </p>
+                                </div>
+                                <h4>+</h4>
+                                <div class="input-date">
+                                    <div class="material-textfield">
+                                        <!-- Percentage: $("#percentage").val() -->
+                                        <input id="percentage" placeholder=" " name="Percentage" type="text" required style="width: 100px;">
+                                        <label>%</label>
+                                    </div>
+                                    <p>
+                                        eg. 25
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inside-container" style="margin-top: 20px;">
+                            <h5 class="title">
+                                Holiday Pay Adjustment
+                            </h5>
+                            <div class="input-6">
+                                <div class="input-date">
+                                    <div class="material-textfield">
+                                        <!-- RegularRate: $("#regularRate").val() -->
+                                        <input id="regularRate" placeholder=" " name="RegularRate" type="text" required style="width: auto;">
+                                        <label>₱ Regular Rate</label>
+                                    </div>
+                                    <p>
+                                        PerHour
+                                    </p>
+                                </div>
+                                <h4>+</h4>
+                                <div class="input-date">
+                                    <div class="material-textfield">
+                                        <!-- HolidayPay: $("#holidayPay").val() -->
+                                        <input id="holidayPay" placeholder=" " name="HolidayPay" type="text" required style="width: auto;">
+                                        <label>₱ Holiday Pay</label>
+                                    </div>
+                                    <p>
+                                        PerHour
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- TIME-IN/OUT section -->
+                    <div class="container-2">
+                        <h4>Time-IN/Time-OUT Policy Adjustment as of <?php echo date('(D) M d, Y', strtotime(date('Y-m-d'))); ?></h4>
+
+                        <!-- Late Policy input -->
+                        <div class="inside-container" style="margin-top: 20px;">
+                            <h5 class="title">
+                                Late Policy
+                            </h5>
+                            <div class="input-6">
+                                <h5 style="margin-top: 10px; margin-left:10px;">
+                                    Late After:
+                                </h5>
+                                <div class="input-date">
+                                    <div class="material-textfield">
+                                        <!-- LateHours: $("#lateHours").val() -->
+                                        <input id="lateHours" placeholder=" " name="LateHours" type="text" required style="width: 100px;">
+                                        <label>Hours</label>
+                                    </div>
+                                </div>
+                                <h4>:</h4>
+                                <div class="input-date">
+                                    <div class="material-textfield">
+                                        <!-- LateMinutes: $("#lateMinutes").val() -->
+                                        <input id="lateMinutes" placeholder=" " name="LateMinutes" type="text" required style="width: 100px;">
+                                        <label>Minutes</label>
+                                    </div>
+                                </div>
+                                <h5 style="margin-top: 10px; margin-left: 20px">
+                                    Late Penalty:
+                                </h5>
+                                <div class="input-date">
+                                    <div class="material-textfield">
+                                        <!-- PenaltyAmount: $("#penaltyAmount").val() -->
+                                        <input id="penaltyAmount" placeholder=" " name="PenaltyAmount" type="text" required style="width: 150px;">
+                                        <label>₱ Amount</label>
+                                    </div>
+                                    <p>
+                                        PerHour
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Early Time in input -->
+                        <div class="inside-container" style="margin-top: 20px;">
+                            <h5 class="title">
+                                For Early Time IN
+                            </h5>
+                            <div class="input-6">
+                                <h5 style="margin-top: 10px; margin-left:10px;">
+                                    Limit to: &nbsp;&nbsp;&nbsp;
+                                </h5>
+                                <div class="input-date">
+                                    <div class="material-textfield">
+                                        <!-- LimitHours: $("#limitHours").val() -->
+                                        <input id="limitHours" placeholder=" " name="LimitHours" type="text" required style="width: 100px;">
+                                        <label>Hours</label>
+                                    </div>
+                                </div>
+                                <h4>:</h4>
+                                <div class="input-date">
+                                    <div class="material-textfield">
+                                        <!-- LimitMinutes: $("#limitMinutes").val() -->
+                                        <input id="limitMinutes" placeholder=" " name="LimitMinutes" type="text" required style="width: 100px;">
+                                        <label>Minutes</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Footer Buttons -->
@@ -264,9 +432,6 @@
                                     <table id="position-table" class="table table-hover">
                                         <thead class="text-info">
                                             <th>
-                                                #
-                                            </th>
-                                            <th>
                                                 Position List
                                             </th>
                                             <th>
@@ -286,8 +451,25 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <input type="checkbox" name="selector[]" id="selector[]" value="' . $result->PROID . '" />
+                                                    Software Engineer
                                                 </td>
+                                                <td class="text-center">
+                                                    12.5
+                                                </td>
+                                                <td class="text-center">
+                                                    300
+                                                </td>
+                                                <td class="text-center">
+                                                    1500
+                                                </td>
+                                                <td class="text-center">
+                                                    6000
+                                                </td>
+                                                <td class="td-actions text-center">
+                                                    <a title="Delete" class="btn btn-danger btn-sm" href="' . web_root . 'admin/products/index.php?view=edit&id=' . $result->PROID . '"> <i class="material-icons">delete</i></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td>
                                                     Software Engineer
                                                 </td>
@@ -304,7 +486,47 @@
                                                     6000
                                                 </td>
                                                 <td class="td-actions text-center">
-                                                    <a title="edit" class="btn btn-danger btn-sm" href="' . web_root . 'admin/products/index.php?view=edit&id=' . $result->PROID . '"> <i class="material-icons">delete</i></a>
+                                                    <a title="Delete" class="btn btn-danger btn-sm" href="' . web_root . 'admin/products/index.php?view=edit&id=' . $result->PROID . '"> <i class="material-icons">delete</i></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Software Engineer
+                                                </td>
+                                                <td class="text-center">
+                                                    12.5
+                                                </td>
+                                                <td class="text-center">
+                                                    300
+                                                </td>
+                                                <td class="text-center">
+                                                    1500
+                                                </td>
+                                                <td class="text-center">
+                                                    6000
+                                                </td>
+                                                <td class="td-actions text-center">
+                                                    <a title="Delete" class="btn btn-danger btn-sm" href="' . web_root . 'admin/products/index.php?view=edit&id=' . $result->PROID . '"> <i class="material-icons">delete</i></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Software Engineer
+                                                </td>
+                                                <td class="text-center">
+                                                    12.5
+                                                </td>
+                                                <td class="text-center">
+                                                    300
+                                                </td>
+                                                <td class="text-center">
+                                                    1500
+                                                </td>
+                                                <td class="text-center">
+                                                    6000
+                                                </td>
+                                                <td class="td-actions text-center">
+                                                    <a title="Delete" class="btn btn-danger btn-sm" href="' . web_root . 'admin/products/index.php?view=edit&id=' . $result->PROID . '"> <i class="material-icons">delete</i></a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -344,6 +566,11 @@
         </div>
     </div>
 </form>
+
+
+<!-- ------------------------------------------------------------------------------------ -->
+<!-- ------------------------------- Main Body modals ----------------------------------- -->
+<!-- ------------------------------------------------------------------------------------ -->
 
 <!-- ---------------------------------->
 <!-- Form modal for add new employee -->
@@ -542,7 +769,7 @@
                     </div>
                     <div class="container-2" style="background-color: #7c5295; border-radius: 5px; padding: 10px; color: white; margin-top: 20px;">
                         <h5 style="font-weight: bold;margin-top: 0px;">Time Shifting</h5>
-                        
+
                         <div class="input-6" style="margin-top: 20px;">
                             <div class="select">
                                 <!-- TimeType: $("#time-type").val() -->
@@ -690,143 +917,7 @@
                         <h3>Important Parameter</h3>
                     </div>
 
-                    <div class="container-1" style="margin-bottom: 30px;">
-                        <h4>Holiday Policy Adjustment as <?php echo date('(D) M d, Y', strtotime(date('Y-m-d'))); ?> </h4>
 
-                        <div class="inside-container">
-                            <!-- title -->
-                            <h5 class="title">
-                                Overtime Cost Adjustment
-                            </h5>
-
-                            <!-- input container -->
-                            <div class="input-6">
-                                <h5 style="margin-top: 10px">
-                                    Regular Rate with Overtime:
-                                </h5>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- RegularRateWOvertime: $("#regularrateWOvertime").val() -->
-                                        <input id="regularrateWOvertime" placeholder=" " name="RegularRateWOvertime" type="text" required style="width: auto;">
-                                        <label>₱</label>
-                                    </div>
-                                    <p>
-                                        PerHour
-                                    </p>
-                                </div>
-                                <h4>+</h4>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- Percentage: $("#percentage").val() -->
-                                        <input id="percentage" placeholder=" " name="Percentage" type="text" required style="width: 100px;">
-                                        <label>%</label>
-                                    </div>
-                                    <p>
-                                        eg. 25
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="inside-container" style="margin-top: 20px;">
-                            <h5 class="title">
-                                Holiday Pay Adjustment
-                            </h5>
-                            <div class="input-6">
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- RegularRate: $("#regularRate").val() -->
-                                        <input id="regularRate" placeholder=" " name="RegularRate" type="text" required style="width: auto;">
-                                        <label>₱ Regular Rate</label>
-                                    </div>
-                                    <p>
-                                        PerHour
-                                    </p>
-                                </div>
-                                <h4>+</h4>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- HolidayPay: $("#holidayPay").val() -->
-                                        <input id="holidayPay" placeholder=" " name="HolidayPay" type="text" required style="width: auto;">
-                                        <label>₱ Holiday Pay</label>
-                                    </div>
-                                    <p>
-                                        PerHour
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TIME-IN/OUT section -->
-                    <div class="container-2">
-                        <h4>Time-IN/Time-OUT Policy Adjustment as of <?php echo date('(D) M d, Y', strtotime(date('Y-m-d'))); ?></h4>
-
-                        <!-- Late Policy input -->
-                        <div class="inside-container" style="margin-top: 20px;">
-                            <h5 class="title">
-                                Late Policy
-                            </h5>
-                            <div class="input-6">
-                                <h5 style="margin-top: 10px; margin-left:10px;">
-                                    Late After:
-                                </h5>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- LateHours: $("#lateHours").val() -->
-                                        <input id="lateHours" placeholder=" " name="LateHours" type="text" required style="width: 100px;">
-                                        <label>Hours</label>
-                                    </div>
-                                </div>
-                                <h4>:</h4>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- LateMinutes: $("#lateMinutes").val() -->
-                                        <input id="lateMinutes" placeholder=" " name="LateMinutes" type="text" required style="width: 100px;">
-                                        <label>Minutes</label>
-                                    </div>
-                                </div>
-                                <h5 style="margin-top: 10px; margin-left: 20px">
-                                    Late Penalty:
-                                </h5>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- PenaltyAmount: $("#penaltyAmount").val() -->
-                                        <input id="penaltyAmount" placeholder=" " name="PenaltyAmount" type="text" required style="width: 150px;">
-                                        <label>₱ Amount</label>
-                                    </div>
-                                    <p>
-                                        PerHour
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Early Time in input -->
-                        <div class="inside-container" style="margin-top: 20px;">
-                            <h5 class="title">
-                                For Early Time IN
-                            </h5>
-                            <div class="input-6">
-                                <h5 style="margin-top: 10px; margin-left:10px;">
-                                    Limit to: &nbsp;&nbsp;&nbsp;
-                                </h5>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- LimitHours: $("#limitHours").val() -->
-                                        <input id="limitHours" placeholder=" " name="LimitHours" type="text" required style="width: 100px;">
-                                        <label>Hours</label>
-                                    </div>
-                                </div>
-                                <h4>:</h4>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- LimitMinutes: $("#limitMinutes").val() -->
-                                        <input id="limitMinutes" placeholder=" " name="LimitMinutes" type="text" required style="width: 100px;">
-                                        <label>Minutes</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Footer Buttons -->
@@ -957,7 +1048,7 @@
                                 <select id="civilStatus" name="CivilStatus" class="select-text" required>
                                     <option value="" selected></option>
                                     <option value="Single">Single</option>
-                                    <option value="Marriage">Marriage</option>
+                                    <option value="Marriage">Married</option>
                                     <option value="Divorced">Divorced</option>
                                     <option value="Widowed">Widowed</option>
                                 </select>

@@ -71,7 +71,7 @@
             <nav class="navbar navbar-expand-lg navbar-light navbar-absolute fixed-top" style="max-height: 55px; z-index: 99; box-shadow: 0px 0px 5px 0px rgb(167, 167, 167)">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
-                        <a class="navbar-brand" href="javascript:;"><?php echo $page_title; ?></a>
+                        <h4 class="navbar-brand" style="margin-top: 5px;"><?php echo $page_title; ?></h4>
                     </div>
                     <div class="collapse navbar-collapse justify-content-end">
                         <ul class="navbar-nav">
@@ -84,14 +84,12 @@
                                 echo '<li class="nav-item">
                                     <a href="#registration-form" data-target="#add-position-form" data-toggle="modal" data-backdrop="static" class="btn btn-info btn-sm"> <i class="material-icons">add</i> Add Position</a>
                                 </li>
-                                <li class="nav-item" style="margin-left: 20px;">
-                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-info btn-sm"> <i class="material-icons">monetization_on</i> Salary Adjustment</a>
-                                </li>
+                                
                                 <li class="nav-item" style="margin-left: 20px;">
                                     <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-info btn-sm"> <i class="material-icons">update</i> Update employee time in/out</a>
                                 </li>
                                 <li class="nav-item" style="margin-left: 20px;">
-                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">playlist_add</i> Import Excel Data File</a>
+                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-warning btn-sm"> <i class="material-icons">monetization_on</i> Salary Adjustment</a>
                                 </li>';
                             }
 
