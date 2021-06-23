@@ -1,3 +1,9 @@
+html,body, p, a,i,h1,h2,h3,h4,h5,h6, .modal-footer{
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+
 @font-face {
   font-family: "Material Icons";
   font-style: normal;
@@ -675,3 +681,23 @@ input#search.dropdown {
 .remark-field {
   width: 100%;
 }
+
+
+/* import excel form */
+
+.import-excel {
+  display: flex;
+  justify-content: center;
+}
+
+input[type="file"]:invalid{
+  color: #adadad;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  background-color: white;
+  color: #2d9c91;
+  border: rgb(221, 221, 221) solid 1px;
+  border-radius: 5px;
+}
+

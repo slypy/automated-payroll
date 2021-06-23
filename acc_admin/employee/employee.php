@@ -31,7 +31,7 @@
                         </div>
 
                         <div>
-                            <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">playlist_add</i> Import Excel Data File</a>
+                            <a href="#registration-form" data-target="#import-excel-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"> <i class="material-icons">playlist_add</i> Import Excel Data File</a>
                             <!-- Load Form Modal Add new Employee -->
                             <a href="#registration-form" data-target="#registration-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">add</i> Add new Employee</a>
 
@@ -609,6 +609,44 @@
 <!-- ------------------------------------------------------------------------------------ -->
 <!-- ------------------------------- Main Body modals ----------------------------------- -->
 <!-- ------------------------------------------------------------------------------------ -->
+
+<!-- -------------------------------- -->
+<!-- Form modal for import excel file -->
+<!-- -------------------------------- -->
+
+<form action="" method="post">
+    <div id="import-excel-form" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-header-title">
+                        <h3 class="modal-title" id="exampleModalLabel">Import Excel data file</h3>
+                        <p class="modal-title" id="exampleModalLabel">Download the template to import your existing data.</p>
+                    </div>
+
+                    <button class="close" id="btnclose" type="button" data-dismiss="modal">×</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="import-excel">
+                        <div class="material-textfield">
+                            <input id="" placeholder=" " name="CardID" type="file" accept=".xlsx, .xls, .csv" required style="width: max-content; height: max-content;">
+                            <label>Upload Excel file</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Buttons -->
+                <div class="modal-footer" style="max-height: 60px">
+                    <a href="../../TemplateExcel/excel-template.xls" class="btn btn-primary btn-sm" style="margin-right: 60px;" download> <i class="material-icons">get_app</i> Download Template</a>
+
+                    <button type="submit" name="UpdateSalary" class="btn btn-success btn-md">Import</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 <!-- ---------------------------------->
 <!-- Form modal for add new employee -->
@@ -1312,7 +1350,7 @@
 <!-- Form modal for display info of employee -->
 <!-- --------------------------------------- -->
 <form action="controller.php?action=add" id="employeeInfo" method="POST" autocomplete="off">
-<div id="info-form" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false">
+    <div id="info-form" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
