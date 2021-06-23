@@ -13,23 +13,27 @@
     <div class="wrapper">
         <div class="sidebar" data-color="torquoise" data-background-color="white" style="z-index: 999;">
             <div class="logo">
-
+                <!-- company logo -->
                 <a href="<?php echo $web_root ?>acc_admin/dashboard/" class="simple-text logo-normal">
                     <img src="<?php echo web_root; ?>res/cmp_logo.png" alt="logo" height="80" width="80">
-
                 </a>
+                <!-- company name -->
                 <a href="<?php echo $web_root ?>acc_admin/dashboard/" class="simple-text logo-normal">
                     El Pardo
                 </a>
             </div>
+
+            <!-- SIDEBAR -->
             <div id="sidebar-scroll" class="sidebar-wrapper" onmouseover="this.style.overflow='overlay'" onmouseout="this.style.overflow='hidden'">
                 <ul class="nav">
+                    <!-- Dashboard -->
                     <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/dashboard/">
                         <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/dashboard/">
                             <i class="material-icons">dashboard</i>
                             <p>Dashboard</p>
                         </a>
                     </li>
+                    <!-- Employee -->
                     <hr style="width: 230px;">
                     <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/employee/">
                         <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/employee/">
@@ -37,12 +41,14 @@
                             <p>Employees</p>
                         </a>
                     </li>
+                    <!-- Staff Cash Advance -->
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/staffcashadvance/">
                             <i class="material-icons">monetization_on</i>
                             <p>Staff Cash Advances</p>
                         </a>
                     </li>
+                    <!-- Payroll Report -->
                     <hr style="width: 230px;">
                     <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/reports/">
                         <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/reports/">
@@ -50,16 +56,18 @@
                             <p>Payroll Report</p>
                         </a>
                     </li>
+                    <!-- Employee's Payroll Verification -->
                     <li class="nav-item ">
                         <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/EVpayroll/">
                             <i class="material-icons">playlist_add_check</i>
                             <p style="font-size: 13px;">Employee's Payroll Verification</p>
                         </a>
                     </li>
+                    <!-- Scheduled AutoPrint Payroll -->
                     <li class="nav-item ">
                         <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/SApayroll/">
                             <i class="material-icons">event_note</i>
-                            <p style="font-size: 14px;">Schedule AutoPrint Payroll</p>
+                            <p style="font-size: 14px;">Scheduled AutoPrint Payroll</p>
                         </a>
                     </li>
                     <hr style="width: 230px;">
@@ -67,29 +75,36 @@
             </div>
         </div>
         <div class="main-panel">
-            <!-- Navbar -->
+            <!-- Navigation bar -->
             <nav class="navbar navbar-expand-lg navbar-light navbar-absolute fixed-top" style="max-height: 55px; z-index: 99; box-shadow: 0px 0px 5px 0px rgb(167, 167, 167)">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
 
                         <?php
+                        # request current url
                         $u_url = $_SERVER['REQUEST_URI'];
+                        # create matching string url 
                         $u_employee_url = $web_root . 'acc_admin/employee/index.php?page=time-in-out';
 
+                        # if match echo back button in the left top navigation bar of the time-in-out page
                         if (strval($u_url) === strval($u_employee_url)) {
-                            echo '<a href="'.$web_root.'acc_admin/employee/" class="btn btn-primary btn-sm"> <i class="material-icons">arrow_back</i> Back</a>';
+                            echo '<a href="' . $web_root . 'acc_admin/employee/" class="btn btn-primary btn-sm"> <i class="material-icons">arrow_back</i> Back</a>';
                         }
                         ?>
 
+                        <!-- echo page title -->
                         <h4 class="navbar-brand" style="margin-top: 5px;"><?php echo $page_title; ?></h4>
                     </div>
                     <div class="collapse navbar-collapse justify-content-end">
                         <ul class="navbar-nav">
 
                             <?php
+                            # request url for the current page
                             $url = $_SERVER['REQUEST_URI'];
+                            # create matching string url
                             $employee_url = $web_root . 'acc_admin/employee/';
 
+                            # if current page url matched to employee default index echo buttons in the top navigation bar of employee page
                             if (strval($url) == strval($employee_url)) {
                                 echo '<li class="nav-item">
                                     <a href="#registration-form" data-target="#add-position-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">add</i> Add Position</a>
@@ -116,14 +131,13 @@
                                     <a class="dropdown-item" href="controller.php?action=logout">Log out</a>
                                 </div>
                             </li>
-                            <!-- your navbar here -->
                         </ul>
                     </div>
                 </div>
             </nav>
             <!-- End Navbar -->
 
-
+            <!-- load Body content from chunked forms -->
             <div class="content">
                 <div class="container-fluid">
                     <?php require_once $page_content ?>
@@ -385,8 +399,8 @@
             });
 
             /*****
-         * Data values from form modal input registration
-         /***/
+            * Data values from form modal input registration
+            /***/
             $("#registerEmployee").on("submit", function(event) {
                 var newEmployeeData = {
                     CardID: $("#cardID").val(),
@@ -507,7 +521,7 @@
             /**
              *  set attribute disable for employee information modal
              */
-            
+
             $("input[type='date']").on("change", function() {
                 this.setAttribute(
                     "data-date",
