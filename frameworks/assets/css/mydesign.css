@@ -242,6 +242,7 @@ input:valid + label {
   font-size: 10px;
   margin-left: 10px;
   margin-bottom: 0px;
+  color: gray;
 }
 
 .input-2 {
