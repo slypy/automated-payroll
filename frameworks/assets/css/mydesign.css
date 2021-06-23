@@ -3,8 +3,7 @@
   font-style: normal;
   font-weight: 400;
   src: local("Material Icons"), local("MaterialIcons-Regular"),
-    url("../../icons/font/MaterialIcons-Regular.ttf")
-      format("truetype");
+    url("../../icons/font/MaterialIcons-Regular.ttf") format("truetype");
 }
 
 @font-face {
@@ -12,8 +11,7 @@
   font-style: normal;
   font-weight: 400;
   src: local("Roboto"), local("Roboto-Regular"),
-    url("../../icons/font/Roboto-Regular.ttf")
-      format("truetype");
+    url("../../icons/font/Roboto-Regular.ttf") format("truetype");
 }
 
 @font-face {
@@ -21,8 +19,7 @@
   font-style: normal;
   font-weight: 400;
   src: local("Roboto Slab"), local("RobotoSlab-Regular"),
-    url("../../icons/font/RobotoSlab-Regular.ttf")
-      format("truetype");
+    url("../../icons/font/RobotoSlab-Regular.ttf") format("truetype");
 }
 
 img {
@@ -177,7 +174,6 @@ img {
   border-color: #2d9c91;
 }
 
-
 .material-textfield input:focus + label,
 input:valid + label {
   color: #2d9c91;
@@ -236,7 +232,7 @@ input:valid + label {
   display: flex;
 }
 
-.input-1-5 .input-date p {
+.input-date p {
   font-size: 10px;
   margin-left: 10px;
   margin-bottom: 0px;
@@ -353,14 +349,15 @@ input:valid + label {
 
 /* active state */
 .select-text:focus ~ .select-label,
-.select-text:valid ~ .select-label {
+.select-text:valid ~ .select-label,
+.select-text:disabled ~ .select-label {
   color: #2d9c91;
   background-color: white;
   transform: translateY(-110%) scale(1);
   font-size: 14px;
 }
 
-.select-text:valid{
+.select-text:valid {
   border-color: #2d9c91;
 }
 
@@ -538,7 +535,7 @@ input:valid + label {
 
 /* Update salary design */
 
-input[type="date"]{
+input[type="date"] {
   position: relative;
   color: white;
 }
@@ -551,14 +548,15 @@ input[type="date"]:before {
   color: black;
 }
 
-
-input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spin-button, input[type="date"]::-webkit-clear-button {
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-clear-button {
   display: none;
 }
 
 @keyframes width-pulse {
   0% {
-    stroke-width: 6px
+    stroke-width: 6px;
   }
   50% {
     stroke-width: 10px;
@@ -580,7 +578,7 @@ input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spi
 .ct-chart .ct-label.ct-vertical,
 .ct-chart .ct-label.ct-horizontal {
   color: rgba(255, 255, 255, 0.5);
-} 
+}
 .ct-chart .ct-grid.ct-vertical,
 .ct-chart .ct-grid.ct-horizontal {
   stroke: rgba(255, 255, 255, 0.1);
@@ -589,7 +587,7 @@ input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spi
 }
 
 .ct-chart .ct-series.ct-series-a .ct-line {
-  stroke: #4ECDC4;
+  stroke: #4ecdc4;
   stroke-width: 5px;
   stroke-linecap: round;
   animation: width-pulse 2s infinite;
@@ -601,7 +599,6 @@ input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spi
   animation: dashoffset-seven 300ms infinite linear;
 }
 
-
 .update-position-salary-container {
   width: 100%;
   display: flex;
@@ -610,4 +607,71 @@ input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spi
   border-radius: 5px;
   box-shadow: 0px 0px 3px 0px gray;
   margin-bottom: 20px;
+}
+
+/* Update Employee design */
+.search-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  /* border: yellow 1px solid; */
+}
+
+.search-container .date-input {
+  display: flex;
+}
+
+.u-search-input {
+  display: flex;
+}
+
+input#search.dropdown {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#selector {
+  position: sticky;
+  box-shadow: 0px 0px 2px 0px gray;
+  background-color: white;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-top: 2px;
+  max-height: 175px;
+  overflow: auto;
+  z-index: 99;
+}
+
+#selector button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  font-size: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 15px;
+  border: none;
+  display: block;
+  background-color: #ffffff;
+  margin: 0;
+  border-radius: 5px;
+  background-color: transparent;
+  border-width: 0;
+  width: 100%;
+  text-align: left;
+}
+
+#selector button:hover {
+  background-color: #f2f2f2;
+}
+
+.update-time-in-form {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.remark-field {
+  width: 100%;
 }

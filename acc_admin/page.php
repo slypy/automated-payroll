@@ -71,6 +71,16 @@
             <nav class="navbar navbar-expand-lg navbar-light navbar-absolute fixed-top" style="max-height: 55px; z-index: 99; box-shadow: 0px 0px 5px 0px rgb(167, 167, 167)">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
+
+                        <?php
+                        $u_url = $_SERVER['REQUEST_URI'];
+                        $u_employee_url = $web_root . 'acc_admin/employee/index.php?page=time-in-out';
+
+                        if (strval($u_url) === strval($u_employee_url)) {
+                            echo '<a href="'.$web_root.'acc_admin/employee/" class="btn btn-primary btn-sm"> <i class="material-icons">arrow_back</i> Back</a>';
+                        }
+                        ?>
+
                         <h4 class="navbar-brand" style="margin-top: 5px;"><?php echo $page_title; ?></h4>
                     </div>
                     <div class="collapse navbar-collapse justify-content-end">
@@ -82,14 +92,13 @@
 
                             if (strval($url) == strval($employee_url)) {
                                 echo '<li class="nav-item">
-                                    <a href="#registration-form" data-target="#add-position-form" data-toggle="modal" data-backdrop="static" class="btn btn-info btn-sm"> <i class="material-icons">add</i> Add Position</a>
-                                </li>
-                                
-                                <li class="nav-item" style="margin-left: 20px;">
-                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-info btn-sm"> <i class="material-icons">update</i> Update employee time in/out</a>
+                                    <a href="#registration-form" data-target="#add-position-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">add</i> Add Position</a>
                                 </li>
                                 <li class="nav-item" style="margin-left: 20px;">
-                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-warning btn-sm"> <i class="material-icons">monetization_on</i> Salary Adjustment</a>
+                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">monetization_on</i> Salary Adjustment</a>
+                                </li>                              
+                                <li class="nav-item" style="margin-left: 20px;">
+                                    <a href="' . $web_root . 'acc_admin/employee/index.php?page=time-in-out" class="btn btn-warning btn-sm"> <i class="material-icons">update</i> Update employee time in/out</a>
                                 </li>';
                             }
 
@@ -323,7 +332,7 @@
                 "bFilter": true,
                 "dom": 'ftipr',
                 "bInfo": true,
-                "bAutoWidth": false,
+                "bAutoWidth": true,
                 "searchable": true,
                 "orderable": true,
                 "sort": false,
@@ -356,6 +365,19 @@
                 "sort": false,
                 "pageLength": 5,
             });
+
+            $("#employee-record-table").DataTable({
+                "responsive": true,
+                "bPaginate": true,
+                "bFilter": true,
+                "bInfo": true,
+                "dom": 'ftipr',
+                "bAutoWidth": true,
+                "searchable": false,
+                "orderable": true,
+                "sort": false,
+                "pageLength": 10,
+            })
 
             // add class active in li .nav-item on curren url
             $(function() {
@@ -438,6 +460,16 @@
                 }
             });
 
+            $("#u-worker-type").on('change', function() {
+                if (this.value === "Regular" || this.value === "Contractual") {
+                    $("div[data-id='employee-gov'").show();
+                    $("div[data-id='employee-gov'] input").attr("disabled", false);
+                } else {
+                    $("div[data-id='employee-gov'").hide();
+                    $("div[data-id='employee-gov'] input").attr("disabled", true);
+                }
+            });
+
             /*****
              * this event handler is for select time type in 
              * TIME IN/OUT in Admin Parameter
@@ -458,7 +490,11 @@
                         $("div[data-id='time'").hide();
                         break;
                 }
-            })
+            });
+
+            $("#employeeInfo input").prop('disabled', true);
+            $("#employeeInfo select").prop('disabled', true);
+
 
             /*****
              * this event handler is to display Remove Employees
@@ -471,9 +507,7 @@
             /**
              *  set attribute disable for employee information modal
              */
-            $("#employeeInfo input").prop('disabled', true);
-            $("#employeeInfo select").prop('disabled', true);
-
+            
             $("input[type='date']").on("change", function() {
                 this.setAttribute(
                     "data-date",
@@ -481,7 +515,6 @@
                     .format(this.getAttribute("data-date-format"))
                 )
             }).trigger("change");
-
 
             // TODO
             $("#durationDate").change(function() {
@@ -624,7 +657,7 @@
             dashboard.initDashboardPageCharts();
 
             $(window).resize(function() {
-                md.initSidebarsCheck();
+                dashboard.initSidebarsCheck();
 
                 // reset the seq for charts drawing animations
                 seq = seq2 = 0;
@@ -633,8 +666,81 @@
                     dashboard.initDashboardPageCharts();
                 }, 500);
             });
-
         });
+    </script>
+    <script>
+        const db = {
+            "0": ["Sly Bacalso", "employee"],
+            "1": ["Jeremiah Montebon", "employee"],
+            "2": ["Daniel Kiamco", "employee"],
+            "3": ["Daniel Kiaco", "employee"],
+            "4": ["Danie Kiamco", "employee"],
+            "5": ["Danel Kimco", "employee"],
+            "6": ["Daie Kiamco", "employee"],
+            "7": ["Daniel Kimc", "employee"],
+            "8": ["Dniel Kiaco", "employee"],
+            "9": ["Daiel Kiamo", "employee"],
+            "10": ["Danel Kiamco", "employee"],
+            "11": ["Danel Kiamco", "employee"],
+            "12": ["John Doe", "employee"]
+        };
+
+        function searchDB(elem) {
+            let selector = document.getElementById("selector");
+            // Check if input is empty
+            if (elem.value.trim() !== "") {
+                elem.classList.add("dropdown"); // Add dropdown class (for the CSS border-radius)
+                // If the selector div element does not exist, create it
+                if (selector == null) {
+                    selector = document.createElement("div");
+                    selector.id = "selector";
+                    elem.parentNode.appendChild(selector);
+                    // Position it below the input element
+                    selector.style.left = elem.getBoundingClientRect().left + "px";
+                    selector.style.top = elem.getBoundingClientRect().bottom + "px";
+                    selector.style.width = elem.getBoundingClientRect().width + "px";
+                }
+                // Clear everything before new search
+                selector.innerHTML = "";
+                // Variable if result is empty
+                let empty = true;
+                for (let item in db) {
+                    // Join the db elements in one string
+                    let str = [item.toLowerCase(), db[item][0].toLowerCase(), db[item][1].toLowerCase()].join();
+
+                    // If exists, create an item (button)
+                    if (str.indexOf(elem.value.toLowerCase()) !== -1) {
+                        let opt = document.createElement("button");
+                        opt.setAttribute("onclick", "insertValue(this);")
+                        opt.innerHTML = db[item][0];
+                        selector.appendChild(opt);
+                        empty = false;
+                    }
+                }
+                // If result is empty, display a disabled button with text
+                if (empty == true) {
+                    let opt = document.createElement("button");
+                    opt.disabled = true;
+                    opt.innerHTML = "No results";
+                    selector.appendChild(opt);
+                }
+                return true;
+            }
+            // Remove selector element if input is empty
+            else {
+                if (selector !== null) {
+                    selector.parentNode.removeChild(selector);
+                    elem.classList.remove("dropdown");
+                }
+            }
+        }
+
+        // Function to insert the selected item back to the input element
+        function insertValue(elem) {
+            window.search.classList.remove("dropdown");
+            window.search.value = elem.innerHTML;
+            elem.parentNode.parentNode.removeChild(elem.parentNode);
+        }
     </script>
 </body>
 
