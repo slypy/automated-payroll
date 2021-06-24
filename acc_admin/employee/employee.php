@@ -630,7 +630,7 @@
                 <div class="modal-body">
                     <div class="import-excel">
                         <div class="material-textfield">
-                            <input id="" placeholder=" " name="CardID" type="file" accept=".xlsx, .xls, .csv" required style="width: max-content; height: max-content;">
+                            <input id="" placeholder=" " name="CardID" type="file" accept=".xlsx, .xls, .csv" style="width: max-content; height: max-content;" required>
                             <label>Upload Excel file</label>
                         </div>
                     </div>
