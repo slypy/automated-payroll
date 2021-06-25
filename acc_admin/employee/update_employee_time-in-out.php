@@ -15,26 +15,29 @@
                         <div class="date-input">
                             <div class="input-date">
                                 <div class="material-textfield">
-                                    <input id="endDate" placeholder=" " name="EndDate" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;">
+                                    <input id="endDate" placeholder=" " name="EndDate" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;" required>
                                     <label>Date From</label>
                                 </div>
                                 <p>click the calendar button</p>
                             </div>
                             <div class="input-date">
                                 <div class="material-textfield">
-                                    <input id="endDate" placeholder=" " name="EndDate" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;">
+                                    <input id="endDate" placeholder=" " name="EndDate" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;" required>
                                     <label>Date Until</label>
                                 </div>
                                 <p>click the calendar button</p>
                             </div>
                         </div>
                         <div class="u-search-input">
-                            <div class="material-textfield">
-                                <input id="search" placeholder=" " name="FirstName" type="text" autocomplete="off" onkeyup="searchDB(this);">
-                                <label>Search Employee</label>
-                            </div>
                             <div>
-                                <button type="submit" name="UpdateSalary" class="btn btn-success btn-sm">Search Record</button>
+                                <div class="material-textfield">
+                                    <input id="search" placeholder=" " name="FirstName" type="text" autocomplete="off" onkeyup="searchDB(this);" required>
+                                    <label>Search Employee</label>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: -4px;">
+                                <button type="submit" name="UpdateSalary" class="btn btn-success btn-md">Search Record</button>
                             </div>
                         </div>
                     </div>

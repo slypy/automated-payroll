@@ -392,6 +392,19 @@
                 "sort": false,
                 "pageLength": 10,
             })
+            
+            $("#staffCA-table").DataTable({
+                "responsive": true,
+                "bPaginate": true,
+                "bFilter": true,
+                "bInfo": true,
+                "dom": 'ftipr',
+                "bAutoWidth": true,
+                "searchable": false,
+                "orderable": true,
+                "sort": false,
+                "pageLength": 10,
+            });
 
             // add class active in li .nav-item on curren url
             $(function() {
@@ -481,28 +494,6 @@
                 } else {
                     $("div[data-id='employee-gov'").hide();
                     $("div[data-id='employee-gov'] input").attr("disabled", true);
-                }
-            });
-
-            /*****
-             * this event handler is for select time type in 
-             * TIME IN/OUT in Admin Parameter
-             /***/
-            $("#time-type").on('change', function() {
-                switch ($(this).val()) {
-                    case "Other Shift":
-                        $("div[data-id='time'").show();
-                        $("#start-time").val("08:00");
-                        $("#end-time").val("20:00");
-                        break;
-                    case 'Regular Shift':
-                        $("div[data-id='time'").show();
-                        $("#start-time").val("08:00");
-                        $("#end-time").val("20:00");
-                        break;
-                    default:
-                        $("div[data-id='time'").hide();
-                        break;
                 }
             });
 

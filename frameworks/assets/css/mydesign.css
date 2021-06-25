@@ -1,6 +1,26 @@
-html,body, p, a,i,h1,h2,h3,h4,h5,h6, .modal-footer{
-	-webkit-font-smoothing: antialiased;
-	text-rendering: optimizeLegibility;
+html,
+body {
+  user-select: none;
+}
+
+image {
+  -webkit-user-drag: none;
+}
+
+html,
+body,
+p,
+a,
+i,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.modal-footer {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 
@@ -238,11 +258,17 @@ input:valid + label {
   display: flex;
 }
 
+.input-1-6 {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .input-date p {
   font-size: 10px;
   margin-left: 10px;
   margin-bottom: 0px;
-  color: gray;
+  /* color: gray; */
 }
 
 .input-2 {
@@ -447,6 +473,11 @@ input:valid + label {
   margin-bottom: 0px;
 }
 
+.position-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .admin-parameter {
   width: 100%;
   display: flex;
@@ -630,6 +661,7 @@ input[type="date"]::-webkit-clear-button {
 
 .u-search-input {
   display: flex;
+  justify-content: space-between;
 }
 
 input#search.dropdown {
@@ -683,7 +715,6 @@ input#search.dropdown {
   width: 100%;
 }
 
-
 /* import excel form */
 
 .import-excel {
@@ -691,7 +722,7 @@ input#search.dropdown {
   justify-content: center;
 }
 
-input[type="file"]:invalid{
+input[type="file"]:invalid {
   color: #adadad;
 }
 
@@ -701,4 +732,3 @@ input[type="file"]::-webkit-file-upload-button {
   border: rgb(221, 221, 221) solid 1px;
   border-radius: 5px;
 }
-
