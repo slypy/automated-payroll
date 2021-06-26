@@ -45,7 +45,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/staffcashadvance/">
                             <i class="material-icons">monetization_on</i>
-                            <p>Staff Cash Advances</p>
+                            <p>Employee Credits</p>
                         </a>
                     </li>
                     <!-- Payroll Report -->
@@ -93,7 +93,7 @@
                         ?>
 
                         <!-- echo page title -->
-                        <h4 class="navbar-brand" style="margin-top: 5px;"><?php echo $page_title; ?></h4>
+                        <h4 id="page-title" class="navbar-brand" style="margin-top: 5px;"><?php echo $page_title; ?></h4>
                     </div>
                     <div class="collapse navbar-collapse justify-content-end">
                         <ul class="navbar-nav">
@@ -103,8 +103,8 @@
                             $url = $_SERVER['REQUEST_URI'];
                             # create matching string url
                             $employee_url = $web_root . 'acc_admin/employee/';
+                            $staffcash_advance_url = $web_root.'acc_admin/staffcashadvance/';
 
-                            # if current page url matched to employee default index echo buttons in the top navigation bar of employee page
                             if (strval($url) == strval($employee_url)) {
                                 echo '<li class="nav-item">
                                     <a href="#registration-form" data-target="#add-position-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">add</i> Add Position</a>
@@ -114,6 +114,20 @@
                                 </li>                              
                                 <li class="nav-item" style="margin-left: 20px;">
                                     <a href="' . $web_root . 'acc_admin/employee/index.php?page=time-in-out" class="btn btn-warning btn-sm"> <i class="material-icons">update</i> Update employee time in/out</a>
+                                </li>';
+                            } else if (strval($url) == strval($staffcash_advance_url)){
+                                echo '
+                                <li class="nav-item">
+                                    <button id="staffCA-btn" class="btn btn-primary btn-sm"> <i class="material-icons">monetization_on</i> Staff Cash Advance</button>
+                                </li> 
+                                <li class="nav-item" style="margin-left:20px">
+                                    <button id="loan-btn" class="btn btn-warning btn-sm"> <i class="material-icons">monetization_on</i> loan</button>
+                                </li>                            
+                                <li class="nav-item" style="margin-left:20px;">
+                                    <button id="misc-btn" class="btn btn-warning btn-sm"> <i class="material-icons">monetization_on</i> Employee miscellaneous</button>
+                                </li> 
+                                <li class="nav-item" style="margin-left: 20px;">
+                                    <button id="damage-btn" class="btn btn-warning btn-sm"> <i class="material-icons">show_chart</i> Damage record</button>
                                 </li>';
                             }
 
@@ -406,6 +420,19 @@
                 "pageLength": 10,
             });
 
+            $("#staffCA-table-2").DataTable({
+                "responsive": true,
+                "bPaginate": true,
+                "bFilter": true,
+                "bInfo": true,
+                "dom": 'ftipr',
+                "bAutoWidth": true,
+                "searchable": false,
+                "orderable": true,
+                "sort": false,
+                "pageLength": 10,
+            });
+
             // add class active in li .nav-item on curren url
             $(function() {
                 $('.nav-item a[href^="/PayRoll2/acc_admin/' + location.pathname.split("/")[3] + '"]').closest('li').addClass("active");
@@ -671,6 +698,70 @@
                     dashboard.initDashboardPageCharts();
                 }, 500);
             });
+
+            $("#staffCA-btn").click(function(){
+                $("#tbl-staffCA").show();
+                $("#tbl-loan").hide();
+                $("#tbl-damage").hide();
+                $("#tbl-misc").hide();
+                $("#page-title").html("Staff Cash Advance Record");
+                $("#loan-btn").removeClass("btn-primary");
+                $("#loan-btn").addClass("btn-warning");
+                $("#misc-btn").removeClass("btn-primary");
+                $("#misc-btn").addClass("btn-warning");
+                $("#damage-btn").removeClass("btn-primary");
+                $("#damage-btn").addClass("btn-warning");
+                $(this).removeClass("btn-warning");
+                $(this).addClass("btn-primary");
+            })
+
+            $("#loan-btn").click(function(){
+                $("#tbl-loan").show();
+                $("#tbl-staffCA").hide();
+                $("#tbl-damage").hide();
+                $("#tbl-misc").hide();
+                $("#page-title").html("Loan Record");
+                $("#staffCA-btn").removeClass("btn-primary");
+                $("#staffCA-btn").addClass("btn-warning");
+                $("#misc-btn").removeClass("btn-primary");
+                $("#misc-btn").addClass("btn-warning");
+                $("#damage-btn").removeClass("btn-primary");
+                $("#damage-btn").addClass("btn-warning");
+                $(this).removeClass("btn-warning");
+                $(this).addClass("btn-primary");
+            });
+            
+            $("#misc-btn").click(function(){
+                $("#tbl-misc").show();
+                $("#tbl-loan").hide();
+                $("#tbl-staffCA").hide();
+                $("#tbl-damage").hide();
+                $("#page-title").html("Employee Miscellaneous");
+                $("#staffCA-btn").removeClass("btn-primary");
+                $("#staffCA-btn").addClass("btn-warning");
+                $("#loan-btn").removeClass("btn-primary");
+                $("#loan-btn").addClass("btn-warning");
+                $("#damage-btn").removeClass("btn-primary");
+                $("#damage-btn").addClass("btn-warning");
+                $(this).removeClass("btn-warning");
+                $(this).addClass("btn-primary");
+            });
+
+            $("#damage-btn").click(function(){
+                $("#tbl-damage").show();
+                $("#tbl-loan").hide();
+                $("#tbl-staffCA").hide();
+                $("#tbl-misc").hide();
+                $("#page-title").html("Damages Record");
+                $("#staffCA-btn").removeClass("btn-primary");
+                $("#staffCA-btn").addClass("btn-warning");
+                $("#loan-btn").removeClass("btn-primary");
+                $("#loan-btn").addClass("btn-warning");
+                $("#misc-btn").removeClass("btn-primary");
+                $("#misc-btn").addClass("btn-warning");
+                $(this).removeClass("btn-warning");
+                $(this).addClass("btn-primary");
+            })
         });
     </script>
     <script>

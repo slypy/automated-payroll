@@ -732,3 +732,10 @@ input[type="file"]::-webkit-file-upload-button {
   border: rgb(221, 221, 221) solid 1px;
   border-radius: 5px;
 }
+
+.staffCA-container{
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: 0 0 3px 0 rgb(180, 180, 180);
+  padding: 20px;
+}
