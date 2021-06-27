@@ -69,7 +69,7 @@
 
 	.aol-quote{
 		font-weight: bold;
-		color: #1271c9;
+		color: #33b3a6;
 	}
 
 	footer {

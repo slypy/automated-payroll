@@ -19,11 +19,10 @@ if(Account::loggedIn()){
 </head>
 
 <body>
-    <nav class="navbar navbar-dark bg-primary shadow-none">
+    <nav class="navbar navbar-dark shadow-none" style="background-color: #33b3a6; color: white"> 
         <div class="container">
             <div class="navhead navbar-header">
                 <a href="../index.php" style="display: flex; align-items: center;">
-                    <!-- <img src="../res/logo.png" alt="logo" height="50" width="50"> -->
                     <h5 class="aol-title">KMB Solutions </h5>
                 </a>
             </div>
@@ -74,7 +73,7 @@ if(Account::loggedIn()){
                     <p>
                         By clicking "Login", you agree to our Terms & Conditions and Privacy Policy.
                     </p>
-                    <button name="login" type="submit" class="btn btn-primary btn-rounded">
+                    <button name="login" type="submit" class="btn btn-rounded" style="background-color: #33b3a6; color: white"> 
                         Login</button>
                 </div>
                 <br>
@@ -90,7 +89,7 @@ if(Account::loggedIn()){
         </div>
     </div>
     <footer class="bg-light text-center text-lg-start">
-        <div class="text-center p-3" style="background-color: #1271c9; color:white; font-size:small">
+        <div class="text-center p-3" style="background-color: #33b3a6; color:white; font-size:small">
             © 2020 Copyright |
             <a class="text-light" href="../index.php"><?php echo CompanyName; ?></a>
         </div>

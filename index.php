@@ -22,12 +22,12 @@ if (Account::loggedIn()) {
             <div class="container">
                 <div class="navhead navbar-header">
                     <!-- <img src="res/logo.png" alt="logo" height="100" width="100"> -->
-                    <h1 style="align-self: center; font-weight:bold; color: #1271c9;">KMB Solutions</h1>
+                    <h1 style="align-self: center; font-weight:bold; color: #33b3a6;">KMB Solutions</h1>
 
                 </div>
 
                 <div class="navhead navbar-header">
-                    <a href="./login/index.php" class="btn btn-primary btn-rounded">
+                    <a href="./login/index.php" class="btn btn-rounded" style="background-color: #33b3a6; color: white">
                         Log In</a>
                 </div>
             </div>
@@ -37,27 +37,27 @@ if (Account::loggedIn()) {
 
                 <div class="aol-wrap">
                     <div class="aol-content">
-                        <h4 class="aol-quote">Amplify your edge</h4>
+                        <h4 class="aol-quote">We make and sell Softwares base on your: </h4>
                         <br>
                         <ul>
                             <li>
                                 <h5>
-                                    Record and Analyze your trading performance.
+                                    Small Business
                                 </h5>
                             </li>
                             <li>
                                 <h5>
-                                    Learn how other traders perform.
+                                    Company Business
                                 </h5>
                             </li>
                             <li>
                                 <h5>
-                                    Interact with traders.
+                                    Interactive request
                                 </h5>
                             </li>
                         </ul>
                     </div>
-                    <a href="signup/index.php" class="navbar-header btn btn-primary btn-rounded">
+                    <a href="signup/index.php" class="navbar-header btn btn-rounded" style="background-color: #33b3a6; color: white">
                         Get Started</a>
                 </div>
                 <img class="illustration" src="res/solution_illustration.png" alt="illustration">
@@ -65,7 +65,7 @@ if (Account::loggedIn()) {
         </div>
 
         <footer class="bg-light text-center text-lg-start">
-            <div class="text-center p-3" style="background-color: #1271c9; color:white; font-size:small">
+            <div class="text-center p-3" style="background-color: #33b3a6; color:white; font-size:small">
                 © 2020 Copyright |
                 <a class="text-light" href="#">KMB Solutions</a>
             </div>

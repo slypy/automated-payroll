@@ -2,7 +2,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" type="text/css" href="../frameworks/css/style.css?v=<?php echo time(); ?>">
 <!-- Bootstrap core CSS -->
 <link rel="stylesheet" href="../frameworks/css/bootstrap.min.css?v=<?php echo time(); ?>">
 <!-- Material Design Bootstrap -->

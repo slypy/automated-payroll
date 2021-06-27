@@ -401,7 +401,7 @@
                 "bInfo": true,
                 "dom": 'ftipr',
                 "bAutoWidth": true,
-                "searchable": false,
+                "searchable": true,
                 "orderable": true,
                 "sort": false,
                 "pageLength": 10,
@@ -414,22 +414,22 @@
                 "bInfo": true,
                 "dom": 'ftipr',
                 "bAutoWidth": true,
-                "searchable": false,
+                "searchable": true,
                 "orderable": true,
                 "sort": false,
                 "pageLength": 10,
             });
 
-            $("#staffCA-table-2").DataTable({
+            $("#loan-table").DataTable({
                 "responsive": true,
                 "bPaginate": true,
                 "bFilter": true,
                 "bInfo": true,
                 "dom": 'ftipr',
-                "bAutoWidth": true,
-                "searchable": false,
+                "bAutoWidth": false,
+                "searchable": true,
                 "orderable": true,
-                "sort": false,
+                "sort": true,
                 "pageLength": 10,
             });
 
@@ -704,7 +704,7 @@
                 $("#tbl-loan").hide();
                 $("#tbl-damage").hide();
                 $("#tbl-misc").hide();
-                $("#page-title").html("Staff Cash Advance Record");
+                $("#page-title").html("Staff Cash Advance");
                 $("#loan-btn").removeClass("btn-primary");
                 $("#loan-btn").addClass("btn-warning");
                 $("#misc-btn").removeClass("btn-primary");

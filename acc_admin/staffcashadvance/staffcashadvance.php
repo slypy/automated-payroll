@@ -1,3 +1,4 @@
+<!-- Staff Cash Advance Section -->
 <div id="tbl-staffCA" class="row" style="margin-top: -40px;">
     <div class="col-md-12">
         <div class="card">
@@ -74,6 +75,8 @@
     </div>
 </div>
 
+
+<!-- Loan Section -->
 <div id="tbl-loan" class="row" style="margin-top: -40px; display: none;">
     <div class="col-md-12">
         <div class="card">
@@ -85,17 +88,17 @@
                         </h3>
                     </div>
                     <div>
-                        <a href="#registration-form" data-target="#new-ca-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"><i class="material-icons">add</i> New</a>
+                        <a href="#loan-form" data-target="#loan-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"><i class="material-icons">add</i> New</a>
                     </div>
                 </div>
                 <div class="header-line">
                     <hr>
                 </div>
                 <div class="table-responsive">
-                    <table id="staffCA-table" class="table table-sm table-hover" cellspacing="0">
+                    <table id="loan-table" class="table table-sm table-hover" cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th>
-                                Transaction #
+                                Loan #
                             </th>
                             <th>
                                 Employee ID #
@@ -104,13 +107,19 @@
                                 Name
                             </th>
                             <th>
-                                Date of Cash Advance
+                                Date of Loan
+                            </th>
+                            <th>
+                                DueDate
                             </th>
                             <th class="text-center">
-                                ₱ CA Amount
+                                ₱ Loan Amount
                             </th>
                             <th class="text-center">
-                                Salary Deduction
+                                Intereset %
+                            </th>
+                            <th class="text-center">
+                                ₱ Balance Remaining
                             </th>
                             <th class="text-center">
                                 Action
@@ -130,8 +139,14 @@
                                 <td>
                                     Jun 25, 2021
                                 </td>
+                                <td>
+                                    Jun 30, 2021
+                                </td>
                                 <td class="text-warning text-center">
                                     5500
+                                </td>
+                                <td class="text-success text-center">
+                                    10
                                 </td>
                                 <td class="text-danger text-center">
                                     5500
@@ -302,6 +317,7 @@
     </div>
 </div>
 
+
 <form action="controller.php?action=add" id="registerEmployee" method="POST" autocomplete="off">
     <div id="new-ca-form" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
@@ -352,6 +368,61 @@
                         <div class="material-textfield">
                             <input id="" placeholder=" " name="CardID" type="text" required style="width: 727px;">
                             <label>Purpose of Cash Advance</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Buttons -->
+                <div class="modal-footer" style="height: 75px">
+                    <button type="submit" name="UpdateSalary" class="btn btn-success btn-md">Submit and Print</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form action="controller.php?action=add" id="registerEmployee" method="POST" autocomplete="off">
+    <div id="loan-form" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-header-title">
+                        <h3 class="modal-title" id="exampleModalLabel">New Loan</h3>
+                        <p class="modal-title" id="exampleModalLabel">complete the loan form to submit</p>
+                    </div>
+
+                    <button class="close" id="btnclose" type="button" data-dismiss="modal">×</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="u-search-input">
+                        <div class="input-date">
+                            <div class="material-textfield">
+                                <input id="employee-id" placeholder=" " name="employeeID" type="text" style="width: auto;" required>
+                                <label>Employee ID #</label>
+                            </div>
+                            <p>eg. EPTC-20210123</p>
+                        </div>
+                        <div class="input-date">
+                            <div class="material-textfield">
+                                <input id="employee-id" placeholder=" " name="employeeID" type="text" style="width: auto;" required>
+                                <label>Employee Name</label>
+                            </div>
+                            <p>eg. John Doe</p>
+                        </div>
+                        <div class="input-date">
+                            <div class="material-textfield">
+                                <input id="employee-id" placeholder=" " name="employeeID" type="text" style="width: auto;" required>
+                                <label> ₱ Amount to loan</label>
+                            </div>
+                            <p>eg. 5500</p>
+                        </div>
+                    </div>
+                    <div class="remark-field" style="margin-top: 20px;">
+                        <div class="material-textfield">
+                            <input id="" placeholder=" " name="CardID" type="text" required style="width: 727px;">
+                            <label>Purpose of Loan</label>
                         </div>
                     </div>
                 </div>

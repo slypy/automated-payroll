@@ -505,12 +505,8 @@
                                     <button type="submit" name="UpdateSalary" class="btn btn-success btn-sm">Add</button>
                                     <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
                                 </div>
-
                             </div>
-
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -572,7 +568,6 @@
                             <h3 class="modal-title" id="exampleModalLabel">Employee Registration</h3>
                             <p class="modal-title" id="exampleModalLabel">Register new employee</p>
                         </div>
-
                         <button class="close" id="btnclose" type="button" data-dismiss="modal">×</button>
                     </div>
 

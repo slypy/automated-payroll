@@ -15,7 +15,7 @@ include "../modules/error.php";
 </head>
 
 <body>
-    <nav class="navbar navbar-dark bg-primary shadow-none">
+    <nav class="navbar navbar-dark shadow-none" style="background-color: #33b3a6; color: white">
         <div class="container">
             <div class="navhead navbar-header">
                 <div class="navhead navbar-header">
@@ -99,21 +99,21 @@ include "../modules/error.php";
                     </select>
                 </div>
                 <div class="terms">
-                    <button href="signup/index.php" type="submit" name="register" class="btn btn-primary btn-rounded">
+                    <button href="signup/index.php" type="submit" name="register" class="btn btn-rounded" style="background-color: #33b3a6; color: white">
                         Register</button>
                 </div>
                 <div class="log">
                     <p>
                         Already have an account?
                     </p>
-                    <a href="../login/index.php" type="button">
+                    <a href="../login/index.php" type="button" style="color: #33b3a6;">
                         Log In to <?php echo CompanyName; ?></a>
                 </div>
             </form>
         </div>
     </div>
     <footer class="cp bg-light text-center text-lg-start">
-        <div class="text-center p-3" style="background-color: #1271c9; color:white; font-size:small">
+        <div class="text-center p-3" style="background-color: #33b3a6; color:white; font-size:small">
             © 2020 Copyright |
             <a class="text-light" href="../index.php"><?php echo CompanyName; ?></a>
         </div>

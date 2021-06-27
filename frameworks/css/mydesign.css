@@ -168,12 +168,12 @@ input {
 }
 
 input:focus {
-    border-color: #1271c9;
+    border-color: #33b3a6;
 }
 
 
 input:focus+label {
-    color: #1271c9;
+    color: #33b3a6;
     top: 0;
     transform: translateY(-50%) scale(.9);
 }
