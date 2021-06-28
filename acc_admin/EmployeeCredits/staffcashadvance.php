@@ -340,7 +340,6 @@
                         </select>
                         <label class="select-label">Type of CA</label>
                     </div>
-
                     <div class="u-search-input">
                         <div class="input-date">
                             <div class="material-textfield">

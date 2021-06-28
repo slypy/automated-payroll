@@ -15,7 +15,7 @@
             <div class="logo">
                 <!-- company logo -->
                 <a href="<?php echo $web_root ?>acc_admin/dashboard/" class="simple-text logo-normal">
-                    <img src="<?php echo web_root; ?>res/cmp_logo.png" alt="logo" height="80" width="80">
+                    <img src="<?php echo $web_root; ?>res/cmp_logo.png" alt="logo" height="80" width="80">
                 </a>
                 <!-- company name -->
                 <a href="<?php echo $web_root ?>acc_admin/dashboard/" class="simple-text logo-normal">
@@ -43,7 +43,7 @@
                     </li>
                     <!-- Staff Cash Advance -->
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/staffcashadvance/">
+                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/EmployeeCredits/">
                             <i class="material-icons">monetization_on</i>
                             <p>Employee Credits</p>
                         </a>
@@ -103,7 +103,7 @@
                             $url = $_SERVER['REQUEST_URI'];
                             # create matching string url
                             $employee_url = $web_root . 'acc_admin/employee/';
-                            $staffcash_advance_url = $web_root.'acc_admin/staffcashadvance/';
+                            $staffcash_advance_url = $web_root.'acc_admin/EmployeeCredits/';
 
                             if (strval($url) == strval($employee_url)) {
                                 echo '<li class="nav-item">
@@ -486,6 +486,7 @@
                     LimitMinutes: $("#limitMinutes").val(),
                 };
 
+                
                 $.ajax({
                     type: "POST",
                     url: "controller.php?action=add",
@@ -637,7 +638,6 @@
                 },
 
                 startAnimationForLineChart: function(chart) {
-
                     chart.on('draw', function(data) {
                         if (data.type === 'line' || data.type === 'area') {
                             data.element.animate({
@@ -665,8 +665,8 @@
 
                     seq = 0;
                 },
+                
                 startAnimationForBarChart: function(chart) {
-
                     chart.on('draw', function(data) {
                         if (data.type === 'bar') {
                             seq2++;

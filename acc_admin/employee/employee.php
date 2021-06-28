@@ -466,10 +466,10 @@
                             <div class="position-container" style="margin-bottom: 20px;">
                                 <div class="material-textfield">
                                     <!-- CardID: $("#cardID").val() -->
-                                    <input id="cardID" placeholder=" " name="CardID" type="text" required style="width: 180px;">
+                                    <input id="cardID" placeholder=" " name="CardID" type="text" required style="width: 150px;">
                                     <label>Position Name</label>
                                 </div>
-                                <div class="select" style="width: 150px;">
+                                <div class="select" style="width: 150px; margin-left: 5px;">
                                     <!--  WorkerType: $("#worker-type").val() -->
                                     <select class="select-text" name="WorkerType" required style="width: 150px;">
                                         <option value="Per Hour" selected>Per Hour</option>
@@ -479,7 +479,7 @@
                                 </div>
                                 <div class="material-textfield">
                                     <!-- CardID: $("#cardID").val() -->
-                                    <input id="cardID" placeholder=" " name="CardID" type="text" required style="width: 130px;">
+                                    <input id="cardID" placeholder=" " name="CardID" type="text" required style="width: 150px;">
                                     <label>₱</label>
                                 </div>
                             </div>
@@ -488,14 +488,14 @@
                                     <div class="input-date">
                                         <div class="material-textfield">
                                             <!-- StartTime: $("#start-time").val() -->
-                                            <input id="start-time" placeholder=" " name="StartTime" type="time" style="width: 120px;" required>
+                                            <input id="start-time" placeholder=" " name="StartTime" type="time" style="width: 150px;" required>
                                             <label>Start</label>
                                         </div>
                                     </div>
                                     <div class="input-date">
                                         <div class="material-textfield">
                                             <!-- EndTime: $("end-time").val() -->
-                                            <input id="end-time" placeholder=" " name="EndTime" type="time" required style="width: 120px;">
+                                            <input id="end-time" placeholder=" " name="EndTime" type="time" required style="width: 150px;">
                                             <label>End</label>
                                         </div>
                                     </div>
