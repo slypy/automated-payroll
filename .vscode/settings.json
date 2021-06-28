@@ -1,5 +1,5 @@
 {
     "phpserver.browser": "chrome",
     "editor.minimap.enabled": false,
-    "liveServer.settings.port": 8067
+    "liveServer.settings.port": 8067,
 }

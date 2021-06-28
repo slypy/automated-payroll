@@ -186,10 +186,27 @@
         </div>
     </div>
     <script>
+        /********************************************
+         * -----------------------------------------
+         * jQuery -- Material Design -- AJAX masters
+         * -----------------------------------------
+         * 
+         * Author: Sly Kint Bacalso 2021
+         ********************************************/
+        
+
         /**
-         * Design functions by Sly Kint A. Bacalso
-         * 2021
-         * jQuery -- Material Design
+         * TODO: 
+         * 
+         * 1. add new position back end
+         * 2. fetch data from position database to position list table
+         * 3. create the calculation for the Government contribution input and make it interactive
+         * 4. employee registration data back end
+         * 5. fetch data from employee table and display in employee list table
+         * 6. the delete action should be working for all tables
+         * 7. salary adjustment back end 
+         * 8. create the interactive calculation for salary adjustment
+         * 9. Modify the security for update employee time IO
          */
 
         $(document).ready(function() {
@@ -438,52 +455,41 @@
                 $('.nav-item a[href^="/PayRoll2/acc_admin/' + location.pathname.split("/")[3] + '"]').closest('li').addClass("active");
             });
 
-            /*****
-            * Data values from form modal input registration
-            /***/
+
+            /**************************************
+             * Data values from position form modal
+             *************************************/
+
+            $("#addPosition").submit(function(){
+                var Position_Data = {
+                    position_name: $("#position_name").val(),
+                    wage: $("#wage").val(),
+                    wage_amount: $("#wage_amount").val(),
+                    start_time: $("#start_time").val(),
+                    end_time: $("end_time").val(),
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "controller.php?action=addposition",
+                    data: Position_Data,
+                    success: function(html){
+
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown){
+
+                    }
+                });
+            });
+
+            /*******************************************
+            * Data values from form modal input employee
+            * registration
+            /*******************************************/
+
             $("#registerEmployee").on("submit", function(event) {
                 var newEmployeeData = {
-                    CardID: $("#cardID").val(),
-                    FingerPrint: $("#fingerPrint").val(),
-                    WorkerType: $("#worker-type").val(),
-                    JobTitle: $("#jobTitle").val(),
-                    FirstName: $("#fname").val(),
-                    LastName: $("#lname").val(),
-                    MiddleName: $("#mname").val(),
-                    BirthDate: $("#birthDate").val(),
-                    Age: $("#age").val(),
-                    Gender: $("#gender").val(),
-                    CivilStatus: $("#civilStatus").val(),
-                    FullAddress: $("#fullAddress").val(),
-                    Email: $("#email").val(),
-                    ContactNumber: $("#contactNumber").val(),
-                    ContactPerson: $("#contactPerson").val(),
-                    ContactPersonNumber: $("#contactPersonNumber").val(),
-                    Relationship: $("#relationship").val(),
-                    DurationDate: $("#durationDate").val(),
-                    StartDate: $("startDate").val(),
-                    EndDate: $("#endDate").val(),
-                    SSSNumber: $("#sssNumber").val(),
-                    EmployeeER: $("#employeeER").val(),
-                    EmployeeEE: $("#employeeEE").val(),
-                    SSSActiveLoan: $("#sssActiveLoan").val(),
-                    PhilhealthNumber: $("#philhealthNumber").val(),
-                    Philhealth_PerMonth: $("#philhealth_perMonth").val(),
-                    PagIBIGNumber: $("#pagIbigNumber").val(),
-                    PagIBIG_PerMonth: $("#pagIbig_perMonth").val(),
-                    PagIBIG_ActiveLoan: $("#pagIbig_activeLoan").val(),
-                    RegularRateWOvertime: $("#regularrateWOvertime").val(),
-                    Percentage: $("#percentage").val(),
-                    RegularRate: $("#regularRate").val(),
-                    HolidayPay: $("#holidayPay").val(),
-                    TimeType: $("#time-type").val(),
-                    StartTime: $("#start-time").val(),
-                    EndTime: $("#end-time").val(),
-                    LateHours: $("#lateHours").val(),
-                    LateMinutes: $("#lateMinutes").val(),
-                    PenaltyAmount: $("#penaltyAmount").val(),
-                    LimitHours: $("#limitHours").val(),
-                    LimitMinutes: $("#limitMinutes").val(),
+                    //TODO next
                 };
 
                 

@@ -15,10 +15,13 @@ switch($action){
         Page::redir("../index.php");
         break;
 
-    case 'add':
-        doAdd();
+    case 'add_employee':
+        doAdd_Employee();
         break;
     
+    case 'add_position':
+        doAdd_Position();
+        break;
     case 'edit':
         break;
 
@@ -26,12 +29,23 @@ switch($action){
         break;
 }
 
-function doAdd(){
+function doAdd_Employee(){
     if(isset($_POST["FirstName"])){
         $firstname = htmlspecialchars($_POST["FirstName"], ENT_QUOTES, 'UTF-8');
         $lastname = htmlspecialchars($_POST["LastName"], ENT_QUOTES, 'UTF-8');
 
         Account::add($firstname, $lastname, "sample","sample", "admin", "");
+    }
+}
+
+function doAdd_Position(){
+    if(isset($_POST['position_name'])){
+        $position_name = htmlspecialchars($_POST['position_name']);
+        $wage          = htmlspecialchars($_POST['wage']);
+        $wage_amount   = htmlspecialchars($_POST['wage_amount']);
+        $start_time = $_POST['start_time'];
+        $end_time = $_POST['end_time'];
+        $max_hours= $_POST['max_hours'];
     }
 }
 

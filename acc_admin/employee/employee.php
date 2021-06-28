@@ -412,9 +412,11 @@
     <!-- ------------------------------- -->
     <!-- Form modal for add new position -->
     <!-- ------------------------------- -->
-    <form action="controller.php?action=add" id="registerEmployee" method="POST" autocomplete="off">
+
+    <!-- {id} : $("#addPosition") -->
+    <form action="controller.php?action=add" id="addPosition" method="POST" autocomplete="off">
         <div id="add-position-form" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false">
-            <div class="modal-dialog modal-md" role="document" style="max-width: 520px">
+            <div class="modal-dialog modal-md" role="document" style="max-width: 490px">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="modal-header-title">
@@ -463,46 +465,33 @@
                     <!-- Footer Buttons -->
                     <div class="modal-footer" style="height: 150px; align-items: center; align-content: center; justify-content: center;">
                         <div>
-                            <div class="position-container" style="margin-bottom: 20px;">
+                            <div class="position-container" style="margin-bottom: 20px; margin-left: -5px;">
                                 <div class="material-textfield">
-                                    <!-- CardID: $("#cardID").val() -->
-                                    <input id="cardID" placeholder=" " name="CardID" type="text" required style="width: 150px;">
+                                    <!-- position_name: $("#position_name").val() -->
+                                    <input id="position_name" placeholder=" " name="position_name" type="text" required style="width: 285px;">
                                     <label>Position Name</label>
                                 </div>
-                                <div class="select" style="width: 150px; margin-left: 5px;">
-                                    <!--  WorkerType: $("#worker-type").val() -->
-                                    <select class="select-text" name="WorkerType" required style="width: 150px;">
-                                        <option value="Per Hour" selected>Per Hour</option>
-                                        <option value="Regular">Per Day</option>
-                                    </select>
-                                    <label class="select-label">Wages</label>
-                                </div>
-                                <div class="material-textfield">
-                                    <!-- CardID: $("#cardID").val() -->
-                                    <input id="cardID" placeholder=" " name="CardID" type="text" required style="width: 150px;">
-                                    <label>₱</label>
-                                </div>
+
                             </div>
-                            <div class="position-container">
+                            <div class="position-container" style="justify-content: space-between;">
                                 <div style="display: flex;">
-                                    <div class="input-date">
-                                        <div class="material-textfield">
-                                            <!-- StartTime: $("#start-time").val() -->
-                                            <input id="start-time" placeholder=" " name="StartTime" type="time" style="width: 150px;" required>
-                                            <label>Start</label>
-                                        </div>
+                                    <div class="select" style="width: 140px; margin-left: 0px;">
+                                        <!--  wage: $("#wage").val() -->
+                                        <select id="wage" class="select-text" name="wage" required style="width: 140px;">
+                                            <option value="Per Hour" selected>Per Hour</option>
+                                            <option value="Regular">Per Day</option>
+                                        </select>
+                                        <label class="select-label">Wages</label>
                                     </div>
-                                    <div class="input-date">
-                                        <div class="material-textfield">
-                                            <!-- EndTime: $("end-time").val() -->
-                                            <input id="end-time" placeholder=" " name="EndTime" type="time" required style="width: 150px;">
-                                            <label>End</label>
-                                        </div>
+                                    <div class="material-textfield">
+                                        <!-- wage_amount: $("#wage_amount").val() -->
+                                        <input id="cardID" placeholder=" " name="wage_amount" type="text" required style="width: 140px;">
+                                        <label>₱</label>
                                     </div>
                                 </div>
 
-                                <div style="margin-right: 5px;">
-                                    <button type="submit" name="UpdateSalary" class="btn btn-success btn-sm">Add</button>
+                                <div>
+                                    <button type="submit" name="add_position" class="btn btn-success btn-sm">Add</button>
                                     <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
