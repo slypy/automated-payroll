@@ -207,6 +207,7 @@
          * 7. salary adjustment back end 
          * 8. create the interactive calculation for salary adjustment
          * 9. Modify the security for update employee time IO
+         + 10. make the table more interactive and simple
          */
 
         $(document).ready(function() {
@@ -414,7 +415,7 @@
                 "ajax": {
                     url: 'employee_post.php',
                     type: 'POST',
-                    
+                    data: {action}
                 }
             });
 
