@@ -208,6 +208,7 @@
          * 8. create the interactive calculation for salary adjustment
          * 9. Modify the security for update employee time IO
          + 10. make the table more interactive and simple
+         * 11. modify all interactive table for fast time execution
          */
 
         $(document).ready(function() {
