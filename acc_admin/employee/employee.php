@@ -414,7 +414,7 @@
     <!-- ------------------------------- -->
 
     <!-- {id} : $("#addPosition") -->
-    <form action="controller.php?action=add" id="addPosition" method="POST" autocomplete="off">
+    <form action="controller.php?action=add_position" id="addPosition" method="POST" autocomplete="off">
         <div id="add-position-form" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false">
             <div class="modal-dialog modal-md" role="document" style="max-width: 490px">
                 <div class="modal-content">
@@ -479,21 +479,21 @@
                                         <!--  wage: $("#wage").val() -->
                                         <select id="wage" class="select-text" name="wage" required style="width: 140px;">
                                             <option value="Per Hour" selected>Per Hour</option>
-                                            <option value="Regular">Per Day</option>
+                                            <option value="Per Day">Per Day</option>
                                         </select>
                                         <label class="select-label">Wages</label>
                                     </div>
                                     <div class="material-textfield">
                                         <!-- wage_amount: $("#wage_amount").val() -->
-                                        <input id="cardID" placeholder=" " name="wage_amount" type="text" required style="width: 140px;">
+                                        <input id="wage_amount" placeholder=" " name="wage_amount" type="number" required style="width: 140px;">
                                         <label>₱</label>
                                     </div>
                                 </div>
 
-                                <div>
+                                <div style="margin-top: 3px;">
                                     <button type="submit" name="add_position" class="btn btn-success btn-sm">Add</button>
                                     <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                </div>
+                                </div> 
                             </div>
                         </div>
                     </div>

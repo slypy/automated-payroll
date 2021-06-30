@@ -409,6 +409,13 @@
                 "orderable": true,
                 "sort": false,
                 "pageLength": 5,
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    url: 'employee_post.php',
+                    type: 'POST',
+                    
+                }
             });
 
             $("#employee-record-table").DataTable({
@@ -465,22 +472,27 @@
                     position_name: $("#position_name").val(),
                     wage: $("#wage").val(),
                     wage_amount: $("#wage_amount").val(),
-                    start_time: $("#start_time").val(),
-                    end_time: $("end_time").val(),
                 };
 
                 $.ajax({
                     type: "POST",
-                    url: "controller.php?action=addposition",
+                    url: "controller.php?action=add_position",
                     data: Position_Data,
-                    success: function(html){
-
+                    success: function(data){
+                        
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown){
 
                     }
                 });
+
+                event.preventDefault();
             });
+            
+
+            function onAddPositionSuccess(){
+                
+            }
 
             /*******************************************
             * Data values from form modal input employee

@@ -16,6 +16,4 @@ $web_root =  str_replace (array($doc_root, "important.php") , '' , $this_file);
 $server_root = str_replace ('config/config.php' ,'', $this_file);
 define ('web_root' , $web_root);
 define('server_root' , $server_root);
-
-
 ?>

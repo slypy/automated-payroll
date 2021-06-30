@@ -43,10 +43,10 @@ function doAdd_Position(){
         $position_name = htmlspecialchars($_POST['position_name']);
         $wage          = htmlspecialchars($_POST['wage']);
         $wage_amount   = htmlspecialchars($_POST['wage_amount']);
-        $start_time = $_POST['start_time'];
-        $end_time = $_POST['end_time'];
-        $max_hours= $_POST['max_hours'];
-    }
+
+
+        Position::add($position_name,$wage,$wage_amount);
+    } 
 }
 
 ?>

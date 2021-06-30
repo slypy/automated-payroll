@@ -733,6 +733,17 @@ input[type="file"]::-webkit-file-upload-button {
   border-radius: 5px;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .staffCA-container{
   width: 100%;
   border-radius: 5px;

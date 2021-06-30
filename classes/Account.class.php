@@ -12,8 +12,7 @@ class Account{
     public static function add($firstname, $lastname, $username, $password, $position, $profile_pic){
 
         self::$query = Db::fetch("tbl_accounts", "id","username = ? ", array($username), "", "", "");
-        
-
+    
         /**
          * TODO:
          * 
