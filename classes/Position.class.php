@@ -52,7 +52,7 @@
                 $positionRows[] = $tbl_position['position_name'];
                 $positionRows[] = $tbl_position['per_hour'];
                 $positionRows[] = $tbl_position['per_day'];
-		        $positionRows[] = '<button type="button" name="delete" id="'.$tbl_position["id"].'" class="btn btn-danger"><i class="material-icons">delete</i></button>';
+		        $positionRows[] = '<button type="button" name="delete" id="'.$tbl_position["id"].'" class="btn btn-danger delete"><i class="material-icons">delete</i></button>';
                 $positionData[] = $positionRows;
             }
 
@@ -69,5 +69,11 @@
 
             #encode json format to 
             echo json_encode($result_data);
+        }
+
+        public static function deletePosition(){
+            if($_GET['pos_id']){
+                Db::delete(self::$db_tbl, "id = ?", $_GET['pos_id']);
+            }
         }
     }

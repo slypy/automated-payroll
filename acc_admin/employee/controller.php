@@ -19,14 +19,18 @@ switch($action){
         doAdd_Employee();
         break;
     
-    case 'add_position':
-        doAdd_Position();
-        break;
     
     case 'listPositions':
         datatable_PositionList();
         break;
-
+    
+    case 'add_position':
+        doAdd_Position();
+        break;
+    
+    case 'position_delete':
+        delete_Position();
+        break;
 
     case 'edit':
         break;
@@ -60,5 +64,10 @@ function doAdd_Position(){
 
 function datatable_PositionList(){
     Position::fetchPositionList();
+    return;
+}
+
+function delete_Position(){
+    Position::deletePosition();
     return;
 }

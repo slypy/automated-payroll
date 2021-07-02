@@ -414,10 +414,10 @@
                     },
                     dataType: 'json',
                 },
+                "retrieve": true,
                 "dom": 'ftipr',
                 "bAutoWidth": false,
                 "paging": true,
-                "retrieve": true,
                 "lengthChange": false,
                 "ordering": false,
                 "bInfo": false,
@@ -505,10 +505,25 @@
                 event.preventDefault();
             });
 
-
-            function onAddPositionSuccess() {
-
-            }
+            $("#position-table").on('click', '.delete', function(){
+                var posID = $(this).attr('id');
+                if(confirm("Are you sure you want to delete this position?")){
+                    $.ajax({
+                        url: 'controller.php',
+                        method: 'GET',
+                        data: {
+                            pos_id: posID,
+                            action: 'position_delete'
+                        },
+                        success: function(){
+                            $("#position-table").DataTable().draw();
+                        }
+                    })
+                } else {
+                    return false;
+                }
+            });
+            
 
             /*******************************************
             * Data values from form modal input employee

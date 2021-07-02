@@ -21,7 +21,6 @@ class Db extends mysqli implements Config{
 		}
 
 		return $db;// always connect to the database when necessary and kill the  connection when done please;
-	
 	}
 
 	public static function insert($table, array $columns, array $colValues ){
@@ -176,7 +175,6 @@ class Db extends mysqli implements Config{
 		}
 	}
 
-
 	// this method (Db::fetchAll(params)) is deprecated, use Db::fetch(params) instead
 	public static function fetchAll($table, $where, $whereValue, $order,$limit){
 		// Db::fetchAll("tableName", "col = ? ", "id DESC");
@@ -188,7 +186,6 @@ class Db extends mysqli implements Config{
 			$limit = " LIMIT $limit "; 
 
 		}
-
 
 		if($order == ""){
 			$order = "";
@@ -338,17 +335,22 @@ class Db extends mysqli implements Config{
 	}
 
 
-	// fetch method should be used instead of fetchSpeical, fetchAll and fetchCols. 
-	// fetch is the valid function that does the work of 'fetchSpecial', 'fetchAll', and 'fetchCols', 
-	// always use this method when fetching anything from your database
-
+	# fetchLike is a search method from your database
 	public static function fetchLike($table, $col, $filter){
-		$con = self::connectDB();
-		$query = $con->prepare("SELECT * FROM $table WHERE $col LIKE '%$filter%'");
-		$query->execute();
+		try{
+			$con = self::connectDB();
+			$query = $con->prepare("SELECT * FROM $table WHERE $col LIKE '%$filter%'");
+			$query->execute();
 
-		return $query;
+			return $query;
+		} catch (Exception $e){
+			die($e);
+		}
 	}
+
+	# fetch method should be used instead of fetchSpeical, fetchAll and fetchCols. 
+	# fetch is the valid function that does the work of 'fetchSpecial', 'fetchAll', and 'fetchCols', 
+	# always use this method when fetching anything from your database
 
 	public static function fetch($table, $columns,  $whereClause, $whereValue, $orderBy, $limit, $groupBy){
 		if($limit == ""){
