@@ -22,6 +22,12 @@ switch($action){
     case 'add_position':
         doAdd_Position();
         break;
+    
+    case 'listPositions':
+        datatable_PositionList();
+        break;
+
+
     case 'edit':
         break;
 
@@ -36,6 +42,8 @@ function doAdd_Employee(){
 
         Account::add($firstname, $lastname, "sample","sample", "admin", "");
     }
+
+    return;
 }
 
 function doAdd_Position(){
@@ -47,6 +55,10 @@ function doAdd_Position(){
 
         Position::add($position_name,$wage,$wage_amount);
     } 
+    return;
 }
 
-?>
+function datatable_PositionList(){
+    Position::fetchPositionList();
+    return;
+}

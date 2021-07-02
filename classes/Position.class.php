@@ -1,6 +1,5 @@
 <?php
     class Position{
-        protected static $query;
         protected static $db_tbl = "tbl_positions";
 
         public static function add($position_name, $wage, $wage_amount){
@@ -11,9 +10,9 @@
             # if the admin will set the position wage as per_day then insert 0 in perday column
             $wage_per_hour = 0;
 
-            self::$query = Db::fetch("tbl_positions", "id", "position_name = ?", $position_name, "", "", "");
+            $query = Db::fetch("tbl_positions", "id", "position_name = ?", $position_name, "", "", "");
 
-            if(Db::count(self::$query)){
+            if(Db::count($query)){
                 $_SESSION['position_name_already_taken'] = "Position name is already exist! try use another name.";
 
                 return false;
@@ -28,5 +27,47 @@
                         break;
                 }
             }
+        }
+
+        public static function fetchPositionList(){
+            $query = Db::fetch(self::$db_tbl, "", "", "", "", "", "");
+            
+            # Page length
+            $limit = $_GET['start'].', '.$_GET['length'];
+            if($_GET["length"] != -1){
+                $query = Db::fetch(self::$db_tbl, "", "", "", "", $limit, "");
+            }
+
+            # search respond after page length
+            if(!empty($_GET["search"]["value"])){
+                $like_val = $_GET['search']['value'];
+
+                $query = Db::fetchLike(self::$db_tbl, "position_name", $like_val);
+            }
+            
+            # data array for 
+            $positionData = array();
+            while($tbl_position = Db::assoc($query)){
+                $positionRows = array();
+                $positionRows[] = $tbl_position['position_name'];
+                $positionRows[] = $tbl_position['per_hour'];
+                $positionRows[] = $tbl_position['per_day'];
+		        $positionRows[] = '<button type="button" name="delete" id="'.$tbl_position["id"].'" class="btn btn-danger"><i class="material-icons">delete</i></button>';
+                $positionData[] = $positionRows;
+            }
+
+            # Datatable pagination
+            $query2 = Db::fetch(self::$db_tbl, "", "", "", "", "", "");
+            $numRows = Db::count($query2);
+
+            $result_data = array(
+                "draw"            => intval($_GET["draw"]),
+                "recordsTotal"    => $numRows,
+                "recordsFiltered" => $numRows,
+                "data"            => $positionData
+            );
+
+            #encode json format to 
+            echo json_encode($result_data);
         }
     }

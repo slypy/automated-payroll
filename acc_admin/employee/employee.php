@@ -416,7 +416,7 @@
     <!-- {id} : $("#addPosition") -->
     <form action="controller.php?action=add_position" id="addPosition" method="POST" autocomplete="off">
         <div id="add-position-form" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false">
-            <div class="modal-dialog modal-md" role="document" style="max-width: 490px">
+            <div class="modal-dialog modal-md" role="document" style="max-width: 500px">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="modal-header-title">
@@ -429,7 +429,7 @@
 
                     <div class="modal-body">
                         <div class="table-responsive" style="margin-top: -20px;">
-                            <table id="position-table" class="table table-hover">
+                            <table id="position-table" class="table table-hover table-striped">
                                 <thead class="text-info">
                                     <th>
                                         Position List
@@ -442,22 +442,6 @@
                                     </th>
                                     <th width="50">Action</th>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            Software Engineer
-                                        </td>
-                                        <td class="text-center">
-                                            12.5
-                                        </td>
-                                        <td class="text-center">
-                                            300
-                                        </td>
-                                        <td class="td-actions text-center">
-                                            <a title="Delete" class="btn btn-danger btn-sm" href="' . web_root . 'admin/products/index.php?view=edit&id=' . $result->PROID . '"> <i class="material-icons">delete</i></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
                             </table>
                         </div>
                     </div>

@@ -103,7 +103,7 @@
                             $url = $_SERVER['REQUEST_URI'];
                             # create matching string url
                             $employee_url = $web_root . 'acc_admin/employee/';
-                            $staffcash_advance_url = $web_root.'acc_admin/EmployeeCredits/';
+                            $staffcash_advance_url = $web_root . 'acc_admin/EmployeeCredits/';
 
                             if (strval($url) == strval($employee_url)) {
                                 echo '<li class="nav-item">
@@ -115,7 +115,7 @@
                                 <li class="nav-item" style="margin-left: 20px;">
                                     <a href="' . $web_root . 'acc_admin/employee/index.php?page=time-in-out" class="btn btn-warning btn-sm"> <i class="material-icons">update</i> Update employee time in/out</a>
                                 </li>';
-                            } else if (strval($url) == strval($staffcash_advance_url)){
+                            } else if (strval($url) == strval($staffcash_advance_url)) {
                                 echo '
                                 <li class="nav-item">
                                     <button id="staffCA-btn" class="btn btn-primary btn-sm"> <i class="material-icons">monetization_on</i> Staff Cash Advance</button>
@@ -186,14 +186,14 @@
         </div>
     </div>
     <script>
-        /********************************************
+        /*******************************************
          * -----------------------------------------
          * jQuery -- Material Design -- AJAX masters
          * -----------------------------------------
          * 
          * Author: Sly Kint Bacalso 2021
-         ********************************************/
-        
+         *******************************************/
+
 
         /**
          * TODO: 
@@ -400,24 +400,37 @@
                 "pageLength": 10,
             });
 
+
+            /** 
+             * Server Side DataTable {Position}
+             */
             $('#position-table').DataTable({
-                "responsive": true,
-                "bPaginate": true,
-                "bFilter": true,
-                "bInfo": false,
-                "dom": 'ftipr',
-                "bAutoWidth": false,
-                "searchable": true,
-                "orderable": true,
-                "sort": false,
-                "pageLength": 5,
-                "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    url: 'employee_post.php',
-                    type: 'POST',
-                    data: {action}
-                }
+                    url: 'controller.php',
+                    type: 'GET',
+                    data: {
+                        action: 'listPositions'
+                    },
+                    dataType: 'json',
+                },
+                "dom": 'ftipr',
+                "bAutoWidth": false,
+                "paging": true,
+                "retrieve": true,
+                "lengthChange": false,
+                "ordering": false,
+                "bInfo": false,
+                "searching": true,
+                "bFilter": true,
+                "pageLength": 5,
+                "columnDefs": [{
+                    "targets": [3],
+                    className: "td-actions"
+                },{
+                    "targets": [1, 2],
+                    className: "text-center"
+                }],
             });
 
             $("#employee-record-table").DataTable({
@@ -432,7 +445,7 @@
                 "sort": false,
                 "pageLength": 10,
             })
-            
+
             $("#staffCA-table").DataTable({
                 "responsive": true,
                 "bPaginate": true,
@@ -466,10 +479,10 @@
 
 
             /**************************************
-             * Data values from position form modal
+             * Data values from position form modal very interactive
              *************************************/
 
-            $("#addPosition").submit(function(){
+            $("#addPosition").submit(function() {
                 var Position_Data = {
                     position_name: $("#position_name").val(),
                     wage: $("#wage").val(),
@@ -480,20 +493,21 @@
                     type: "POST",
                     url: "controller.php?action=add_position",
                     data: Position_Data,
-                    success: function(data){
-                        
+                    success: function(data) {
+                        $('#position-table').DataTable().draw();
+                        $('#addPosition')[0].reset();
                     },
-                    error: function(XMLHttpRequest, textStatus, errorThrown){
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
 
                     }
                 });
 
                 event.preventDefault();
             });
-            
 
-            function onAddPositionSuccess(){
-                
+
+            function onAddPositionSuccess() {
+
             }
 
             /*******************************************
@@ -506,7 +520,7 @@
                     //TODO next
                 };
 
-                
+
                 $.ajax({
                     type: "POST",
                     url: "controller.php?action=add",
@@ -685,7 +699,7 @@
 
                     seq = 0;
                 },
-                
+
                 startAnimationForBarChart: function(chart) {
                     chart.on('draw', function(data) {
                         if (data.type === 'bar') {
@@ -719,7 +733,7 @@
                 }, 500);
             });
 
-            $("#staffCA-btn").click(function(){
+            $("#staffCA-btn").click(function() {
                 $("#tbl-staffCA").show();
                 $("#tbl-loan").hide();
                 $("#tbl-damage").hide();
@@ -735,7 +749,7 @@
                 $(this).addClass("btn-primary");
             })
 
-            $("#loan-btn").click(function(){
+            $("#loan-btn").click(function() {
                 $("#tbl-loan").show();
                 $("#tbl-staffCA").hide();
                 $("#tbl-damage").hide();
@@ -750,8 +764,8 @@
                 $(this).removeClass("btn-warning");
                 $(this).addClass("btn-primary");
             });
-            
-            $("#misc-btn").click(function(){
+
+            $("#misc-btn").click(function() {
                 $("#tbl-misc").show();
                 $("#tbl-loan").hide();
                 $("#tbl-staffCA").hide();
@@ -767,7 +781,7 @@
                 $(this).addClass("btn-primary");
             });
 
-            $("#damage-btn").click(function(){
+            $("#damage-btn").click(function() {
                 $("#tbl-damage").show();
                 $("#tbl-loan").hide();
                 $("#tbl-staffCA").hide();
