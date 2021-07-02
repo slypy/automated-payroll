@@ -23,13 +23,23 @@ switch($action){
     case 'listPositions':
         datatable_PositionList();
         break;
+
+    case 'listShiftingHours':
+        datatable_ShiftingHours();
+        break;
     
     case 'add_position':
         doAdd_Position();
         break;
-    
+    case 'add_shifting_type':
+        doAdd_ShiftingType();
+        break;
+
     case 'position_delete':
         delete_Position();
+        break;
+    case 'shifting_type_delete':
+        delete_shiftingType();
         break;
 
     case 'edit':
@@ -62,6 +72,18 @@ function doAdd_Position(){
     return;
 }
 
+function doAdd_ShiftingType(){
+    if(isset($_POST['shifting_type_name'])){
+        $shifting_type_name = htmlspecialchars($_POST['shifting_type_name']);
+        $start_time = strval($_POST['start_time']);
+        $end_time = strval($_POST['end_time']);
+        $break_time = htmlspecialchars($_POST['break_time']);
+        $total_work_hours = htmlspecialchars($_POST['total_work_hours']);
+
+        ShiftingHours::add($shifting_type_name, $start_time, $end_time, $break_time, $total_work_hours);
+    }
+}
+
 function datatable_PositionList(){
     Position::fetchPositionList();
     return;
@@ -69,5 +91,15 @@ function datatable_PositionList(){
 
 function delete_Position(){
     Position::deletePosition();
+    return;
+}
+
+function delete_shiftingType(){
+    ShiftingHours::deleteRow();
+    return;
+}
+
+function datatable_ShiftingHours(){
+    ShiftingHours::fetchList();
     return;
 }

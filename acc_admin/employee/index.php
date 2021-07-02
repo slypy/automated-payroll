@@ -9,6 +9,12 @@ if(Account::loggedIn()){
 			$page_title = 'Update Employee Time-In/Out';
 			$page_content = 'update_employee_time-in-out.php';
 			break;
+
+		case 'shifting-hours':
+			$page_title = 'Shifting Hours';
+			$page_content = 'shifting_hours.php';
+			break;
+
 		default:
 			$page_title = "Employees";
 			$page_content    = 'employee.php';

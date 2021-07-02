@@ -85,9 +85,10 @@
                         $u_url = $_SERVER['REQUEST_URI'];
                         # create matching string url 
                         $u_employee_url = $web_root . 'acc_admin/employee/index.php?page=time-in-out';
+                        $s_employee_url = $web_root . 'acc_admin/employee/index.php?page=shifting-hours';
 
                         # if match echo back button in the left top navigation bar of the time-in-out page
-                        if (strval($u_url) === strval($u_employee_url)) {
+                        if (strval($u_url) === strval($u_employee_url) || strval($u_url) === strval($s_employee_url)) {
                             echo '<a href="' . $web_root . 'acc_admin/employee/" class="btn btn-primary btn-sm"> <i class="material-icons">arrow_back</i> Back</a>';
                         }
                         ?>
@@ -111,7 +112,10 @@
                                 </li>
                                 <li class="nav-item" style="margin-left: 20px;">
                                     <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">monetization_on</i> Salary Adjustment</a>
-                                </li>                              
+                                </li>   
+                                <li class="nav-item" style="margin-left: 20px;">
+                                    <a href="' . $web_root . 'acc_admin/employee/index.php?page=shifting-hours" class="btn btn-warning btn-sm"> <i class="material-icons">access_time</i> Shifting hours</a>
+                                </li>                           
                                 <li class="nav-item" style="margin-left: 20px;">
                                     <a href="' . $web_root . 'acc_admin/employee/index.php?page=time-in-out" class="btn btn-warning btn-sm"> <i class="material-icons">update</i> Update employee time in/out</a>
                                 </li>';
@@ -401,38 +405,6 @@
             });
 
 
-            /** 
-             * Server Side DataTable {Position}
-             */
-            $('#position-table').DataTable({
-                "serverSide": true,
-                "ajax": {
-                    url: 'controller.php',
-                    type: 'GET',
-                    data: {
-                        action: 'listPositions'
-                    },
-                    dataType: 'json',
-                },
-                "retrieve": true,
-                "dom": 'ftipr',
-                "bAutoWidth": false,
-                "paging": true,
-                "lengthChange": false,
-                "ordering": false,
-                "bInfo": false,
-                "searching": true,
-                "bFilter": true,
-                "pageLength": 5,
-                "columnDefs": [{
-                    "targets": [3],
-                    className: "td-actions"
-                },{
-                    "targets": [1, 2],
-                    className: "text-center"
-                }],
-            });
-
             $("#employee-record-table").DataTable({
                 "responsive": true,
                 "bPaginate": true,
@@ -478,9 +450,37 @@
             });
 
 
-            /**************************************
-             * Data values from position form modal very interactive
-             *************************************/
+            /*============= Start  position table =============*/
+
+            //  Server Side DataTable {Position}
+            $('#position-table').DataTable({
+                "serverSide": true,
+                "ajax": {
+                    url: 'controller.php',
+                    type: 'GET',
+                    data: {
+                        action: 'listPositions'
+                    },
+                    dataType: 'json',
+                },
+                "retrieve": true,
+                "dom": 'ftipr',
+                "bAutoWidth": false,
+                "paging": true,
+                "lengthChange": false,
+                "ordering": false,
+                "bInfo": false,
+                "searching": true,
+                "bFilter": true,
+                "pageLength": 5,
+                "columnDefs": [{
+                    "targets": [3],
+                    className: "td-actions text-center"
+                }, {
+                    "targets": [1, 2],
+                    className: "text-center"
+                }],
+            });
 
             $("#addPosition").submit(function() {
                 var Position_Data = {
@@ -488,7 +488,6 @@
                     wage: $("#wage").val(),
                     wage_amount: $("#wage_amount").val(),
                 };
-
                 $.ajax({
                     type: "POST",
                     url: "controller.php?action=add_position",
@@ -497,17 +496,13 @@
                         $('#position-table').DataTable().draw();
                         $('#addPosition')[0].reset();
                     },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-
-                    }
                 });
-
                 event.preventDefault();
             });
 
-            $("#position-table").on('click', '.delete', function(){
+            $("#position-table").on('click', '.delete', function() {
                 var posID = $(this).attr('id');
-                if(confirm("Are you sure you want to delete this position?")){
+                if (confirm("Are you sure you want to delete this position?")) {
                     $.ajax({
                         url: 'controller.php',
                         method: 'GET',
@@ -515,7 +510,7 @@
                             pos_id: posID,
                             action: 'position_delete'
                         },
-                        success: function(){
+                        success: function() {
                             $("#position-table").DataTable().draw();
                         }
                     })
@@ -523,7 +518,112 @@
                     return false;
                 }
             });
-            
+            /*============= end of position table =============*/
+
+
+            /*============= Start of Shifting Hours table =============*/
+
+            function toAMPM(time) {
+                time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+                if (time.length > 1) {
+                    time = time.slice(1);
+                    time[5] = +time[0] < 12 ? ' AM' : ' PM';
+                    time[0] = +time[0] % 12 || 12;
+                }
+                return time.join('');
+            }
+
+            function diffTime(start, end) {
+                start = start.split(":");
+                end = end.split(":");
+                var startDate = new Date(0, 0, 0, start[0], start[1], 0);
+                var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+                var diff = endDate.getTime() - startDate.getTime();
+                var hours = Math.floor(diff / 1000 / 60 / 60);
+                diff -= hours * (1000 * 60 * 60);
+                var minutes = Math.floor(diff / 1000 / 60);
+                diff -= minutes * (1000 * 60);
+                var seconds = Math.floor(diff / 1000);
+
+                // If using time pickers with 24 hours format, add the below line get exact hours
+                if (hours < 0)
+                    hours = hours + 24;
+
+                return parseFloat((hours <= 9 ? "0" : "") + hours + "." + (minutes <= 9 ? "0" : "") + minutes);
+            }
+
+            // Server Side DataTable {Shifting Hours}
+            $("#employee-shifting-hours-table").DataTable({
+                'serverSide': true,
+                'ajax': {
+                    url: 'controller.php',
+                    type: 'GET',
+                    data: {
+                        action: 'listShiftingHours'
+                    },
+                    dataType: 'json'
+                },
+                'retrieve': true,
+                'dom': 'ftipr',
+                'bAutoWidth': false,
+                'ordering': false,
+                'searching': true,
+                'bFilter': true,
+                'pageLength': 15,
+                'columnDefs': [{
+                    'targets': [5],
+                    className: 'td-actions text-center'
+                }]
+            });
+
+            $('#addShiftingHours').submit(function() {
+                var totalWorkHours = diffTime($("#start_time").val(), $("#end_time").val()) - $("#break_time").val();
+                var ShiftingHours_Data = {
+                    shifting_type_name: $("#shifting_type_name").val(),
+                    start_time: toAMPM($("#start_time").val()),
+                    end_time: toAMPM($("#end_time").val()),
+                    break_time: $("#break_time").val(),
+                    total_work_hours: totalWorkHours
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "controller.php?action=add_shifting_type",
+                    data: ShiftingHours_Data,
+                    success: function(data) {
+                        $('#addShiftingHours')[0].reset();
+                        $("#add-custom-shifting-type-form").modal('hide');
+                        $('#employee-shifting-hours-table').DataTable().draw();
+
+                    },
+                });
+                event.preventDefault();
+            });
+
+            $("#employee-shifting-hours-table").on('click', '.delete', function() {
+                var shiftID = $(this).attr('id');
+                if (confirm("Are you sure you want to delete this position?")) {
+                    $.ajax({
+                        url: 'controller.php',
+                        method: 'GET',
+                        data: {
+                            shift_id: shiftID,
+                            action: 'shifting_type_delete'
+                        },
+                        success: function() {
+                            $("#employee-shifting-hours-table").DataTable().draw();
+                        }
+                    })
+                } else {
+                    return false;
+                }
+            });
+
+
+            /*============= end of Shifting Hours table =============*/
+
+
 
             /*******************************************
             * Data values from form modal input employee

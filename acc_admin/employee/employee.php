@@ -429,7 +429,7 @@
 
                     <div class="modal-body">
                         <div class="table-responsive" style="margin-top: -20px;">
-                            <table id="position-table" class="table table-hover table-striped">
+                            <table id="position-table" class="table table-hover table-striped table-bordered">
                                 <thead class="text-info">
                                     <th>
                                         Position List
@@ -440,7 +440,7 @@
                                     <th class="text-center">
                                         ₱ Per Day
                                     </th>
-                                    <th width="50">Action</th>
+                                    <th class="text-center" width="50">Action</th>
                                 </thead>
                             </table>
                         </div>
@@ -469,7 +469,7 @@
                                     </div>
                                     <div class="material-textfield">
                                         <!-- wage_amount: $("#wage_amount").val() -->
-                                        <input id="wage_amount" placeholder=" " name="wage_amount" type="number" required style="width: 140px;">
+                                        <input id="wage_amount" placeholder=" " name="wage_amount" type="number" step="0.01" required style="width: 140px;">
                                         <label>₱</label>
                                     </div>
                                 </div>

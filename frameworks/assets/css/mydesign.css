@@ -711,6 +711,13 @@ input#search.dropdown {
   margin-bottom: 25px;
 }
 
+.new-custom-shifting{
+  display: flex;
+  justify-content: space-between;
+  margin-left: -10px;
+  margin-bottom: -10px;
+}
+
 .remark-field {
   width: 100%;
 }
