@@ -18,8 +18,7 @@ switch($action){
     case 'add_employee':
         doAdd_Employee();
         break;
-    
-    
+
     case 'listPositions':
         datatable_PositionList();
         break;
