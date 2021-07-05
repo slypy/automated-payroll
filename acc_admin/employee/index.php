@@ -14,7 +14,11 @@ if(Account::loggedIn()){
 			$page_title = 'Shifting Hours';
 			$page_content = 'shifting_hours.php';
 			break;
-
+		case 'job-positions':
+			$page_title = 'Job Positions';
+			$page_content = 'position.php';
+			break;
+			
 		default:
 			$page_title = "Employees";
 			$page_content    = 'employee.php';

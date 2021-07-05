@@ -1,48 +1,46 @@
-<form action="">
-    <div class="row" style="margin-top: -45px;">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="header-title">
-                        <h3>
-                            Shifting Hours
-                        </h3>
-                        <div>
-                            <a href="#add-custom-shifting-type-form" data-target="#add-custom-shifting-type-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">add</i> Add custom shifting hours</a>
-                        </div>
+<div class="row" style="margin-top: -45px;">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="header-title">
+                    <h3>
+                        Shifting Hours
+                    </h3>
+                    <div>
+                        <a href="#add-custom-shifting-type-form" data-target="#add-custom-shifting-type-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">add</i> Add custom shifting hours</a>
                     </div>
-                    <div class="header-line">
-                        <hr>
-                    </div>
-                    <div class="table-responsive">
-                        <table id="employee-shifting-hours-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
-                            <thead class="text-primary text-sm">
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Start Time
-                                </th>
-                                <th>
-                                    End Time
-                                </th>
-                                <th>
-                                    Break Time
-                                </th>
-                                <th>
-                                    Total Work Hours
-                                </th>
-                                <th class="text-center" width=100>
-                                    Action
-                                </th>
-                            </thead>
-                        </table>
-                    </div>
+                </div>
+                <div class="header-line">
+                    <hr>
+                </div>
+                <div class="table-responsive">
+                    <table id="employee-shifting-hours-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
+                        <thead class="text-primary text-sm">
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Start Time
+                            </th>
+                            <th>
+                                End Time
+                            </th>
+                            <th>
+                                Break Time
+                            </th>
+                            <th>
+                                Total Work Hours
+                            </th>
+                            <th class="text-center" width=100>
+                                Action
+                            </th>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-</form>
+</div>
 
 <form id="addShiftingHours" method="POST" autocomplete="off">
     <div id="add-custom-shifting-type-form" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false">

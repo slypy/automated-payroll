@@ -2,13 +2,7 @@
     class Position{
         protected static $db_tbl = "tbl_positions";
 
-        public static function add($position_name, $wage, $wage_amount){
-
-            # if the position wage will set as per_hour, then insert 0 in perday column
-            $wage_per_day = 0;
-
-            # if the admin will set the position wage as per_day then insert 0 in perday column
-            $wage_per_hour = 0;
+        public static function add($position_name, $wage_salary, $wage_type){
 
             $query = Db::fetch("tbl_positions", "id", "position_name = ?", $position_name, "", "", "");
 
@@ -17,15 +11,7 @@
 
                 return false;
             } else {
-                switch($wage){
-                    case 'Per Hour':
-                        Db::insert(self::$db_tbl, array("position_name", "wage", "per_hour", "per_day"), array($position_name, $wage, floatval($wage_amount), floatval($wage_per_day)));
-                        break;
-
-                    case 'Per Day':
-                        Db::insert(self::$db_tbl, array("position_name", "wage", "per_hour", "per_day"), array($position_name, $wage, floatval($wage_per_hour), floatval($wage_amount)));
-                        break;
-                }
+                Db::insert(self::$db_tbl, array("position_name", "wage_salary", "wage_type"), array($position_name, $wage_salary, $wage_type));
             }
         }
 
@@ -50,9 +36,9 @@
             while($tbl_position = Db::assoc($query)){
                 $positionRows = array();
                 $positionRows[] = $tbl_position['position_name'];
-                $positionRows[] = $tbl_position['per_hour'];
-                $positionRows[] = $tbl_position['per_day'];
-		        $positionRows[] = '<button type="button" name="delete" id="'.$tbl_position["id"].'" class="btn btn-danger delete"><i class="material-icons">delete</i></button>';
+                $positionRows[] = $tbl_position['wage_salary'];
+                $positionRows[] = $tbl_position['wage_type'];
+		        $positionRows[] = '<button type="button" name="update" id="'.$tbl_position['id'].'" class="btn btn-success update"><i class="material-icons">edit</i></button> <button type="button" name="delete" id="'.$tbl_position["id"].'" class="btn btn-danger delete"><i class="material-icons">delete</i></button>';
                 $positionData[] = $positionRows;
             }
 
@@ -71,6 +57,15 @@
             echo json_encode($result_data);
         }
 
+        public static function getData(){
+            if($_GET['pos_id']){
+                $query = Db::fetch(self::$db_tbl,"", "id = ?", $_GET['pos_id'], "", "", "");
+    
+                $row = DB::num($query);
+                echo json_encode($row);
+            }
+        }
+
         public static function deletePosition(){
             if($_GET['pos_id']){
                 Db::delete(self::$db_tbl, "id = ?", $_GET['pos_id']);
@@ -78,6 +73,12 @@
         }
 
         public static function updateRow(){
-            
+            $position_name = $_POST['position_name'];
+            $wage_salary = $_POST['wage_salary'];
+            $wage_type = $_POST['wage_type'];
+
+            if(isset($_POST['position_name'])){
+                Db::update(self::$db_tbl, array('position_name', 'wage_salary', 'wage_type'), array($position_name, $wage_salary, $wage_type), "position_name = ?", $position_name);
+            }
         }
     }

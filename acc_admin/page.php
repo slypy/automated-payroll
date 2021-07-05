@@ -86,9 +86,11 @@
                         # create matching string url 
                         $u_employee_url = $web_root . 'acc_admin/employee/index.php?page=time-in-out';
                         $s_employee_url = $web_root . 'acc_admin/employee/index.php?page=shifting-hours';
+                        $p_employee_url = $web_root . 'acc_admin/employee/index.php?page=job-positions';
+
 
                         # if match echo back button in the left top navigation bar of the time-in-out page
-                        if (strval($u_url) === strval($u_employee_url) || strval($u_url) === strval($s_employee_url)) {
+                        if (strval($u_url) === strval($u_employee_url) || strval($u_url) === strval($s_employee_url) || strval($u_url) === strval($p_employee_url)) {
                             echo '<a href="' . $web_root . 'acc_admin/employee/" class="btn btn-primary btn-sm"> <i class="material-icons">arrow_back</i> Back</a>';
                         }
                         ?>
@@ -107,15 +109,17 @@
                             $staffcash_advance_url = $web_root . 'acc_admin/EmployeeCredits/';
 
                             if (strval($url) == strval($employee_url)) {
-                                echo '<li class="nav-item">
-                                    <a href="#registration-form" data-target="#add-position-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">add</i> Add Position</a>
+                                echo '
+                                <li class="nav-item">
+                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">monetization_on</i> Salary Adjustment</a>
+                                </li> 
+                                <li class="nav-item" style="margin-left: 20px;">
+                                    <a href="' . $web_root . 'acc_admin/employee/index.php?page=job-positions" class="btn btn-warning btn-sm"> <i class="material-icons">work</i> Job Positions</a>
                                 </li>
                                 <li class="nav-item" style="margin-left: 20px;">
-                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">monetization_on</i> Salary Adjustment</a>
-                                </li>   
-                                <li class="nav-item" style="margin-left: 20px;">
                                     <a href="' . $web_root . 'acc_admin/employee/index.php?page=shifting-hours" class="btn btn-warning btn-sm"> <i class="material-icons">access_time</i> Shifting hours</a>
-                                </li>                           
+                                </li> 
+                                                      
                                 <li class="nav-item" style="margin-left: 20px;">
                                     <a href="' . $web_root . 'acc_admin/employee/index.php?page=time-in-out" class="btn btn-warning btn-sm"> <i class="material-icons">update</i> Update employee time in/out</a>
                                 </li>';
@@ -479,22 +483,23 @@
                 }],
             });
 
-            $("#addPosition").submit(function() {
+            $("#addJobPosition").submit(function(event) {
+                event.preventDefault();
                 var Position_Data = {
                     position_name: $("#position_name").val(),
-                    wage: $("#wage").val(),
-                    wage_amount: $("#wage_amount").val(),
+                    wage_salary: $("#wage_salary").val(),
+                    wage_type: $("#wage_type").val(),
                 };
                 $.ajax({
                     type: "POST",
                     url: "controller.php?action=add_position",
                     data: Position_Data,
                     success: function(data) {
+                        $('#add-job-position-form').modal('hide');
+                        $('#addJobPosition')[0].reset();
                         $('#position-table').DataTable().draw();
-                        $('#addPosition')[0].reset();
                     },
                 });
-                event.preventDefault();
             });
 
             $("#position-table").on('click', '.delete', function() {
@@ -515,6 +520,48 @@
                     return false;
                 }
             });
+
+            $("#position-table").on('click', '.update', function(){
+                var posID = $(this).attr('id');
+                $.ajax({
+                    url: 'controller.php',
+                    method: 'GET',
+                    data: {
+                        pos_id: posID,
+                        action: 'get_job_position'
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $("#update-job-position-form").modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }, 'show');
+                        $('#update-job-position-form #position_name').val(data[1]);
+                        $('#update-job-position-form #wage_salary').val(data[2]);
+                        $('#update-job-position-form #wage_type').val(data[3]);
+                    }
+                });
+            });
+
+            $("#updateJobPosition").submit(function(event) {
+                event.preventDefault();
+                var Position_Data = {
+                    position_name: $("#updateJobPosition #position_name").val(),
+                    wage_salary: $("#updateJobPosition #wage_salary").val(),
+                    wage_type: $("#updateJobPosition #wage_type").val(),
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "controller.php?action=update_job_position",
+                    data: Position_Data,
+                    success: function(data) {
+                        $('#update-job-position-form').modal('hide');
+                        $('#updateJobPosition')[0].reset();
+                        $('#position-table').DataTable().draw();
+                    },
+                });
+            });
+
             /*============= end of position table =============*/
 
 

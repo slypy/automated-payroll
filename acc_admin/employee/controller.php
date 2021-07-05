@@ -46,9 +46,17 @@ switch($action){
     case 'get_shifting_type':
         getShiftingData();
         break;
+
+    case 'get_job_position':
+        getJobPositionData();
+        break;
     
     case 'update_shifting_type':
         updateShiftingType();
+        break;
+
+    case 'update_job_position':
+        updateJobPosition();
         break;
 }
 
@@ -66,11 +74,11 @@ function doAdd_Employee(){
 function doAdd_Position(){
     if(isset($_POST['position_name'])){
         $position_name = htmlspecialchars($_POST['position_name']);
-        $wage          = htmlspecialchars($_POST['wage']);
-        $wage_amount   = htmlspecialchars($_POST['wage_amount']);
+        $wage_salary   = htmlspecialchars($_POST['wage_salary']);
+        $wage_type          = htmlspecialchars($_POST['wage_type']);
 
 
-        Position::add($position_name,$wage,$wage_amount);
+        Position::add($position_name,$wage_salary,$wage_type);
     } 
     return;
 }
@@ -112,7 +120,17 @@ function getShiftingData(){
     return;
 }
 
+function getJobPositionData(){
+    Position::getData();
+    return;
+}
+
 function updateShiftingType(){
     ShiftingHours::updateRow();
+    return;
+}
+
+function updateJobPosition(){
+    Position::updateRow();
     return;
 }
