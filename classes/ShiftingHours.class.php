@@ -62,14 +62,24 @@ class ShiftingHours{
         }
     }
 
-    public static function updateRow(){
-        $shifting_type_name = $_GET['shifting_type_name'];
-        $start_time         = $_GET['start_time'];
-        $end_time           = $_GET['end_time'];
-        $break_time         = $_GET['break_time'];
-
+    public static function getData(){
         if($_GET['shift_id']){
-            Db::update(self::$db_tbl, array('shiftin_type_name', 'start_time', 'end_time', 'break_time'), array($shifting_type_name, $start_time, $end_time, $break_time), "id = ?", $_GET['shift_id']);
+            $query = Db::fetch(self::$db_tbl,"", "id = ?", $_GET['shift_id'], "", "", "");
+
+            $row = DB::num($query);
+            echo json_encode($row);
+        }
+    }
+
+    public static function updateRow(){
+        $shifting_type_name = $_POST['shifting_type_name'];
+        $start_time         = $_POST['start_time'];
+        $end_time           = $_POST['end_time'];
+        $break_time         = $_POST['break_time'];
+        $total_work_hours   = $_POST['total_work_hours'];
+        
+        if(isset($_POST['shifting_type_name'])){
+            Db::update(self::$db_tbl, array('shifting_type_name', 'start_time', 'end_time', 'break_time', 'total_work_hours'), array($shifting_type_name, $start_time, $end_time, $break_time, $total_work_hours), "shifting_type_name = ?", $shifting_type_name);
         }
     }
 }

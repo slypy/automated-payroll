@@ -30,6 +30,7 @@ switch($action){
     case 'add_position':
         doAdd_Position();
         break;
+
     case 'add_shifting_type':
         doAdd_ShiftingType();
         break;
@@ -37,14 +38,17 @@ switch($action){
     case 'position_delete':
         delete_Position();
         break;
+
     case 'shifting_type_delete':
         delete_shiftingType();
         break;
 
-    case 'edit':
+    case 'get_shifting_type':
+        getShiftingData();
         break;
-
-    case 'remove':
+    
+    case 'update_shifting_type':
+        updateShiftingType();
         break;
 }
 
@@ -100,5 +104,15 @@ function delete_shiftingType(){
 
 function datatable_ShiftingHours(){
     ShiftingHours::fetchList();
+    return;
+}
+
+function getShiftingData(){
+    ShiftingHours::getData();
+    return;
+}
+
+function updateShiftingType(){
+    ShiftingHours::updateRow();
     return;
 }

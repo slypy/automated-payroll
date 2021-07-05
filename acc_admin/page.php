@@ -202,17 +202,14 @@
         /**
          * TODO: 
          * 
-         * 1. add new position back end
-         * 2. fetch data from position database to position list table
-         * 3. create the calculation for the Government contribution input and make it interactive
-         * 4. employee registration data back end
-         * 5. fetch data from employee table and display in employee list table
-         * 6. the delete action should be working for all tables
-         * 7. salary adjustment back end 
-         * 8. create the interactive calculation for salary adjustment
-         * 9. Modify the security for update employee time IO
-         + 10. make the table more interactive and simple
-         * 11. modify all interactive table for fast time execution
+         * 1. create the calculation for the Government contribution input and make it interactive
+         * 2. employee registration data back end
+         * 3. fetch data from employee table and display in employee list table
+         * 4. salary adjustment back end 
+         * 5. create the interactive calculation for salary adjustment
+         * 6. Modify the security for update employee time IO
+         + 7. make the table more interactive and simple
+         * 8. modify all interactive table for fast time execution
          */
 
         $(document).ready(function() {
@@ -530,8 +527,27 @@
                     time = time.slice(1);
                     time[5] = +time[0] < 12 ? ' AM' : ' PM';
                     time[0] = +time[0] % 12 || 12;
+                    if (time[0] < 10) {
+                        time[0] = '0' + time[0].toString();
+                    }
                 }
+
                 return time.join('');
+            }
+
+            function to24(time12h) {
+                var [time, modifier] = time12h.split(' ');
+                var [hours, minutes] = time.split(':');
+
+                if (hours === '12') {
+                    hours = '00';
+                }
+
+                if (modifier === 'PM') {
+                    hours = parseInt(hours, 10) + 12;
+                }
+
+                return `${hours}:${minutes}`;
             }
 
             function diffTime(start, end) {
@@ -588,14 +604,13 @@
                 };
 
                 $.ajax({
-                    type: "POST",
                     url: "controller.php?action=add_shifting_type",
+                    method: "POST",
                     data: ShiftingHours_Data,
                     success: function(data) {
                         $('#addShiftingHours')[0].reset();
                         $("#add-custom-shifting-type-form").modal('hide');
                         $('#employee-shifting-hours-table').DataTable().draw();
-
                     },
                 });
                 event.preventDefault();
@@ -603,7 +618,7 @@
 
             $("#employee-shifting-hours-table").on('click', '.delete', function() {
                 var shiftID = $(this).attr('id');
-                if (confirm("Are you sure you want to delete this position?")) {
+                if (confirm("Are you sure you want to delete this shifiting type?")) {
                     $.ajax({
                         url: 'controller.php',
                         method: 'GET',
@@ -620,6 +635,56 @@
                 }
             });
 
+            $("#employee-shifting-hours-table").on('click', '.update', function() {
+                var shiftID = $(this).attr('id');
+                $.ajax({
+                    url: 'controller.php',
+                    method: 'GET',
+                    data: {
+                        shift_id: shiftID,
+                        action: 'get_shifting_type'
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $("#update-custom-shifting-type-form").modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }, 'show');
+                        $("#updateShiftingHours #shifting_type_name").val(data[1]);
+                        $("#updateShiftingHours #start_time").val(to24(data[2]));
+                        $("#updateShiftingHours #end_time").val(to24(data[3]));
+                        $("#updateShiftingHours #break_time").val(data[4]);
+                    }
+                });
+            });
+
+            $('#updateShiftingHours').submit(function() {
+                    var startTime = $("#updateShiftingHours #start_time").val(),
+                        endTime = $("#updateShiftingHours #end_time").val(),
+                        breakTime = $("#updateShiftingHours #break_time").val(),
+                        timeDifference = diffTime(startTime, endTime),
+                        totalWorkHours = timeDifference - breakTime;
+
+                    var ShiftingHours_Data = {
+                        shifting_type_name: $("#updateShiftingHours #shifting_type_name").val(),
+                        start_time: toAMPM($("#updateShiftingHours #start_time").val()),
+                        end_time: toAMPM($("#updateShiftingHours #end_time").val()),
+                        break_time: $("#updateShiftingHours #break_time").val(),
+                        total_work_hours: totalWorkHours
+                    };
+
+                    $.ajax({
+                        url: "controller.php?action=update_shifting_type",
+                        method: "POST",
+                        data: ShiftingHours_Data,
+                        success: function(data) {
+                            $('#updateShiftingHours')[0].reset();
+                            $("#update-custom-shifting-type-form").modal('hide');
+                            $('#employee-shifting-hours-table').DataTable().draw();
+                        },
+                    });
+                    event.preventDefault();
+                });
 
             /*============= end of Shifting Hours table =============*/
 

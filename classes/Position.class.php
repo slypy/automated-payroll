@@ -76,4 +76,8 @@
                 Db::delete(self::$db_tbl, "id = ?", $_GET['pos_id']);
             }
         }
+
+        public static function updateRow(){
+            
+        }
     }
