@@ -33,6 +33,12 @@
                             <p>Dashboard</p>
                         </a>
                     </li>
+                    <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/HolidayPay/">
+                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/HolidayPay/">
+                            <i class="material-icons">account_balance_wallet</i>
+                            <p>Holiday Pay</p>
+                        </a>
+                    </li>
                     <!-- Employee -->
                     <hr style="width: 230px;">
                     <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/employee/">
@@ -445,6 +451,134 @@
                 "pageLength": 10,
             });
 
+
+            /*============== Start Holiday Pay Table ===============*/
+
+            // correct time zone support
+            Date.prototype.toDateInputValue = (function() {
+                var local = new Date(this);
+                local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                return local.toJSON().slice(0, 10);
+            });
+
+            // set input date value with current date
+            $('#holiday_date').val(new Date().toDateInputValue());
+
+            $("#holiday-pay-table").DataTable({
+                "serverSide": true,
+                "ajax": {
+                    url: 'controller.php',
+                    type: 'GET',
+                    data: {
+                        action: 'listHolidayPay'
+                    },
+                    dataType: 'json',
+                },
+                "retrieve": true,
+                "dom": 'ftipr',
+                "bAutoWidth": false,
+                "paging": true,
+                "lengthChange": false,
+                "ordering": false,
+                "bInfo": false,
+                "searching": true,
+                "bFilter": true,
+                "pageLength": 15,
+                "columnDefs": [{
+                    "targets": [4],
+                    className: "td-actions text-center"
+                }],
+            });
+
+            $('#addHolidayPay').submit(function(event){
+                event.preventDefault();
+                var holidayData = {
+                    holiday_name: $('#holiday_name').val(),
+                    holiday_date: $('#holiday_date').val(),
+                    none_over_time_percent: $('#none_over_time_percent').val(),
+                    over_time_percent: $('#over_time_percent').val()
+                };
+
+                $.ajax({
+                    url: 'controller.php?action=add_holiday_pay',
+                    type: 'POST',
+                    data: holidayData,
+                    success: function(data){
+                        $('#add-holiday-pay-form').modal('hide');
+                        $('#addHolidayPay')[0].reset();
+                        $('#holiday-pay-table').DataTable().draw();
+                    }
+                })
+            });
+
+            $("#holiday-pay-table").on('click', '.delete', function() {
+                var holidayID = $(this).attr('id');
+                if (confirm("Are you sure you want to delete this Holiday Pay?")) {
+                    $.ajax({
+                        url: 'controller.php',
+                        method: 'GET',
+                        data: {
+                            holiday_id: holidayID,
+                            action: 'delete_holiday_pay'
+                        },
+                        success: function() {
+                            $("#holiday-pay-table").DataTable().draw();
+                        }
+                    })
+                } else {
+                    return false;
+                }
+            });
+
+            $("#holiday-pay-table").on('click', '.update', function() {
+                var holidayID = $(this).attr('id');
+                
+                $.ajax({
+                    url: 'controller.php',
+                    method: 'GET',
+                    data: {
+                        holiday_id: holidayID,
+                        action: 'get_holiday_pay'
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $("#update-holiday-pay-form").modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        }, 'show');
+                        $('#update-holiday-pay-form #holiday_name').val(data[1]);
+                        $('#update-holiday-pay-form #holiday_date').val(data[2]);
+                        $('#update-holiday-pay-form #none_over_time_percent').val(data[3]);
+                        $('#update-holiday-pay-form #over_time_percent').val(data[4])
+                    }
+                });
+            });
+
+            $("#updateHolidayPay").submit(function(event) {
+                event.preventDefault();
+                var Holiday_Data = {
+                    holiday_name: $('#updateHolidayPay #holiday_name').val(),
+                    holiday_date: $('#updateHolidayPay #holiday_date').val(),
+                    none_over_time_percent: $('#updateHolidayPay #none_over_time_percent').val(),
+                    over_time_percent: $('#updateHolidayPay #over_time_percent').val()
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "controller.php?action=update_holiday_pay",
+                    data: Holiday_Data,
+                    success: function(data) {
+                        $('#update-holiday-pay-form').modal('hide');
+                        $('#updateHolidayPay')[0].reset();
+                        $('#holiday-pay-table').DataTable().draw();
+                    },
+                });
+            });
+            
+
+            /*============== End Holiday Pay Table ===============*/
+
+            
+
             // add class active in li .nav-item on curren url
             $(function() {
                 $('.nav-item a[href^="/PayRoll2/acc_admin/' + location.pathname.split("/")[3] + '"]').closest('li').addClass("active");
@@ -473,7 +607,7 @@
                 "bInfo": false,
                 "searching": true,
                 "bFilter": true,
-                "pageLength": 5,
+                "pageLength": 15,
                 "columnDefs": [{
                     "targets": [3],
                     className: "td-actions text-center"
@@ -521,7 +655,7 @@
                 }
             });
 
-            $("#position-table").on('click', '.update', function(){
+            $("#position-table").on('click', '.update', function() {
                 var posID = $(this).attr('id');
                 $.ajax({
                     url: 'controller.php',
@@ -706,32 +840,32 @@
             });
 
             $('#updateShiftingHours').submit(function() {
-                    var startTime = $("#updateShiftingHours #start_time").val(),
-                        endTime = $("#updateShiftingHours #end_time").val(),
-                        breakTime = $("#updateShiftingHours #break_time").val(),
-                        timeDifference = diffTime(startTime, endTime),
-                        totalWorkHours = timeDifference - breakTime;
+                var startTime = $("#updateShiftingHours #start_time").val(),
+                    endTime = $("#updateShiftingHours #end_time").val(),
+                    breakTime = $("#updateShiftingHours #break_time").val(),
+                    timeDifference = diffTime(startTime, endTime),
+                    totalWorkHours = timeDifference - breakTime;
 
-                    var ShiftingHours_Data = {
-                        shifting_type_name: $("#updateShiftingHours #shifting_type_name").val(),
-                        start_time: toAMPM($("#updateShiftingHours #start_time").val()),
-                        end_time: toAMPM($("#updateShiftingHours #end_time").val()),
-                        break_time: $("#updateShiftingHours #break_time").val(),
-                        total_work_hours: totalWorkHours
-                    };
+                var ShiftingHours_Data = {
+                    shifting_type_name: $("#updateShiftingHours #shifting_type_name").val(),
+                    start_time: toAMPM($("#updateShiftingHours #start_time").val()),
+                    end_time: toAMPM($("#updateShiftingHours #end_time").val()),
+                    break_time: $("#updateShiftingHours #break_time").val(),
+                    total_work_hours: totalWorkHours
+                };
 
-                    $.ajax({
-                        url: "controller.php?action=update_shifting_type",
-                        method: "POST",
-                        data: ShiftingHours_Data,
-                        success: function(data) {
-                            $('#updateShiftingHours')[0].reset();
-                            $("#update-custom-shifting-type-form").modal('hide');
-                            $('#employee-shifting-hours-table').DataTable().draw();
-                        },
-                    });
-                    event.preventDefault();
+                $.ajax({
+                    url: "controller.php?action=update_shifting_type",
+                    method: "POST",
+                    data: ShiftingHours_Data,
+                    success: function(data) {
+                        $('#updateShiftingHours')[0].reset();
+                        $("#update-custom-shifting-type-form").modal('hide');
+                        $('#employee-shifting-hours-table').DataTable().draw();
+                    },
                 });
+                event.preventDefault();
+            });
 
             /*============= end of Shifting Hours table =============*/
 

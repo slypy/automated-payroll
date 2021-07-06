@@ -1,7 +1,6 @@
 <?php 
 # Require the Important php
 require_once "../../important.php";
-include "../../modules/crud.php";
 
 # GET data action from URL
 $action = (isset($_GET['action']) && $_GET['action'] != '') ? $_GET['action'] : '';

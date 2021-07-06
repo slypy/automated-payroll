@@ -586,6 +586,32 @@ input[type="date"]:before {
   color: black;
 }
 
+#addHolidayPay input[type="date"] {
+  position: relative;
+  color: white;
+}
+
+#addHolidayPay input[type="date"]:before {
+  position: relative;
+  width: 145px;
+  content: attr(data-date);
+  display: inline-block;
+  color: black;
+}
+
+#updateHolidayPay input[type="date"] {
+  position: relative;
+  color: white;
+}
+
+#updateHolidayPay input[type="date"]:before {
+  position: relative;
+  width: 145px;
+  content: attr(data-date);
+  display: inline-block;
+  color: black;
+}
+
 input[type="date"]::-webkit-datetime-edit,
 input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-clear-button {

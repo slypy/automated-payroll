@@ -42,7 +42,7 @@
                             <hr>
                         </div>
                         <div class="table-responsive">
-                            <table id="active-table" class="table table-sm table-hover" cellspacing="0">
+                            <table id="active-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
                                 <thead class="text-primary text-sm">
                                     <th>
                                         #
@@ -50,7 +50,7 @@
                                     <th>
                                         Employee ID #
                                     </th>
-                                    <th>
+                                    <th width="50">
                                         Profile
                                     </th>
 
@@ -72,7 +72,7 @@
                                     <th>
                                         Position
                                     </th>
-                                    <th>
+                                    <th class="text-center">
                                         Action
                                     </th>
                                 </thead>
@@ -105,7 +105,7 @@
                                         <td class="text-danger">
                                             Software Engineer
                                         </td>
-                                        <td class="td-actions text-left">
+                                        <td class="td-actions text-center">
                                             <button title="Edit" type="button" rel="tooltip" class="btn btn-success" data-target="#update-form" data-toggle="modal" data-backdrop="static">
                                                 <i class="material-icons">edit</i>
                                             </button>
@@ -229,104 +229,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="modal-header-title">
-                            <h3 class="modal-title" id="exampleModalLabel">Salary Adjustment</h3>
-                            <p class="modal-title" id="exampleModalLabel">This form will update the employee's salary</p>
+                            <h3 class="modal-title" id="exampleModalLabel">Laye Pay Policy</h3>
+                            <p class="modal-title" id="exampleModalLabel">This form will set the late pay policy</p>
                         </div>
 
                         <button class="close" id="btnclose" type="button" data-dismiss="modal">×</button>
                     </div>
 
                     <div class="modal-body">
-                        <div class="update-position-salary-container">
-                            <div class="select" style="margin-left: 5px;">
-                                <!--  WorkerType: $("#worker-type").val() -->
-                                <select class="select-text" name="WorkerType" required>
-                                    <option value="" selected></option>
-                                    <option value="Regular">SOftware Engineer</option>
-                                </select>
-                                <label class="select-label">Select Position</label>
-                            </div>
-                            <div class="select" style="margin-left: 5px;">
-                                <select class="select-text" name="WorkerType" required>
-                                    <option value="" selected></option>
-                                    <option value="Per Hour">Per Hour</option>
-                                    <option value="Per Day">Per Day</option>
-                                    <option value="Per Week">Per Week</option>
-                                    <option value="Per Month">Per Month</option>
-                                </select>
-                                <label class="select-label">Wages</label>
-                            </div>
-                            <div class="material-textfield" height="30">
-                                <input id="cardID" placeholder=" " name="CardID" type="text" required style="width: 200px;">
-                                <label>₱</label>
-                            </div>
-                        </div>
-                        <div class="container-1" style="margin-bottom: 20px;">
-                            <h4>Holiday Pay Policy Adjustment as <?php echo date('(D) M d, Y', strtotime(date('Y-m-d'))); ?> </h4>
-
-                            <div class="inside-container">
-                                <!-- title -->
-                                <h5 class="title">
-                                    Overtime Cost Adjustment
-                                </h5>
-
-                                <!-- input container -->
-                                <div class="input-6">
-                                    <h5 style="margin-top: 10px">
-                                        Regular Rate with Overtime:
-                                    </h5>
-                                    <div class="input-date">
-                                        <div class="material-textfield">
-                                            <!-- RegularRateWOvertime: $("#regularrateWOvertime").val() -->
-                                            <input id="regularrateWOvertime" placeholder=" " name="RegularRateWOvertime" type="text" required style="width: auto;">
-                                            <label>₱</label>
-                                        </div>
-                                        <p>
-                                            PerHour
-                                        </p>
-                                    </div>
-                                    <h4>+</h4>
-                                    <div class="input-date">
-                                        <div class="material-textfield">
-                                            <!-- Percentage: $("#percentage").val() -->
-                                            <input id="percentage" placeholder=" " name="Percentage" type="text" required style="width: 100px;">
-                                            <label>%</label>
-                                        </div>
-                                        <p>
-                                            eg. 25
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="inside-container" style="margin-top: 20px;">
-                                <h5 class="title">
-                                    Holiday Pay Adjustment
-                                </h5>
-                                <div class="input-6">
-                                    <div class="input-date">
-                                        <div class="material-textfield">
-                                            <!-- RegularRate: $("#regularRate").val() -->
-                                            <input id="regularRate" placeholder=" " name="RegularRate" type="text" required style="width: auto;">
-                                            <label>₱ Regular Rate</label>
-                                        </div>
-                                        <p>
-                                            PerHour
-                                        </p>
-                                    </div>
-                                    <h4>+</h4>
-                                    <div class="input-date">
-                                        <div class="material-textfield">
-                                            <!-- HolidayPay: $("#holidayPay").val() -->
-                                            <input id="holidayPay" placeholder=" " name="HolidayPay" type="text" required style="width: auto;">
-                                            <label>₱ Holiday Pay</label>
-                                        </div>
-                                        <p>
-                                            PerHour
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <!-- TIME-IN/OUT section -->
                         <div class="container-2">
                             <h4>Time-IN/Time-OUT Policy Adjustment as of <?php echo date('(D) M d, Y', strtotime(date('Y-m-d'))); ?></h4>
