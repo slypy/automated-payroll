@@ -24,10 +24,7 @@
                                 Date
                             </th>
                             <th width="150">
-                                None Over Time
-                            </th>
-                            <th width="150">
-                                Over Time
+                                Percent
                             </th>
                             <th class="text-center" width="100">Action</th>
                         </thead>
@@ -65,15 +62,8 @@
                     <div class="position-container" style="justify-content: space-between;">
                         <div class="input-date" style="margin-left: -5px;">
                             <div class="material-textfield">
-                                <input id="none_over_time_percent" placeholder=" " name="none_over_time_percent" class="fn" type="text" required style="width: 210px;">
-                                <label>None OT %</label>
-                            </div>
-                            <p>eg. 10, 25, 50, 100</p>
-                        </div>
-                        <div class="input-date" style="margin-right: -5px;">
-                            <div class="material-textfield">
-                                <input id="over_time_percent" placeholder=" " name="over_time_percent class="fn" type="text" required style="width: 210px;">
-                                <label>Over Time %</label>
+                                <input id="holiday_pay_percent" placeholder=" " name="holiday_pay_percent" class="fn" type="text" required style="width: 210px;">
+                                <label>Percent %</label>
                             </div>
                             <p>eg. 10, 25, 50, 100</p>
                         </div>
@@ -116,15 +106,8 @@
                     <div class="position-container" style="justify-content: space-between;">
                         <div class="input-date" style="margin-left: -5px;">
                             <div class="material-textfield">
-                                <input id="none_over_time_percent" placeholder=" " name="none_over_time_percent" class="fn" type="text" required style="width: 210px;">
-                                <label>None OT %</label>
-                            </div>
-                            <p>eg. 10, 25, 50, 100</p>
-                        </div>
-                        <div class="input-date" style="margin-right: -5px;">
-                            <div class="material-textfield">
-                                <input id="over_time_percent" placeholder=" " name="over_time_percent class="fn" type="text" required style="width: 210px;">
-                                <label>Over Time %</label>
+                                <input id="holiday_pay_percent" placeholder=" " name="holiday_pay_percent" class="fn" type="text" required style="width: 210px;">
+                                <label>Percent %</label>
                             </div>
                             <p>eg. 10, 25, 50, 100</p>
                         </div>
@@ -132,7 +115,7 @@
                 </div>
                 <!-- Footer Buttons -->
                 <div class="modal-footer" style="height: 75px">
-                    <button type="submit" class="btn btn-success btn-md">Add</button>
+                    <button type="submit" class="btn btn-success btn-md">Update</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                 </div>
             </div>

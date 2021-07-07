@@ -229,7 +229,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="modal-header-title">
-                            <h3 class="modal-title" id="exampleModalLabel">Laye Pay Policy</h3>
+                            <h3 class="modal-title" id="exampleModalLabel">Late Pay Policy</h3>
                             <p class="modal-title" id="exampleModalLabel">This form will set the late pay policy</p>
                         </div>
 

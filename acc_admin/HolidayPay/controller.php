@@ -42,10 +42,10 @@ function doAdd_HolidayPay(){
     if(isset($_POST['holiday_name'])){
         $holiday_name = htmlspecialchars($_POST['holiday_name'], ENT_QUOTES, 'UTF-8');
         $holiday_date = $_POST['holiday_date'];
-        $none_over_time_percent = $_POST['none_over_time_percent'];
-        $over_time_percent = $_POST['over_time_percent'];
+        $percent = $_POST['holiday_pay_percent'];
 
-        HolidayPay::add($holiday_name, $holiday_date, $none_over_time_percent, $over_time_percent);
+
+        HolidayPay::add($holiday_name, $holiday_date, $percent);
     }
     return;
 }

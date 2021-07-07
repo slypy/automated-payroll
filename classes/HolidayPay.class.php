@@ -3,7 +3,7 @@
 class HolidayPay {
     protected static $db_tbl = "tbl_holiday_pay";
 
-    public static function add($holiday_name, $holiday_date, $none_over_time_percent, $over_time_percent){
+    public static function add($holiday_name, $holiday_date, $percent){
         $query = Db::fetch(self::$db_tbl, "", "holiday_name = ? AND holiday_date = ?", array($holiday_name, $holiday_date), "", "", "");
 
         if(Db::count($query)){
@@ -11,7 +11,7 @@ class HolidayPay {
 
             return false;
         } else {
-            Db::insert(self::$db_tbl, array("holiday_name", "holiday_date", "none_over_time_percent", "over_time_percent"), array($holiday_name, $holiday_date, $none_over_time_percent, $over_time_percent));
+            Db::insert(self::$db_tbl, array("holiday_name", "holiday_date", "percent"), array($holiday_name, $holiday_date, $percent));
         }
     }
 
@@ -34,8 +34,7 @@ class HolidayPay {
             $holidayRow = array();
             $holidayRow[] = $tbl_holiday_pay['holiday_name'];
             $holidayRow[] = date('M d, Y', strtotime(date($tbl_holiday_pay['holiday_date'])));
-            $holidayRow[] = $tbl_holiday_pay['none_over_time_percent'].'%';
-            $holidayRow[] = $tbl_holiday_pay['over_time_percent'].'%';
+            $holidayRow[] = $tbl_holiday_pay['percent'].'%';
             $holidayRow[] = '<button type="button" name="update" id="'.$tbl_holiday_pay['id'].'" class="btn btn-success update"><i class="material-icons">edit</i></button> <button type="button" name="delete" id="'.$tbl_holiday_pay["id"].'" class="btn btn-danger delete"><i class="material-icons">delete</i></button>';
             $holidayData[] = $holidayRow;
         }
@@ -78,10 +77,9 @@ class HolidayPay {
         if(isset($_POST['holiday_name'])){
             $holiday_name = $_POST['holiday_name'];
             $holiday_date = $_POST['holiday_date'];
-            $none_over_time_percent = $_POST['none_over_time_percent'];
-            $over_time_percent = $_POST['over_time_percent'];
+            $percent = $_POST['holiday_pay_percent'];
 
-            Db::update(self::$db_tbl, array('holiday_name', 'holiday_date', 'none_over_time_percent', 'over_time_percent'), array($holiday_name, $holiday_date, $none_over_time_percent, $over_time_percent), "holiday_name = ?", $holiday_name);
+            Db::update(self::$db_tbl, array('holiday_name', 'holiday_date', 'percent'), array($holiday_name, $holiday_date, $percent, ), "holiday_name = ?", $holiday_name);
         }
     } 
 }
