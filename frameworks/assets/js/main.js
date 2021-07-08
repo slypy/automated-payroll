@@ -396,6 +396,7 @@ $(document).ready(function () {
             .addClass("active");
     });
 
+
     /*============= Start  position table =============*/
 
     //  Server Side DataTable {Position}
@@ -512,10 +513,85 @@ $(document).ready(function () {
             },
         });
     });
-
     /*============= end of position table =============*/
 
-    /*============= Start of Shifting Hours table =============*/
+    /*============= Start of Shifting Schedule table =============*/
+	// Server Side DataTable {Shifting Hours}
+    $("#employee-shifting-hours-table").DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: {
+                action: "listShiftingHours",
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        ordering: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 15,
+        columnDefs: [
+            {
+                targets: [5],
+                className: "td-actions text-center",
+            },
+        ],
+    });
+
+	// Server Side DataTable {Over Time}
+	$('#over-time-table').DataTable({
+		serverSide: true,
+		ajax: {
+			url: 'controller.php',
+			type: 'GET',
+			data: {
+				action: 'listOverTime'
+			},
+			dataType: 'json'
+		},
+		retrieve: true,
+		searching: false,
+		paging: false,
+		ordering: false,
+		bInfo: false,
+		bAutoWidth: false,
+		columnDefs : [{
+			targets: 1,
+			width: '200px'
+		},{
+			targets: 2,
+			width: '50px',
+			className: 'td-actions text-center'
+		}]
+	});
+
+	// Server Side DataTable {Late Policy}
+	$('#late-policy-table').DataTable({
+		serverSide: true,
+		ajax: {
+			url: 'controller.php',
+			type: 'GET',
+			data: {
+				action: 'listLatePolicy',
+			},
+			dataType: 'json'
+		},
+		retrieve: true,
+		searching: false,
+		paging: false,
+		ordering: false,
+		bInfo: false,
+		bAutoWidth: false,
+		columnDefs : [{
+			targets: 2,
+			width: '50px',
+			className: 'td-actions text-center'
+		}]
+	})
 
     function toAMPM(time) {
         time = time
@@ -559,7 +635,6 @@ $(document).ready(function () {
         diff -= hours * (1000 * 60 * 60);
         var minutes = Math.floor(diff / 1000 / 60);
         diff -= minutes * (1000 * 60);
-        var seconds = Math.floor(diff / 1000);
 
         // If using time pickers with 24 hours format, add the below line get exact hours
         if (hours < 0) hours = hours + 24;
@@ -573,33 +648,7 @@ $(document).ready(function () {
         );
     }
 
-    // Server Side DataTable {Shifting Hours}
-    $("#employee-shifting-hours-table").DataTable({
-        serverSide: true,
-        ajax: {
-            url: "controller.php",
-            type: "GET",
-            data: {
-                action: "listShiftingHours",
-            },
-            dataType: "json",
-        },
-        retrieve: true,
-        dom: "ftipr",
-        bAutoWidth: false,
-        ordering: false,
-        searching: true,
-        bFilter: true,
-        pageLength: 15,
-        columnDefs: [
-            {
-                targets: [5],
-                className: "td-actions text-center",
-            },
-        ],
-    });
-
-    $("#addShiftingHours").submit(function () {
+    $("#addShiftingHours").submit(function (event) {
         var totalWorkHours =
             diffTime($("#start_time").val(), $("#end_time").val()) -
             $("#break_time").val();
@@ -669,7 +718,107 @@ $(document).ready(function () {
         });
     });
 
-    $("#updateShiftingHours").submit(function () {
+	$('#late-policy-table').on('click', '.update', function(){
+		var latepolicyID = $(this).attr('id');
+		$.ajax({
+			url: 'controller.php',
+			method: 'GET',
+			data: {
+				latepolicy_id: latepolicyID,
+				action: 'get_late_policy',
+			},
+			dataType: 'json',
+			success: function(data){
+				$("#update-late-policy-form").modal(
+                    {
+                        backdrop: "static",
+                        keyboard: false,
+                    },
+                    "show"
+                );
+				
+				var float_time = data[1].split('.');
+				
+				var hours = float_time[0],
+					minutes = float_time[1];
+
+				$('#latepolicy_hours').val(hours);
+				$('#latepolicy_minutes').val(minutes);
+				$('#penalty_amount').val(data[2])
+			}
+		})
+	});
+
+	$('#updateLatePolicy').submit(function(event){
+		event.preventDefault();
+
+		var LatePolicyData = {
+			latepolicy_hours: $('#latepolicy_hours').val(),
+			latepolicy_minutes: $('#latepolicy_minutes').val(),
+			penalty_amount: $('#penalty_amount').val()
+		};
+
+		$.ajax({
+			url: 'controller.php?action=update_latepolicy',
+			method: 'POST',
+			data: LatePolicyData,
+			success: function(){
+				$('#updateLatePolicy')[0].reset();
+				$('#update-late-policy-form').modal('hide');
+				$('#late-policy-table').DataTable().draw();
+			}
+		});
+	});
+
+	$('#over-time-table').on('click', '.update', function(){
+		var overtimeID = $(this).attr('id');
+
+		$.ajax({
+			url: 'controller.php',
+			method: 'GET',
+			data: {
+				overtime_id: overtimeID,
+				action: 'get_overtime_data'
+			},
+			dataType: 'json',
+			success: function(data){
+				$('#update-over-time-form').modal({
+					backdrop: 'static',
+					keyboard: false
+				}, 'show');
+
+				var float_time = data[2].split('.');
+
+				var hours = float_time[0],
+					minutes = float_time[1];
+
+				$('#overtime_hours').val(hours);
+				$('#overtime_minutes').val(minutes);
+			}
+		});
+	});
+
+	$('#updateOverTime').submit(function(event){
+		event.preventDefault();
+	
+		var OverTimeData = {
+			overtime_hours: $('#overtime_hours').val(),
+			overtime_minutes: $('#overtime_minutes').val()
+		}
+
+		$.ajax({
+			url: 'controller.php?action=update_overtime',
+			method: 'POST',
+			data: OverTimeData,
+			success: function(){
+				$('#updateOverTime')[0].reset(),
+				$('#update-over-time-form').modal('hide');
+				$('#over-time-table').DataTable().draw()
+			}
+		})
+	})
+
+    $("#updateShiftingHours").submit(function (event) {
         var startTime = $("#updateShiftingHours #start_time").val(),
             endTime = $("#updateShiftingHours #end_time").val(),
             breakTime = $("#updateShiftingHours #break_time").val(),
@@ -690,7 +839,7 @@ $(document).ready(function () {
             url: "controller.php?action=update_shifting_type",
             method: "POST",
             data: ShiftingHours_Data,
-            success: function (data) {
+            success: function () {
                 $("#updateShiftingHours")[0].reset();
                 $("#update-custom-shifting-type-form").modal("hide");
                 $("#employee-shifting-hours-table").DataTable().draw();

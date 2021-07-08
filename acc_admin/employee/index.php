@@ -11,7 +11,7 @@ if(Account::loggedIn()){
 			break;
 
 		case 'shifting-hours':
-			$page_title = 'Shifting Hours';
+			$page_title = 'Shifting Schedules';
 			$page_content = 'shifting_hours.php';
 			break;
 		case 'job-positions':

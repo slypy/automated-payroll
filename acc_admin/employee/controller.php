@@ -25,6 +25,14 @@ switch($action){
     case 'listShiftingHours':
         datatable_ShiftingHours();
         break;
+
+    case 'listOverTime':
+        datatable_OverTime();
+        break;
+
+    case 'listLatePolicy':
+        datatable_LatePolicy();
+        break;
     
     case 'add_position':
         doAdd_Position();
@@ -49,9 +57,25 @@ switch($action){
     case 'get_job_position':
         getJobPositionData();
         break;
+
+    case 'get_overtime_data':
+        getOverTimeData();
+        break;
+
+    case 'get_late_policy':
+        getLatePolicy();
+        break;
     
     case 'update_shifting_type':
         updateShiftingType();
+        break;
+
+    case 'update_overtime':
+        updateOverTime();
+        break;
+
+    case 'update_latepolicy':
+        updateLatePolicy();
         break;
 
     case 'update_job_position':
@@ -99,18 +123,18 @@ function datatable_PositionList(){
     return;
 }
 
-function delete_Position(){
-    Position::deletePosition();
-    return;
-}
-
-function delete_shiftingType(){
-    ShiftingHours::deleteRow();
-    return;
-}
-
 function datatable_ShiftingHours(){
     ShiftingHours::fetchList();
+    return;
+}
+
+function datatable_OverTime(){
+    ShiftingHours::fetchOverTime();
+    return;
+}
+
+function datatable_LatePolicy(){
+    ShiftingHours::fetchLatePolicy();
     return;
 }
 
@@ -124,6 +148,16 @@ function getJobPositionData(){
     return;
 }
 
+function getOverTimeData(){
+    ShiftingHours::getData();
+    return;
+}
+
+function getLatePolicy(){
+    ShiftingHours::getData();
+    return;
+}
+
 function updateShiftingType(){
     ShiftingHours::updateRow();
     return;
@@ -131,5 +165,25 @@ function updateShiftingType(){
 
 function updateJobPosition(){
     Position::updateRow();
+    return;
+}
+
+function updateOverTime(){
+    ShiftingHours::updateRow();
+    return;
+}
+
+function updateLatePolicy(){
+    ShiftingHours::updateRow();
+    return;
+}
+
+function delete_Position(){
+    Position::deletePosition();
+    return;
+}
+
+function delete_shiftingType(){
+    ShiftingHours::deleteRow();
     return;
 }
