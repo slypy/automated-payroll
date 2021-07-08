@@ -116,9 +116,6 @@
                         
                             if (strval($url) == strval($employee_url)) {
                                 echo '
-                                <li class="nav-item">
-                                    <a href="#registration-form" data-target="#update-salary-form" data-toggle="modal" data-backdrop="static" class="btn btn-primary btn-sm"> <i class="material-icons">access_time</i> Late Policy</a>
-                                </li> 
                                 <li class="nav-item" style="margin-left: 20px;">
                                     <a href="' . $web_root . 'acc_admin/employee/index.php?page=job-positions" class="btn btn-warning btn-sm"> <i class="material-icons">work</i> Job Positions</a>
                                 </li>

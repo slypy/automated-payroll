@@ -218,106 +218,6 @@
 <!-- ------------------------------- Navagition Top modals ----------------------------------- -->
 <!-- ----------------------------------------------------------------------------------------- -->
 
-<!-- -------------------------------- -->
-<!-- Form modal for update new salary -->
-<!-- -------------------------------- -->
-<form action="controller.php?action=add" id="registerEmployee" method="POST" autocomplete="off">
-    <div id="update-salary-form" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-header-title">
-                        <h3 class="modal-title" id="exampleModalLabel">Late Pay Policy</h3>
-                        <p class="modal-title" id="exampleModalLabel">This form will set the late pay policy</p>
-                    </div>
-
-                    <button class="close" id="btnclose" type="button" data-dismiss="modal">×</button>
-                </div>
-
-                <div class="modal-body">
-                    <!-- TIME-IN/OUT section -->
-                    <div class="container-2">
-                        <h4>Time-IN/Time-OUT Policy Adjustment as of <?php echo date('(D) M d, Y', strtotime(date('Y-m-d'))); ?></h4>
-
-                        <!-- Late Policy input -->
-                        <div class="inside-container" style="margin-top: 20px;">
-                            <h5 class="title">
-                                Late Policy
-                            </h5>
-                            <div class="input-6">
-                                <h5 style="margin-top: 10px; margin-left:10px;">
-                                    Late After:
-                                </h5>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- LateHours: $("#lateHours").val() -->
-                                        <input id="lateHours" placeholder=" " name="LateHours" type="text" required style="width: 100px;">
-                                        <label>Hours</label>
-                                    </div>
-                                </div>
-                                <h4>:</h4>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- LateMinutes: $("#lateMinutes").val() -->
-                                        <input id="lateMinutes" placeholder=" " name="LateMinutes" type="text" required style="width: 100px;">
-                                        <label>Minutes</label>
-                                    </div>
-                                </div>
-                                <h5 style="margin-top: 10px; margin-left: 20px">
-                                    Late Penalty:
-                                </h5>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- PenaltyAmount: $("#penaltyAmount").val() -->
-                                        <input id="penaltyAmount" placeholder=" " name="PenaltyAmount" type="text" required style="width: 150px;">
-                                        <label>₱ Amount</label>
-                                    </div>
-                                    <p>
-                                        PerHour
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Early Time in input -->
-                        <div class="inside-container" style="margin-top: 20px;">
-                            <h5 class="title">
-                                For Early Time IN
-                            </h5>
-                            <div class="input-6">
-                                <h5 style="margin-top: 10px; margin-left:10px;">
-                                    Limit to: &nbsp;&nbsp;&nbsp;
-                                </h5>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- LimitHours: $("#limitHours").val() -->
-                                        <input id="limitHours" placeholder=" " name="LimitHours" type="text" required style="width: 100px;">
-                                        <label>Hours</label>
-                                    </div>
-                                </div>
-                                <h4>:</h4>
-                                <div class="input-date">
-                                    <div class="material-textfield">
-                                        <!-- LimitMinutes: $("#limitMinutes").val() -->
-                                        <input id="limitMinutes" placeholder=" " name="LimitMinutes" type="text" required style="width: 100px;">
-                                        <label>Minutes</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Footer Buttons -->
-                <div class="modal-footer" style="height: 60px">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                    <button type="submit" name="UpdateSalary" class="btn btn-success btn-md">update</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-
-
 <!-- ------------------------------------------------------------------------------------ -->
 <!-- ------------------------------- Main Body modals ----------------------------------- -->
 <!-- ------------------------------------------------------------------------------------ -->
@@ -351,7 +251,6 @@
                 <!-- Footer Buttons -->
                 <div class="modal-footer" style="max-height: 60px">
                     <a href="../../TemplateExcel/excel-template.xls" class="btn btn-primary btn-sm" style="margin-right: 60px;" download> <i class="material-icons">get_app</i> Download Template</a>
-
                     <button type="submit" name="UpdateSalary" class="btn btn-success btn-md">Import</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                 </div>

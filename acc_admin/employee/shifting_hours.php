@@ -268,7 +268,7 @@
                                 <label>Minutes</label>
                             </div>
                             <p>
-                                eg. 0, 5, 30...
+                                eg. 05, 10, 33...
                             </p>
                         </div>
                         <div class="input-date">
