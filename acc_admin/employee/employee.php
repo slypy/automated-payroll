@@ -42,16 +42,12 @@
                     <div class="table-responsive">
                         <table id="active-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
                             <thead class="text-primary text-sm">
-                                <th>
+                                <th class="text-center" width=25>
                                     #
                                 </th>
                                 <th>
                                     Employee ID #
                                 </th>
-                                <th width="50">
-                                    Profile
-                                </th>
-
                                 <th>
                                     Name
                                 </th>
@@ -65,7 +61,7 @@
                                     Contact No.
                                 </th>
                                 <th>
-                                    Email Address
+                                    Shifting
                                 </th>
                                 <th>
                                     Position
@@ -76,14 +72,11 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
+                                    <td class="text-center">
                                         <input type="checkbox" name="selector[]" id="selector[]" value="' . $result->PROID . '" />
                                     </td>
                                     <td>
                                         SM-20211241
-                                    </td>
-                                    <td>
-                                        <img src="<?php echo $web_root; ?>res/sly.jpg" alt="" height="50" width="50">
                                     </td>
                                     <td>
                                         Sly Bacalso
@@ -98,7 +91,7 @@
                                         09123456789
                                     </td>
                                     <td>
-                                        nasa.sly14@gmail.com
+                                        Open Shift
                                     </td>
                                     <td class="text-danger">
                                         Software Engineer
