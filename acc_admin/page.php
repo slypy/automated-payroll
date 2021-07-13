@@ -124,7 +124,7 @@
                                 </li> 
                                                       
                                 <li class="nav-item" style="margin-left: 20px;">
-                                    <a href="' . $web_root . 'acc_admin/employee/index.php?page=time-in-out" class="btn btn-warning btn-sm"> <i class="material-icons">update</i> Update employee time in/out</a>
+                                    <a href="' . $web_root . 'acc_admin/employee/index.php?page=time-in-out" class="btn btn-warning btn-sm"> <i class="material-icons">update</i> Update employee\'s dtr</a>
                                 </li>';
                             } else if (strval($url) == strval($staffcash_advance_url)) {
                                 echo '
@@ -183,10 +183,7 @@
                         </ul>
                     </nav>
                     <div class="copyright float-right">
-                        &copy;
-                        <script>
-                            document.write(new Date().getFullYear());
-                        </script>
+                        &copy;2021
                         , made by
                         <a href="https://www.facebook.com/sly.018" target="_blank">Sly Bacalso</a> <i class="material-icons">favorite</i>
                         for interactive UI

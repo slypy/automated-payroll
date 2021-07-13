@@ -201,7 +201,7 @@ img {
 }
 
 .material-textfield input:focus + label,
-input:valid + label {
+input:valid + label, input:read-only + label{
   color: #2d9c91;
   top: 0;
   transform: translateY(-50%) scale(0.9);
@@ -256,6 +256,7 @@ input:valid + label {
 .input-1-5 {
   width: 100%;
   display: flex;
+  justify-content: space-between;
 }
 
 .input-1-6 {
@@ -383,7 +384,7 @@ input:valid + label {
 /* active state */
 .select-text:focus ~ .select-label,
 .select-text:valid ~ .select-label,
-.select-text:disabled ~ .select-label {
+.select-text:read-only ~ .select-label {
   color: #2d9c91;
   background-color: white;
   transform: translateY(-110%) scale(1);

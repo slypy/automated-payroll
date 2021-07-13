@@ -15,6 +15,16 @@
             }
         }
 
+        public static function fetchName(){
+            $query = Db::fetch(self::$db_tbl, "", "", "", "", "", "");
+
+            while($result = Db::assoc($query)){
+                echo '<option value="'.$result['position_name'].'">'.$result['position_name'].'</option>';
+            }
+
+            return;
+        }
+
         public static function fetchPositionList(){
             $query = Db::fetch(self::$db_tbl, "", "", "", "", "", "");
             

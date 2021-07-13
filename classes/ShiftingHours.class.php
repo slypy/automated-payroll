@@ -17,6 +17,16 @@ class ShiftingHours{
         }
     }
 
+
+    public static function fetchName(){
+        $query = Db::fetch(self::$db_tbl, "", "", "", "", "", "");
+
+        while($result = Db::assoc($query)){
+            echo '<option value="'.$result['shifting_type_name'].'">'.$result['shifting_type_name'].'</option>';
+        }
+        return;
+    }
+
     public static function fetchList(){
         $query = Db::fetch(self::$db_tbl, "", "", "", "", "", "");
 
