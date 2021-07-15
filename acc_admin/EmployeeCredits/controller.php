@@ -1,7 +1,6 @@
 <?php 
 # Require the Important php
 require_once "../../important.php";
-include "../../modules/crud.php";
 
 # GET data action from URL
 $action = (isset($_GET['action']) && $_GET['action'] != '') ? $_GET['action'] : '';
@@ -14,6 +13,33 @@ switch($action){
         setcookie("usr", "" ,time()-(60*60*24*7*30),"/", "","",TRUE);
         Page::redir("../index.php");
         break;
+
+    case 'get_employee_name':
+        getEmployeeName();
+        break;
+    
+    case 'add_staff_ca':
+        addStaffCA();
+        break;
+    
+    case 'listStaffCA':
+        datatable_StaffCA();
+        break;
+}
+
+function getEmployeeName(){
+    Employee::getDataName();
+    return;
+}
+
+function addStaffCA(){
+    EmployeeCredits::addCAData();
+    return;
+}
+
+function datatable_StaffCA(){
+    EmployeeCredits::fetchDataList();
+    return;
 }
 
 ?>

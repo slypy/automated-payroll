@@ -1,194 +1,188 @@
 $(document).ready(function () {
-    $().ready(function () {
-        $sidebar = $(".sidebar");
-        $sidebar_img_container = $sidebar.find(".sidebar-background");
-        $full_page = $(".full-page");
-        $sidebar_responsive = $("body > .navbar-collapse");
-        window_width = $(window).width();
-        fixed_plugin_open = $(
-            ".sidebar .sidebar-wrapper .nav li.active a p"
-        ).html();
-        if (window_width > 767 && fixed_plugin_open == "Dashboard") {
-            if ($(".fixed-plugin .dropdown").hasClass("show-dropdown")) {
-                $(".fixed-plugin .dropdown").addClass("open");
+    $sidebar = $(".sidebar");
+    $sidebar_img_container = $sidebar.find(".sidebar-background");
+    $full_page = $(".full-page");
+    $sidebar_responsive = $("body > .navbar-collapse");
+    window_width = $(window).width();
+    fixed_plugin_open = $(
+        ".sidebar .sidebar-wrapper .nav li.active a p"
+    ).html();
+    if (window_width > 767 && fixed_plugin_open == "Dashboard") {
+        if ($(".fixed-plugin .dropdown").hasClass("show-dropdown")) {
+            $(".fixed-plugin .dropdown").addClass("open");
+        }
+    }
+
+    $(".fixed-plugin a").click(function (event) {
+        //if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
+        if ($(this).hasClass("switch-trigger")) {
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            } else if (window.event) {
+                window.event.cancelBubble = true;
             }
         }
+    });
 
-        $(".fixed-plugin a").click(function (event) {
-            //if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
-            if ($(this).hasClass("switch-trigger")) {
-                if (event.stopPropagation) {
-                    event.stopPropagation();
-                } else if (window.event) {
-                    window.event.cancelBubble = true;
-                }
-            }
-        });
+    $(".fixed-plugin .active-color span").click(function () {
+        $full_page_background = $(".full-page-background");
 
-        $(".fixed-plugin .active-color span").click(function () {
-            $full_page_background = $(".full-page-background");
+        $(this).siblings().removeClass("active");
+        $(this).addClass("active");
 
-            $(this).siblings().removeClass("active");
-            $(this).addClass("active");
+        var new_color = $(this).data("color");
 
-            var new_color = $(this).data("color");
+        if ($sidebar.length != 0) {
+            $sidebar.attr("data-color", new_color);
+        }
 
-            if ($sidebar.length != 0) {
-                $sidebar.attr("data-color", new_color);
-            }
+        if ($full_page.length != 0) {
+            $full_page.attr("filter-color", new_color);
+        }
 
-            if ($full_page.length != 0) {
-                $full_page.attr("filter-color", new_color);
-            }
+        if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.attr("data-color", new_color);
+        }
+    });
 
-            if ($sidebar_responsive.length != 0) {
-                $sidebar_responsive.attr("data-color", new_color);
-            }
-        });
+    $(".fixed-plugin .background-color .badge").click(function () {
+        $(this).siblings().removeClass("active");
+        $(this).addClass("active");
 
-        $(".fixed-plugin .background-color .badge").click(function () {
-            $(this).siblings().removeClass("active");
-            $(this).addClass("active");
+        var new_color = $(this).data("background-color");
 
-            var new_color = $(this).data("background-color");
+        if ($sidebar.length != 0) {
+            $sidebar.attr("data-background-color", new_color);
+        }
+    });
 
-            if ($sidebar.length != 0) {
-                $sidebar.attr("data-background-color", new_color);
-            }
-        });
+    $(".fixed-plugin .img-holder").click(function () {
+        $full_page_background = $(".full-page-background");
 
-        $(".fixed-plugin .img-holder").click(function () {
-            $full_page_background = $(".full-page-background");
+        $(this).parent("li").siblings().removeClass("active");
+        $(this).parent("li").addClass("active");
 
-            $(this).parent("li").siblings().removeClass("active");
-            $(this).parent("li").addClass("active");
+        var new_image = $(this).find("img").attr("src");
 
-            var new_image = $(this).find("img").attr("src");
-
-            if (
-                $sidebar_img_container.length != 0 &&
-                $(".switch-sidebar-image input:checked").length != 0
-            ) {
-                $sidebar_img_container.fadeOut("fast", function () {
-                    $sidebar_img_container.css(
-                        "background-image",
-                        'url("' + new_image + '")'
-                    );
-                    $sidebar_img_container.fadeIn("fast");
-                });
-            }
-
-            if (
-                $full_page_background.length != 0 &&
-                $(".switch-sidebar-image input:checked").length != 0
-            ) {
-                var new_image_full_page = $(
-                    ".fixed-plugin li.active .img-holder"
-                )
-                    .find("img")
-                    .data("src");
-
-                $full_page_background.fadeOut("fast", function () {
-                    $full_page_background.css(
-                        "background-image",
-                        'url("' + new_image_full_page + '")'
-                    );
-                    $full_page_background.fadeIn("fast");
-                });
-            }
-
-            if ($(".switch-sidebar-image input:checked").length == 0) {
-                var new_image = $(".fixed-plugin li.active .img-holder")
-                    .find("img")
-                    .attr("src");
-                var new_image_full_page = $(
-                    ".fixed-plugin li.active .img-holder"
-                )
-                    .find("img")
-                    .data("src");
-
+        if (
+            $sidebar_img_container.length != 0 &&
+            $(".switch-sidebar-image input:checked").length != 0
+        ) {
+            $sidebar_img_container.fadeOut("fast", function () {
                 $sidebar_img_container.css(
                     "background-image",
                     'url("' + new_image + '")'
                 );
+                $sidebar_img_container.fadeIn("fast");
+            });
+        }
+
+        if (
+            $full_page_background.length != 0 &&
+            $(".switch-sidebar-image input:checked").length != 0
+        ) {
+            var new_image_full_page = $(".fixed-plugin li.active .img-holder")
+                .find("img")
+                .data("src");
+
+            $full_page_background.fadeOut("fast", function () {
                 $full_page_background.css(
                     "background-image",
                     'url("' + new_image_full_page + '")'
                 );
+                $full_page_background.fadeIn("fast");
+            });
+        }
+
+        if ($(".switch-sidebar-image input:checked").length == 0) {
+            var new_image = $(".fixed-plugin li.active .img-holder")
+                .find("img")
+                .attr("src");
+            var new_image_full_page = $(".fixed-plugin li.active .img-holder")
+                .find("img")
+                .data("src");
+
+            $sidebar_img_container.css(
+                "background-image",
+                'url("' + new_image + '")'
+            );
+            $full_page_background.css(
+                "background-image",
+                'url("' + new_image_full_page + '")'
+            );
+        }
+
+        if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.css(
+                "background-image",
+                'url("' + new_image + '")'
+            );
+        }
+    });
+
+    $(".switch-sidebar-image input").change(function () {
+        $full_page_background = $(".full-page-background");
+
+        $input = $(this);
+
+        if ($input.is(":checked")) {
+            if ($sidebar_img_container.length != 0) {
+                $sidebar_img_container.fadeIn("fast");
+                $sidebar.attr("data-image", "#");
             }
 
-            if ($sidebar_responsive.length != 0) {
-                $sidebar_responsive.css(
-                    "background-image",
-                    'url("' + new_image + '")'
-                );
-            }
-        });
-
-        $(".switch-sidebar-image input").change(function () {
-            $full_page_background = $(".full-page-background");
-
-            $input = $(this);
-
-            if ($input.is(":checked")) {
-                if ($sidebar_img_container.length != 0) {
-                    $sidebar_img_container.fadeIn("fast");
-                    $sidebar.attr("data-image", "#");
-                }
-
-                if ($full_page_background.length != 0) {
-                    $full_page_background.fadeIn("fast");
-                    $full_page.attr("data-image", "#");
-                }
-
-                background_image = true;
-            } else {
-                if ($sidebar_img_container.length != 0) {
-                    $sidebar.removeAttr("data-image");
-                    $sidebar_img_container.fadeOut("fast");
-                }
-
-                if ($full_page_background.length != 0) {
-                    $full_page.removeAttr("data-image", "#");
-                    $full_page_background.fadeOut("fast");
-                }
-
-                background_image = false;
-            }
-        });
-
-        $(".switch-sidebar-mini input").change(function () {
-            $body = $("body");
-
-            $input = $(this);
-
-            if (md.misc.sidebar_mini_active == true) {
-                $("body").removeClass("sidebar-mini");
-                md.misc.sidebar_mini_active = false;
-
-                $(".sidebar .sidebar-wrapper, .main-panel").perfectScrollbar();
-            } else {
-                $(".sidebar .sidebar-wrapper, .main-panel").perfectScrollbar(
-                    "destroy"
-                );
-
-                setTimeout(function () {
-                    $("body").addClass("sidebar-mini");
-
-                    md.misc.sidebar_mini_active = true;
-                }, 300);
+            if ($full_page_background.length != 0) {
+                $full_page_background.fadeIn("fast");
+                $full_page.attr("data-image", "#");
             }
 
-            // we simulate the window Resize so the charts will get updated in realtime.
-            var simulateWindowResize = setInterval(function () {
-                window.dispatchEvent(new Event("resize"));
-            }, 180);
+            background_image = true;
+        } else {
+            if ($sidebar_img_container.length != 0) {
+                $sidebar.removeAttr("data-image");
+                $sidebar_img_container.fadeOut("fast");
+            }
 
-            // we stop the simulation of Window Resize after the animations are completed
+            if ($full_page_background.length != 0) {
+                $full_page.removeAttr("data-image", "#");
+                $full_page_background.fadeOut("fast");
+            }
+
+            background_image = false;
+        }
+    });
+
+    $(".switch-sidebar-mini input").change(function () {
+        $body = $("body");
+
+        $input = $(this);
+
+        if (md.misc.sidebar_mini_active == true) {
+            $("body").removeClass("sidebar-mini");
+            md.misc.sidebar_mini_active = false;
+
+            $(".sidebar .sidebar-wrapper, .main-panel").perfectScrollbar();
+        } else {
+            $(".sidebar .sidebar-wrapper, .main-panel").perfectScrollbar(
+                "destroy"
+            );
+
             setTimeout(function () {
-                clearInterval(simulateWindowResize);
-            }, 1000);
-        });
+                $("body").addClass("sidebar-mini");
+
+                md.misc.sidebar_mini_active = true;
+            }, 300);
+        }
+
+        // we simulate the window Resize so the charts will get updated in realtime.
+        var simulateWindowResize = setInterval(function () {
+            window.dispatchEvent(new Event("resize"));
+        }, 180);
+
+        // we stop the simulation of Window Resize after the animations are completed
+        setTimeout(function () {
+            clearInterval(simulateWindowResize);
+        }, 1000);
     });
 
     // add class active in li .nav-item on curren url
@@ -217,19 +211,6 @@ $(document).ready(function () {
     });
 
     $("#employee-record-table").DataTable({
-        responsive: true,
-        bPaginate: true,
-        bFilter: true,
-        bInfo: true,
-        dom: "ftipr",
-        bAutoWidth: true,
-        searchable: true,
-        orderable: true,
-        sort: false,
-        pageLength: 10,
-    });
-
-    $("#staffCA-table").DataTable({
         responsive: true,
         bPaginate: true,
         bFilter: true,
@@ -845,42 +826,59 @@ $(document).ready(function () {
 
     /*============= START of active employee table =============*/
 
-    $("input[type='date']").on('change', function () {
-        this.setAttribute("data-date", moment(this.value, "YYYY-MM-DD").format(this.getAttribute("data-date-format")));
-    }).trigger('change');
+    $("input[type='date']")
+        .on("change", function () {
+            this.setAttribute(
+                "data-date",
+                moment(this.value, "YYYY-MM-DD").format(
+                    this.getAttribute("data-date-format")
+                )
+            );
+        })
+        .trigger("change");
 
     // trigger change duration date inputs
-    $("#duration_date").on('change', function () {
-        switch ($(this).val()) {
-            case "3 Months":
-                var date = new Date();
-                date.setMonth(date.getMonth() + 3);
-                $("#end_date").val(moment(date).format('YYYY-MM-DD')).change();
-                break;
+    $("#duration_date")
+        .on("change", function () {
+            switch ($(this).val()) {
+                case "3 Months":
+                    var date = new Date();
+                    date.setMonth(date.getMonth() + 3);
+                    $("#end_date")
+                        .val(moment(date).format("YYYY-MM-DD"))
+                        .change();
+                    break;
 
-            case '6 Months':
-                var date = new Date();
-                date.setMonth(date.getMonth() + 6);
-                $("#end_date").val(moment(date).format('YYYY-MM-DD')).change();
-                break;
+                case "6 Months":
+                    var date = new Date();
+                    date.setMonth(date.getMonth() + 6);
+                    $("#end_date")
+                        .val(moment(date).format("YYYY-MM-DD"))
+                        .change();
+                    break;
 
-            case '1 Year':
-                var date = new Date();
-                date.setMonth(date.getMonth() + 12);
-                $("#end_date").val(moment(date).format('YYYY-MM-DD')).change();
-                break;
+                case "1 Year":
+                    var date = new Date();
+                    date.setMonth(date.getMonth() + 12);
+                    $("#end_date")
+                        .val(moment(date).format("YYYY-MM-DD"))
+                        .change();
+                    break;
 
-            case '2 Years':
-                var date = new Date();
-                date.setMonth(date.getMonth() + 24);
-                $("#end_date").val(moment(date).format('YYYY-MM-DD')).change();
-                break;
-    
-            default:
-                $("#end_date").val("").change();
-                break;
-        }
-    }).trigger('change');
+                case "2 Years":
+                    var date = new Date();
+                    date.setMonth(date.getMonth() + 24);
+                    $("#end_date")
+                        .val(moment(date).format("YYYY-MM-DD"))
+                        .change();
+                    break;
+
+                default:
+                    $("#end_date").val("").change();
+                    break;
+            }
+        })
+        .trigger("change");
 
     $("#add-employee-form").one("shown.bs.modal", function () {
         $.ajax({
@@ -954,47 +952,71 @@ $(document).ready(function () {
         });
     });
 
-    $("#update-employee-form").one("shown.bs.modal", function () {
-        $.ajax({
-            url: "controller.php",
-            type: "GET",
-            data: {action: "fetchJobPositions"},
-            dataType: "html",
-            success: function (data) {
-                $("#updateEmployee #job_position").append(data);
-            },
-        });
+    $("#update-employee-form")
+        .one("shown.bs.modal", function () {
+            $.ajax({
+                url: "controller.php",
+                type: "GET",
+                data: {action: "fetchJobPositions"},
+                dataType: "html",
+                success: function (data) {
+                    $("#updateEmployee #job_position").append(data);
+                },
+            });
 
-        $.ajax({
-            url: "controller.php",
-            type: "GET",
-            data: {action: "fetchShiftingTypes"},
-            dataType: "html",
-            success: function (data) {
-                $("#updateEmployee #shifting_type").append(data);
-            },
-        });
-    }).trigger('shown.bs.modal');
+            $.ajax({
+                url: "controller.php",
+                type: "GET",
+                data: {action: "fetchShiftingTypes"},
+                dataType: "html",
+                success: function (data) {
+                    $("#updateEmployee #shifting_type").append(data);
+                },
+            });
+        })
+        .trigger("shown.bs.modal");
 
-    $("#update-employee-form").on("shown.bs.modal", function () {
-        if ($("#updateEmployee #worker_type").val() === "Regular" || $("#updateEmployee #worker_type").val() === "Contractual") {
-            $("#updateEmployee div[data-id='employee-gov']").show();
-            $("#updateEmployee div[data-id='employee-gov'] input").attr("disabled", false);
-        } else {
-            $("#updateEmployee div[data-id='employee-gov']").hide();
-            $("#updateEmployee div[data-id='employee-gov'] input").attr("disabled", true);
-        }
-    }).trigger('shown.bs.modal');
-    
-    $("#updateEmployee #worker_type").on("change", function () {
-        if ($("#updateEmployee #worker_type").val() === "Regular" || $("#updateEmployee #worker_type").val() === "Contractual") {
-            $("#updateEmployee div[data-id='employee-gov'").show();
-            $("#updateEmployee div[data-id='employee-gov'] input").attr("disabled", false);
-        } else {
-            $("#updateEmployee div[data-id='employee-gov'").hide();
-            $("#updateEmployee div[data-id='employee-gov'] input").attr("disabled", true);
-        }
-    }).trigger('change');
+    $("#update-employee-form")
+        .on("shown.bs.modal", function () {
+            if (
+                $("#updateEmployee #worker_type").val() === "Regular" ||
+                $("#updateEmployee #worker_type").val() === "Contractual"
+            ) {
+                $("#updateEmployee div[data-id='employee-gov']").show();
+                $("#updateEmployee div[data-id='employee-gov'] input").attr(
+                    "disabled",
+                    false
+                );
+            } else {
+                $("#updateEmployee div[data-id='employee-gov']").hide();
+                $("#updateEmployee div[data-id='employee-gov'] input").attr(
+                    "disabled",
+                    true
+                );
+            }
+        })
+        .trigger("shown.bs.modal");
+
+    $("#updateEmployee #worker_type")
+        .on("change", function () {
+            if (
+                $("#updateEmployee #worker_type").val() === "Regular" ||
+                $("#updateEmployee #worker_type").val() === "Contractual"
+            ) {
+                $("#updateEmployee div[data-id='employee-gov'").show();
+                $("#updateEmployee div[data-id='employee-gov'] input").attr(
+                    "disabled",
+                    false
+                );
+            } else {
+                $("#updateEmployee div[data-id='employee-gov'").hide();
+                $("#updateEmployee div[data-id='employee-gov'] input").attr(
+                    "disabled",
+                    true
+                );
+            }
+        })
+        .trigger("change");
 
     $("#active-employee-table").on("click", ".update", function () {
         var EmployeeID = $(this).attr("id");
@@ -1045,7 +1067,7 @@ $(document).ready(function () {
                 $("#updateEmployee #pag_ibig_number").val(data[29]);
                 $("#updateEmployee #pag_ibig_per_month").val(data[30]);
                 $("#updateEmployee #pag_ibig_active_loan").val(data[31]);
-            },  
+            },
         });
     });
 
@@ -1067,7 +1089,7 @@ $(document).ready(function () {
             return false;
         }
     });
-    
+
     $("#updateEmployee").on("submit", function (event) {
         event.preventDefault();
 
@@ -1085,45 +1107,54 @@ $(document).ready(function () {
         });
     });
 
+    $("#info-employee-form")
+        .one("shown.bs.modal", function () {
+            $.ajax({
+                url: "controller.php",
+                type: "GET",
+                data: {action: "fetchJobPositions"},
+                dataType: "html",
+                success: function (data) {
+                    $("#employeeInfo #job_position").append(data);
+                },
+            });
 
-    $("#info-employee-form").one("shown.bs.modal", function () {
-        $.ajax({
-            url: "controller.php",
-            type: "GET",
-            data: {action: "fetchJobPositions"},
-            dataType: "html",
-            success: function (data) {
-                $("#employeeInfo #job_position").append(data);
-            },
-        });
+            $.ajax({
+                url: "controller.php",
+                type: "GET",
+                data: {action: "fetchShiftingTypes"},
+                dataType: "html",
+                success: function (data) {
+                    $("#employeeInfo #shifting_type").append(data);
+                },
+            });
+        })
+        .trigger("shown.bs.modal");
 
-        $.ajax({
-            url: "controller.php",
-            type: "GET",
-            data: {action: "fetchShiftingTypes"},
-            dataType: "html",
-            success: function (data) {
-                $("#employeeInfo #shifting_type").append(data);
-            },
-        });
-    }).trigger('shown.bs.modal');
-
-
-    $("#info-employee-form").on("shown.bs.modal", function () {
-        if ($("#employeeInfo #worker_type").val() === "Regular" || $("#employeeInfo #worker_type").val() === "Contractual") {
-            $("#employeeInfo div[data-id='employee-gov']").show();
-            $("#employeeInfo div[data-id='employee-gov'] input").attr("disabled", false);
-        } else {
-            $("#employeeInfo div[data-id='employee-gov']").hide();
-            $("#employeeInfo div[data-id='employee-gov'] input").attr("disabled", true);
-        }
-    }).trigger('shown.bs.modal');
-    
+    $("#info-employee-form")
+        .on("shown.bs.modal", function () {
+            if (
+                $("#employeeInfo #worker_type").val() === "Regular" ||
+                $("#employeeInfo #worker_type").val() === "Contractual"
+            ) {
+                $("#employeeInfo div[data-id='employee-gov']").show();
+                $("#employeeInfo div[data-id='employee-gov'] input").attr(
+                    "disabled",
+                    false
+                );
+            } else {
+                $("#employeeInfo div[data-id='employee-gov']").hide();
+                $("#employeeInfo div[data-id='employee-gov'] input").attr(
+                    "disabled",
+                    true
+                );
+            }
+        })
+        .trigger("shown.bs.modal");
 
     $("#active-employee-table").on("click", ".info", function () {
-
         $("#employeeInfo input").prop("readonly", true);
-        $("#employeeInfo select").css("pointer-events", 'none');
+        $("#employeeInfo select").css("pointer-events", "none");
 
         var EmployeeID = $(this).attr("id");
         $.ajax({
@@ -1173,20 +1204,20 @@ $(document).ready(function () {
                 $("#employeeInfo #pag_ibig_number").val(data[29]);
                 $("#employeeInfo #pag_ibig_per_month").val(data[30]);
                 $("#employeeInfo #pag_ibig_active_loan").val(data[31]);
-            },  
+            },
         });
     });
-
-   
 
     /*****
              * this event handler is for select Worker type
              * to show and hide the Gov. Ageny data input
              /***/
-    
-             
+
     $("#worker_type").on("change", function () {
-        if ($("#worker_type").val() === "Regular" || $("#worker_type").val() === "Contractual") {
+        if (
+            $("#worker_type").val() === "Regular" ||
+            $("#worker_type").val() === "Contractual"
+        ) {
             $("div[data-id='employee-gov'").show();
             $("div[data-id='employee-gov'] input").attr("disabled", false);
         } else {
@@ -1206,9 +1237,9 @@ $(document).ready(function () {
     });
 
     /*****
-    * this event handler is to display Remove Employees
-    * On Click 
-    ***/
+     * this event handler is to display Remove Employees
+     * On Click
+     ***/
     $("#remove-employees").on("click", function () {
         $("#display-employee").toggle();
     });
@@ -1217,9 +1248,86 @@ $(document).ready(function () {
      *  set attribute disable for employee information modal
      ********************************************************/
 
-    
-
     /*============= END of active employee table =============*/
+
+
+
+    /** ====== Employee Credits ====== **/
+
+    /*============= START Staff cash advance ==============*/
+    $('#staff-ca-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: {
+                action: "listStaffCA",
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 15,
+        columnDefs: [
+            {
+                targets: [5],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+
+    var searchRequest = null;
+
+    $('#employee_number').keyup(function(){
+        var that = this,
+        value = $(this).val();
+        
+        if(value.length >= 1){
+            if(searchRequest != null)
+                searchRequest.abort();
+            
+            searchRequest = $.ajax({
+                url: 'controller.php',
+                type: 'GET',
+                data: {
+                    action: 'get_employee_name',
+                    employee_id: value,
+                },
+                dataType: 'json',
+                success: function(data){
+                    if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
+                        $('#employee_name').val(`${data[7]} ${data[8]}`);
+                    } else {
+                        $('#employee_name').val('');
+                    }
+                },
+            });
+        }
+    });
+
+    $('#addStaffCA').on('submit', function(event){
+        event.preventDefault();
+        var CashDATA = $('#addStaffCA').serialize();
+
+        $.ajax({
+            url: 'controller.php?=add_staff_ca',
+            method: 'POST',
+            data: CashDATA,
+            success: function(){
+                $('#addStaffCA')[0].reset();
+                $('#new-ca-form').modal('hide');
+                $('#staff-ca-table').DataTable().draw();
+            }
+        })
+    });
+    /*============= END Staff cash advance ==============*/
 
     var dashboard = {
         initDashboardPageCharts: function () {

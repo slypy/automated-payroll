@@ -3,7 +3,6 @@
         protected static $tbl_employees = 'tbl_employees';
         
         public static function add(){
-
             $employee_number        = '';
             $card_id                = '';
             $fingerprint_number     = '';
@@ -137,7 +136,18 @@
                 $row = Db::num($query);
                 echo json_encode($row);
             }
-            
+
+            return;
+        }
+
+        public static function getDataName(){
+            if(isset($_GET['employee_id'])){
+                $query = Db::fetch(self::$tbl_employees, "", "employee_number = ?" , $_GET['employee_id'], "", "", "");
+
+                $row = Db::num($query);
+                echo json_encode($row);
+            }
+            return;
         }
 
         public static function updateData(){
