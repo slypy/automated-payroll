@@ -1317,7 +1317,7 @@ $(document).ready(function () {
         var CashDATA = $('#addStaffCA').serialize();
 
         $.ajax({
-            url: 'controller.php?=add_staff_ca',
+            url: 'controller.php?action=add_staff_ca',
             method: 'POST',
             data: CashDATA,
             success: function(){

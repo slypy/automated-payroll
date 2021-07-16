@@ -251,7 +251,6 @@
                             <h5>Worker Type</h5>
                             <div class="input-1-6">
                                 <div class="select" style="margin-left: 5px;">
-                                    <!--  worker_type: $("#worker_type").val() -->
                                     <select id="worker_type" class="select-text" name="worker_type" required>
                                         <option value="" selected></option>
                                         <option value="Regular">Regular</option>

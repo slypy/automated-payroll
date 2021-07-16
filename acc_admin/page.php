@@ -34,7 +34,7 @@
                         </a>
                     </li>
                     <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/dashboard/">
-                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/dashboard/">
+                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/dtr/">
                             <i class="material-icons">access_time</i>
                             <p>Daily Time Record</p>
                         </a>

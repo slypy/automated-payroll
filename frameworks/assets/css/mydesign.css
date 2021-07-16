@@ -383,8 +383,14 @@ input:valid + label, input:read-only + label{
 
 /* active state */
 .select-text:focus ~ .select-label,
-.select-text:valid ~ .select-label,
-.select-text:read-only ~ .select-label {
+.select-text:valid ~ .select-label {
+  color: #2d9c91;
+  background-color: white;
+  transform: translateY(-110%) scale(1);
+  font-size: 14px;
+}
+
+.selec-text:read-only ~ .select-label{
   color: #2d9c91;
   background-color: white;
   transform: translateY(-110%) scale(1);

@@ -3,17 +3,19 @@
 class EmployeeCredits{
     protected static $tbl_staffCA = 'tbl_staffCA';
 
-    public static function addCAData(){
-        if(isset($_POST['employee_number'])){
-            $employee_number = $_POST['employee_id'];
-            $employee_name = $_POST['employee_name'];
-            $ca_date = $_POST['ca_date'];
-            $ca_amount = $_POST['ca_amount'];
-            $ca_remarks = $_POST['ca_remarks'];
-
-            Db::insert(self::$tbl_staffCA, array("employee_number", "employee_name", "date_cash_advance", "cash_advance_amount", "remarks"), array($employee_number, $employee_name, $ca_date, $ca_amount, $ca_remarks));
-        } else {
-            echo 'nothh';
+    public static function add($type = ''){
+        switch($type){
+            case 'staff_ca':
+                if(isset($_POST['employee_number'])){
+                    $employee_number = $_POST['employee_number'];
+                    $employee_name = $_POST['employee_name'];
+                    $ca_date = $_POST['ca_date'];
+                    $ca_amount = $_POST['ca_amount'];
+                    $ca_remarks = $_POST['ca_remarks'];
+        
+                    Db::insert(self::$tbl_staffCA, array("employee_number", "employee_name", "date_cash_advance", "cash_advance_amount", "remarks"), array($employee_number, $employee_name, $ca_date, $ca_amount, $ca_remarks));
+                }
+                break;
         }
     }
     
@@ -36,25 +38,25 @@ class EmployeeCredits{
             $dataRow = array();
             $dataRow[] = $tbl_StaffCA['employee_number'];
             $dataRow[] = $tbl_StaffCA['employee_name'];   
-            $dataRow[] = $tbl_StaffCA['date_cash_advance'];
+            $dataRow[] = date('M d, Y', strtotime(date($tbl_StaffCA['date_cash_advance'])));
             $dataRow[] = $tbl_StaffCA['cash_advance_amount'];
             $dataRow[] = $tbl_StaffCA['cash_advance_amount'];
-            $dataRow[] = '<button type="button" name="update" id="'.$tbl_StaffCA['id'].'" class="btn btn-success update"><i class="material-icons">edit</i></button> <button type="button" name="delete" id="'.$tbl_StaffCA['id'].'" class="btn btn-danger delete"><i class="material-icons">delete</i></button>';
+            $dataRow[] = '<button type="button" name="update" id="'.$tbl_StaffCA['id'].'" class="btn btn-success update"><i class="material-icons">monetization_on</i> pay </button>';
 
             $listData[] = $dataRow;
         }
 
-            $query2 = Db::fetch(self::$tbl_staffCA, "", "", "", "", "", "");
-            $numRows = Db::count($query2);
+        $query2 = Db::fetch(self::$tbl_staffCA, "", "", "", "", "", "");
+        $numRows = Db::count($query2);
 
-            $result_data = array (
-                'draw'              => intval($_GET['draw']),
-                'recordsTotal'      => $numRows,
-                'recordsFiltered'   => $numRows,
-                'data'              => $listData
-            );
+        $result_data = array (
+            'draw'              => intval($_GET['draw']),
+            'recordsTotal'      => $numRows,
+            'recordsFiltered'   => $numRows,
+            'data'              => $listData
+        );
 
-            echo json_encode($result_data);
+        echo json_encode($result_data);
     }
 
     public static function getData(){
@@ -65,7 +67,4 @@ class EmployeeCredits{
 
     }
 
-    public static function delete(){
-
-    }
 }

@@ -14,32 +14,6 @@ switch($action){
         Page::redir("../index.php");
         break;
 
-    case 'get_employee_name':
-        getEmployeeName();
-        break;
-    
-    case 'add_staff_ca':
-        add_StaffCA();
-        break;
-    
-    case 'listStaffCA':
-        datatable_StaffCA();
-        break;
-}
-
-function getEmployeeName(){
-    Employee::getDataName();
-    return;
-}
-
-function add_StaffCA(){
-    EmployeeCredits::add('staff_ca');
-    return;
-}
-
-function datatable_StaffCA(){
-    EmployeeCredits::fetchDataList();
-    return;
 }
 
 ?>
