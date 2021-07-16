@@ -223,19 +223,6 @@ $(document).ready(function () {
         pageLength: 10,
     });
 
-    $("#loan-table").DataTable({
-        responsive: true,
-        bPaginate: true,
-        bFilter: true,
-        bInfo: true,
-        dom: "ftipr",
-        bAutoWidth: false,
-        searchable: true,
-        orderable: true,
-        sort: true,
-        pageLength: 10,
-    });
-
     /*============== Start Holiday Pay Table ===============*/
 
     // correct time zone support
@@ -1243,11 +1230,6 @@ $(document).ready(function () {
     $("#remove-employees").on("click", function () {
         $("#display-employee").toggle();
     });
-
-    /********************************************************
-     *  set attribute disable for employee information modal
-     ********************************************************/
-
     /*============= END of active employee table =============*/
 
 
@@ -1274,7 +1256,37 @@ $(document).ready(function () {
         bInfo: false,
         searching: true,
         bFilter: true,
-        pageLength: 15,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [5],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+
+    $('#paid-staff-ca-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: {
+                action: "listPaidStaffCA",
+            },
+            dataType: "json",
+            liveAjax: true,
+            interval: 1000,
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
         columnDefs: [
             {
                 targets: [5],
@@ -1312,6 +1324,124 @@ $(document).ready(function () {
         }
     });
 
+    $('#addStaffLoan #employee_id').keyup(function(){
+        var that = this,
+        value = $(this).val();
+        
+        if(value.length >= 1){
+            if(searchRequest != null)
+                searchRequest.abort();
+            
+            searchRequest = $.ajax({
+                url: 'controller.php',
+                type: 'GET',
+                data: {
+                    action: 'get_employee_name',
+                    employee_id: value,
+                },
+                dataType: 'json',
+                success: function(data){
+                    if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
+                        $('#addStaffLoan #employee_name').val(`${data[7]} ${data[8]}`);
+                    } else {
+                        $('#addStaffLoan #employee_name').val('');
+                    }
+                },
+            });
+        }
+    });
+
+    $('#addStaffLoan #loan_amount').keyup(function(){
+        var loan_amount=parseFloat($(this).val()),
+            loan_interest=parseFloat($('#addStaffLoan #loan_interest').val());
+        
+        if (isNaN(loan_amount) || isNaN(loan_interest)){
+            loan_amount=0;
+            loan_interest=0;
+        }
+
+        var sub_total=parseFloat(loan_amount*loan_interest)/100,
+            total_balance=parseFloat(sub_total)+parseFloat(loan_amount);
+        $('#loan_balance').val(parseFloat(total_balance));
+    });
+
+    $('#addStaffLoan #loan_interest').keyup(function(){
+        var loan_interest=parseFloat($(this).val()),
+            loan_amount=parseFloat($('#addStaffLoan #loan_amount').val());
+        
+        if (isNaN(loan_amount) || isNaN(loan_interest)){
+            loan_amount=0;
+            loan_interest=0;
+        }
+
+        var sub_total=parseFloat(loan_amount*loan_interest)/100,
+            total_balance=parseFloat(sub_total)+parseFloat(loan_amount);
+        $('#loan_balance').val(parseFloat(total_balance));
+    });
+
+    $('#addStaffLoan').on('submit',function(event){
+        event.preventDefault();
+        var LoanData=$(this).serialize();
+        
+        $.ajax({
+            url: 'controller.php?action=add_staff_loan',
+            method: 'POST',
+            data: LoanData,
+            success: function(){
+                $('#addStaffLoan')[0].reset();
+                $('#new-loan-form').modal('hide');
+                $('#staff-loan-table').DataTable().draw();
+                $('#paid-staff-loan-table').DataTable().draw();
+            }
+        })
+    });
+
+    $('#staff-loan-table').on('click', '.update', function(){
+        var Loan_ID=$(this).attr('id');
+        
+        $.ajax({
+            url: 'controller.php',
+            type: 'GET', 
+            data: {
+                action: 'get_staff_loan',
+                loan_id: Loan_ID
+            },
+            dataType: 'json',
+            success: function(data){
+                $('#update-loan-form').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                }, 'show');
+
+                $('#updateStaffLoan #employee_id').val(data[1]);
+                $('#updateStaffLoan #employee_name').val(data[2]);
+                $('#updateStaffLoan #date_of_loan').val(data[3]);
+                $('#updateStaffLoan #due_date').val(data[4]);
+                $('#updateStaffLoan #loan_amount').val(data[5]);
+                $('#updateStaffLoan #loan_interest').val(data[6]);
+                $('#updateStaffLoan #loan_balance').val(data[7]);
+                $('#updateStaffLoan #loan_remarks').val(data[8]);
+            }
+        });
+    });
+
+    $('#updateStaffLoan').on('submit', function(event){
+        event.preventDefault();
+        var LoanData=$(this).serialize();
+
+        $.ajax({
+            url: 'controller.php?action=update_staff_loan',
+            method: 'POST',
+            data: LoanData,
+            success: function(){
+                $('#updateStaffLoan')[0].reset();
+                $('#update-loan-form').modal('hide');
+                $('#staff-loan-table').DataTable().draw();
+                $('#paid-staff-loan-table').DataTable().draw();
+            }
+        })
+    })
+
     $('#addStaffCA').on('submit', function(event){
         event.preventDefault();
         var CashDATA = $('#addStaffCA').serialize();
@@ -1324,11 +1454,119 @@ $(document).ready(function () {
                 $('#addStaffCA')[0].reset();
                 $('#new-ca-form').modal('hide');
                 $('#staff-ca-table').DataTable().draw();
+                $('#paid-staff-ca-table').DataTable().draw();
             }
         })
     });
+
+    $('#staff-ca-table').on('click', '.update', function(){
+        var CA_ID = $(this).attr('id');
+        $.ajax({
+            url: 'controller.php',
+            type: 'GET',
+            data: {
+                action: 'get_staff_ca',
+                ca_id: CA_ID
+            },
+            dataType: 'json',
+            success: function(data){
+                $('#update-ca-form').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                }, 'show');
+
+                $('#updateStaffCA #employee_number').val(data[1]);
+                $('#updateStaffCA #employee_name').val(data[2]);
+                $('#updateStaffCA #ca_date').val(data[3]);
+                $('#updateStaffCA #ca_amount').val(data[5]);
+                $('#updateStaffCA #ca_remarks').val(data[6]);
+            }
+        });
+    });
+
+    $('#updateStaffCA').on('submit', function(event){
+        event.preventDefault();
+        var CashDATA = $('#updateStaffCA').serialize();
+
+        $.ajax({
+            url: 'controller.php?action=update_staff_ca',
+            method: 'POST',
+            data: CashDATA,
+            success: function(){
+                $('#updateStaffCA')[0].reset();
+                $('#update-ca-form').modal('hide');
+                $('#staff-ca-table').DataTable().draw();
+                $('#paid-staff-ca-table').DataTable().draw();
+            }
+        });
+    })
     /*============= END Staff cash advance ==============*/
 
+    /*============= START Staff loan =============*/
+    $('#staff-loan-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: {
+                action: "listStaffLoan",
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [7],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+
+    $('#paid-staff-loan-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: {
+                action: "listPaidStaffLoan",
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [7],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+    
+
+     /*============= END Staff loan =============*/
+
+    /**
+     * Dahboard Area
+     * 
+     * TODO after all payroll
+     */
     var dashboard = {
         initDashboardPageCharts: function () {
             dataDailySalesChart = {
