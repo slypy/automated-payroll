@@ -3,6 +3,7 @@
 class EmployeeCredits{
     protected static $tbl_staffCA = 'tbl_staffCA';
     protected static $tbl_staffLoan = 'tbl_staffLoan';
+    protected static $tbl_staffDamages = 'tbl_staffDamages';
 
     public static function add($type = ''){
         switch($type){
@@ -20,7 +21,7 @@ class EmployeeCredits{
             
             case 'staff_loan':
                 if(isset($_POST['employee_id'])){
-                    $employee_id    = $_POST['employee_id'];
+                    $employee_id        = $_POST['employee_id'];
                     $employee_name      = $_POST['employee_name'];
                     $loan_amount        = $_POST['loan_amount'];
                     $loan_interest      = $_POST['loan_interest'];
@@ -30,6 +31,18 @@ class EmployeeCredits{
                     $loan_remarks       = $_POST['loan_remarks'];
                     
                     Db::insert(self::$tbl_staffLoan, array('employee_number', 'employee_name', 'date_of_loan', 'due_date', 'loan_amount', 'loan_interest', 'loan_balance', 'loan_remarks'), array($employee_id, $employee_name, $date_of_loan, $due_date, $loan_amount, $loan_interest, $loan_balance, $loan_remarks));
+                }
+                break;
+            
+            case 'staff_damages':
+                if(isset($_POST['employee_number'])){
+                    $employee_number    = $_POST['employee_number'];
+                    $employee_name      = $_POST['employee_name'];
+                    $date_issue         = $_POST['date_issue'];
+                    $damage_amount      = $_POST['damage_amount'];
+                    $issue_name         = $_POST['issue_name'];
+
+                    Db::insert(self::$tbl_staffDamages, array('employee_number', 'employee_name', 'date_issue','damage_amount', 'salary_deduction', 'issue_name'), array($employee_number, $employee_name, $date_issue, $damage_amount, $damage_amount, $issue_name));
                 }
                 break;
         }
@@ -202,8 +215,89 @@ class EmployeeCredits{
     
                 echo json_encode($result_data);
                 break;
+
+            case 'staff_damages':
+                $query = Db::fetch(self::$tbl_staffDamages, "", "salary_deduction > ?", "0", "", "", "");
+
+                $limit = $_GET['start'].', '.$_GET['length'];
+                if($_GET['length'] != -1){
+                    $query = Db::fetch(self::$tbl_staffDamages, "", "salary_deduction > ?", "0", "", $limit, "");
+                }
+    
+                if(!empty($_GET['search']['value'])){
+                    $like_val = $_GET['search']['value'];
+    
+                    $query = Db::fetch(self::$tbl_staffDamages, "", "salary_deduction > ? AND employee_number LIKE ? OR employee_name LIKE ? AND salary_deduction > ?", array("0",'%'.$like_val.'%', '%'.$like_val.'%', "0"), "", "", "");
+                }
+    
+                $listData = array();
+                while($tbl_StaffDamages = Db::assoc($query)){
+                    $dataRow = array();
+                    $dataRow[] = $tbl_StaffDamages['employee_number'];
+                    $dataRow[] = $tbl_StaffDamages['employee_name'];
+                    $dataRow[] = $tbl_StaffDamages['issue_name'];
+                    $dataRow[] = date('M d, Y', strtotime(date($tbl_StaffDamages['date_issue'])));;
+                    $dataRow[] = $tbl_StaffDamages['damage_amount'];
+                    $dataRow[] = $tbl_StaffDamages['salary_deduction'];
+                    $dataRow[] = '<button type="button" name="update" id="'.$tbl_StaffDamages['id'].'" class="btn btn-success update"><i class="material-icons">monetization_on</i> pay </button>';
+    
+                    $listData[] = $dataRow;
+                }
+    
+                $query2 = Db::fetch(self::$tbl_staffCA, "", "", "", "", "", "");
+                $numRows = Db::count($query2);
+    
+                $result_data = array (
+                    'draw'              => intval($_GET['draw']),
+                    'recordsTotal'      => $numRows,
+                    'recordsFiltered'   => $numRows,
+                    'data'              => $listData
+                );
+    
+                echo json_encode($result_data);
+                break;
+
+            case 'paid_staff_damages':
+                $query = Db::fetch(self::$tbl_staffDamages, "", "salary_deduction <= ?", "0", "", "", "");
+
+                $limit = $_GET['start'].', '.$_GET['length'];
+                if($_GET['length'] != -1){
+                    $query = Db::fetch(self::$tbl_staffDamages, "", "salary_deduction <= ?", "0", "", $limit, "");
+                }
+    
+                if(!empty($_GET['search']['value'])){
+                    $like_val = $_GET['search']['value'];
+    
+                    $query = Db::fetch(self::$tbl_staffDamages, "", "salary_deduction <= ? AND employee_number LIKE ? OR employee_name LIKE ? AND salary_deduction <= ?", array("0",'%'.$like_val.'%', '%'.$like_val.'%', "0"), "", "", "");
+                }
+    
+                $listData = array();
+                while($tbl_StaffDamages = Db::assoc($query)){
+                    $dataRow = array();
+                    $dataRow[] = $tbl_StaffDamages['employee_number'];
+                    $dataRow[] = $tbl_StaffDamages['employee_name'];
+                    $dataRow[] = $tbl_StaffDamages['issue_name'];
+                    $dataRow[] = date('M d, Y', strtotime(date($tbl_StaffDamages['date_issue'])));;
+                    $dataRow[] = $tbl_StaffDamages['damage_amount'];
+                    $dataRow[] = $tbl_StaffDamages['salary_deduction'];
+                    $dataRow[] = '<button type="button" class="btn btn-success" disabled><i class="material-icons">check</i> paid </button>';
+    
+                    $listData[] = $dataRow;
+                }
+    
+                $query2 = Db::fetch(self::$tbl_staffCA, "", "", "", "", "", "");
+                $numRows = Db::count($query2);
+    
+                $result_data = array (
+                    'draw'              => intval($_GET['draw']),
+                    'recordsTotal'      => $numRows,
+                    'recordsFiltered'   => $numRows,
+                    'data'              => $listData
+                );
+    
+                echo json_encode($result_data);
+                break;
         }
-        
     }
 
     public static function getData(){
@@ -218,6 +312,13 @@ class EmployeeCredits{
             $row = Db::num($query);
             
             echo json_encode($row);
+        } else if(isset($_GET['damage_id'])){
+            $query = Db::fetch(self::$tbl_staffDamages, '', 'id = ?', $_GET['damage_id'], '', '', '');
+            $row = Db::num($query);
+            
+            echo json_encode($row);
+        } else {
+            //do nothing
         }
 
         return;
@@ -256,6 +357,20 @@ class EmployeeCredits{
 
                     Db::update(self::$tbl_staffLoan, array('employee_number', 'employee_name', 'date_of_loan', 'due_date', 'loan_amount', 'loan_interest', 'loan_balance', 'loan_remarks'), array($employee_id, $employee_name, $date_of_loan, $due_date, $loan_amount, $loan_interest, $total, $loan_remarks), "employee_number = ? AND date_of_loan = ? AND due_date = ? AND loan_remarks = ?", array($employee_id, $date_of_loan, $due_date, $loan_remarks));
                 }
+            
+            case 'staff_damages':
+                if(isset($_POST['employee_number'])){
+                    $employee_number            = $_POST['employee_number'];
+                    $employee_name              = $_POST['employee_name'];
+                    $date_issue                 = $_POST['date_issue'];
+                    $issue_name                 = $_POST['issue_name'];
+                    $damage_amount_balance      = $_POST['damage_amount_balance'];
+                    $pay_damage_amount          = $_POST['pay_damage_amount'];
+                    $total = $damage_amount_balance - $pay_damage_amount;
+                    
+                    Db::update(self::$tbl_staffDamages, array('salary_deduction'), array($total), "employee_number = ? AND employee_name = ? AND date_issue = ? AND issue_name = ?", array($employee_number, $employee_name, $date_issue, $issue_name));
+                }
+                break;
         }
     }
 }

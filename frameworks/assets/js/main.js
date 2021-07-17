@@ -210,19 +210,6 @@ $(document).ready(function () {
         pageLength: 10,
     });
 
-    $("#employee-record-table").DataTable({
-        responsive: true,
-        bPaginate: true,
-        bFilter: true,
-        bInfo: true,
-        dom: "ftipr",
-        bAutoWidth: true,
-        searchable: true,
-        orderable: true,
-        sort: false,
-        pageLength: 10,
-    });
-
     /*============== Start Holiday Pay Table ===============*/
 
     // correct time zone support
@@ -1222,14 +1209,6 @@ $(document).ready(function () {
             $("div[data-id='employee-gov'] input").attr("disabled", true);
         }
     });
-
-    /*****
-     * this event handler is to display Remove Employees
-     * On Click
-     ***/
-    $("#remove-employees").on("click", function () {
-        $("#display-employee").toggle();
-    });
     /*============= END of active employee table =============*/
 
 
@@ -1322,6 +1301,125 @@ $(document).ready(function () {
                 },
             });
         }
+    });
+
+    
+
+    $('#addStaffCA').on('submit', function(event){
+        event.preventDefault();
+        var CashDATA = $('#addStaffCA').serialize();
+
+        $.ajax({
+            url: 'controller.php?action=add_staff_ca',
+            method: 'POST',
+            data: CashDATA,
+            success: function(){
+                $('#addStaffCA')[0].reset();
+                $('#new-ca-form').modal('hide');
+                $('#staff-ca-table').DataTable().draw();
+                $('#paid-staff-ca-table').DataTable().draw();
+            }
+        })
+    });
+
+    $('#staff-ca-table').on('click', '.update', function(){
+        var CA_ID = $(this).attr('id');
+        $.ajax({
+            url: 'controller.php',
+            type: 'GET',
+            data: {
+                action: 'get_staff_ca',
+                ca_id: CA_ID
+            },
+            dataType: 'json',
+            success: function(data){
+                $('#update-ca-form').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                }, 'show');
+
+                $('#updateStaffCA #employee_number').val(data[1]);
+                $('#updateStaffCA #employee_name').val(data[2]);
+                $('#updateStaffCA #ca_date').val(data[3]);
+                $('#updateStaffCA #ca_amount').val(data[5]);
+                $('#updateStaffCA #ca_remarks').val(data[6]);
+            }
+        });
+    });
+
+    $('#updateStaffCA').on('submit', function(event){
+        event.preventDefault();
+        var CashDATA = $('#updateStaffCA').serialize();
+
+        $.ajax({
+            url: 'controller.php?action=update_staff_ca',
+            method: 'POST',
+            data: CashDATA,
+            success: function(){
+                $('#updateStaffCA')[0].reset();
+                $('#update-ca-form').modal('hide');
+                $('#staff-ca-table').DataTable().draw();
+                $('#paid-staff-ca-table').DataTable().draw();
+            }
+        });
+    })
+    /*============= END Staff cash advance ==============*/
+
+    /*============= START Staff loan =============*/
+    $('#staff-loan-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: {
+                action: "listStaffLoan",
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [7],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+
+    $('#paid-staff-loan-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: {
+                action: "listPaidStaffLoan",
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [7],
+                className: 'td-actions text-center'
+            }
+        ]
     });
 
     $('#addStaffLoan #employee_id').keyup(function(){
@@ -1441,126 +1539,154 @@ $(document).ready(function () {
             }
         })
     })
+     /*============= END Staff loan =============*/
 
-    $('#addStaffCA').on('submit', function(event){
-        event.preventDefault();
-        var CashDATA = $('#addStaffCA').serialize();
-
-        $.ajax({
-            url: 'controller.php?action=add_staff_ca',
-            method: 'POST',
-            data: CashDATA,
-            success: function(){
-                $('#addStaffCA')[0].reset();
-                $('#new-ca-form').modal('hide');
-                $('#staff-ca-table').DataTable().draw();
-                $('#paid-staff-ca-table').DataTable().draw();
+    
+     /*============= START Staff damages =============*/
+     $('#staff-damages-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: {
+                action: "listStaffDamages",
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [6],
+                className: 'td-actions text-center'
             }
-        })
+        ]
     });
 
-    $('#staff-ca-table').on('click', '.update', function(){
-        var CA_ID = $(this).attr('id');
+    $('#paid-staff-damages-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: {
+                action: "listPaidStaffDamages",
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [6],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+
+    $('#addStaffDamages #employee_number').keyup(function(){
+        var that = this,
+        value = $(this).val();
+        
+        if(value.length >= 1){
+            if(searchRequest != null)
+                searchRequest.abort();
+            
+            searchRequest = $.ajax({
+                url: 'controller.php',
+                type: 'GET',
+                data: {
+                    action: 'get_employee_name',
+                    employee_id: value,
+                },
+                dataType: 'json',
+                success: function(data){
+                    if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
+                        $('#addStaffDamages #employee_name').val(`${data[7]} ${data[8]}`);
+                    } else {
+                        $('#addStaffDamages #employee_name').val('');
+                    }
+                },
+            });
+        }
+    });
+
+    $('#addStaffDamages').on('submit', function(event){
+        event.preventDefault();
+        var Damage_Data = $(this).serialize();
+
+        $.ajax({
+            url: 'controller.php?action=add_staff_damages',
+            type: 'POST',
+            data: Damage_Data,
+            success: function(){
+                $('#addStaffDamages')[0].reset();
+                $('#new-damages-form').modal('hide');
+                $('#staff-damages-table').DataTable().draw();
+            }
+        })
+    })
+
+    $('#staff-damages-table').on('click', '.update', function(){
+        var Damage_ID=$(this).attr('id');
+        
         $.ajax({
             url: 'controller.php',
-            type: 'GET',
+            type: 'GET', 
             data: {
-                action: 'get_staff_ca',
-                ca_id: CA_ID
+                action: 'get_staff_damages',
+                damage_id: Damage_ID
             },
             dataType: 'json',
             success: function(data){
-                $('#update-ca-form').modal({
+                $('#update-damages-form').modal({
                     backdrop: 'static',
                     keyboard: false,
                 }, 'show');
 
-                $('#updateStaffCA #employee_number').val(data[1]);
-                $('#updateStaffCA #employee_name').val(data[2]);
-                $('#updateStaffCA #ca_date').val(data[3]);
-                $('#updateStaffCA #ca_amount').val(data[5]);
-                $('#updateStaffCA #ca_remarks').val(data[6]);
+                $('#updateStaffDamages #employee_number').val(data[1]);
+                $('#updateStaffDamages #employee_name').val(data[2]);
+                $('#updateStaffDamages #date_issue').val(data[3]);
+                $('#updateStaffDamages #damage_amount').val(data[4]);
+                $('#updateStaffDamages #damage_amount_balance').val(data[5]);
+                $('#updateStaffDamages #issue_name').val(data[6]);
             }
         });
     });
 
-    $('#updateStaffCA').on('submit', function(event){
+    $('#updateStaffDamages').on('submit', function(event){
         event.preventDefault();
-        var CashDATA = $('#updateStaffCA').serialize();
-
+        var Pay_Data = $(this).serialize();
+        
         $.ajax({
-            url: 'controller.php?action=update_staff_ca',
-            method: 'POST',
-            data: CashDATA,
+            url: 'controller.php?action=update_staff_damages',
+            type: 'POST',
+            data: Pay_Data,
             success: function(){
-                $('#updateStaffCA')[0].reset();
-                $('#update-ca-form').modal('hide');
-                $('#staff-ca-table').DataTable().draw();
-                $('#paid-staff-ca-table').DataTable().draw();
+                $('#updateStaffDamages')[0].reset();
+                $('#update-damages-form').modal('hide');
+                $('#staff-damages-table').DataTable().draw();
+                $('#paid-staff-damages-table').DataTable().draw();
             }
-        });
+        })
     })
-    /*============= END Staff cash advance ==============*/
+     /*============= END Staff damages =============*/
 
-    /*============= START Staff loan =============*/
-    $('#staff-loan-table').DataTable({
-        serverSide: true,
-        ajax: {
-            url: "controller.php",
-            type: "GET",
-            data: {
-                action: "listStaffLoan",
-            },
-            dataType: "json",
-        },
-        retrieve: true,
-        dom: "ftipr",
-        bAutoWidth: false,
-        paging: true,
-        lengthChange: false,
-        ordering: false,
-        bInfo: false,
-        searching: true,
-        bFilter: true,
-        pageLength: 10,
-        columnDefs: [
-            {
-                targets: [7],
-                className: 'td-actions text-center'
-            }
-        ]
-    });
-
-    $('#paid-staff-loan-table').DataTable({
-        serverSide: true,
-        ajax: {
-            url: "controller.php",
-            type: "GET",
-            data: {
-                action: "listPaidStaffLoan",
-            },
-            dataType: "json",
-        },
-        retrieve: true,
-        dom: "ftipr",
-        bAutoWidth: false,
-        paging: true,
-        lengthChange: false,
-        ordering: false,
-        bInfo: false,
-        searching: true,
-        bFilter: true,
-        pageLength: 10,
-        columnDefs: [
-            {
-                targets: [7],
-                className: 'td-actions text-center'
-            }
-        ]
-    });
-    
-
-     /*============= END Staff loan =============*/
 
     /**
      * Dahboard Area
@@ -1729,9 +1855,32 @@ $(document).ready(function () {
         }, 500);
     });
 
+        /*****
+     * this event handler is to display Remove Employees
+     * On Click
+     ***/
+    $("#remove-employees").on("click", function () {
+        $("#display-employee").toggle();
+    });
+    
+    $('#paid-staffCA').on('click', function(){
+        $('#display-paid-tbl-staffCA').toggle();
+    });
+    
+    $('#paid-staffLoan').on('click', function(){
+        $('#display-paid-staffLoan').toggle();
+    });
+
+    $('#paid-staffDamages').on('click', function(){
+        $('#display-paid-staffDamages').toggle();
+    });
+
     $("#staffCA-btn").click(function () {
         $("#tbl-staffCA").show();
+        $("#paid-tbl-staffCA").show();
         $("#tbl-loan").hide();
+        $('#paid-tbl-loan').hide();
+        $('#paid-tbl-damages').hide();
         $("#tbl-damage").hide();
         $("#tbl-misc").hide();
         $("#page-title").html("Staff Cash Advance");
@@ -1747,7 +1896,10 @@ $(document).ready(function () {
 
     $("#loan-btn").click(function () {
         $("#tbl-loan").show();
+        $('#paid-tbl-loan').show();
         $("#tbl-staffCA").hide();
+        $('#paid-tbl-damages').hide();
+        $("#paid-tbl-staffCA").hide();
         $("#tbl-damage").hide();
         $("#tbl-misc").hide();
         $("#page-title").html("Loan Record");
@@ -1765,6 +1917,9 @@ $(document).ready(function () {
         $("#tbl-misc").show();
         $("#tbl-loan").hide();
         $("#tbl-staffCA").hide();
+        $('#paid-tbl-loan').hide();
+        $('#paid-tbl-damages').hide();
+        $("#paid-tbl-staffCA").hide();
         $("#tbl-damage").hide();
         $("#page-title").html("Employee Miscellaneous");
         $("#staffCA-btn").removeClass("btn-primary");
@@ -1780,6 +1935,9 @@ $(document).ready(function () {
     $("#damage-btn").click(function () {
         $("#tbl-damage").show();
         $("#tbl-loan").hide();
+        $('#paid-tbl-loan').hide();
+        $("#paid-tbl-staffCA").hide();
+        $('#paid-tbl-damages').show();
         $("#tbl-staffCA").hide();
         $("#tbl-misc").hide();
         $("#page-title").html("Damages Record");

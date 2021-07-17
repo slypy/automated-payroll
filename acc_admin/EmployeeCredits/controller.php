@@ -24,6 +24,10 @@ switch($action){
     case 'add_staff_loan':
         add_StaffLoan();
         break;
+    
+    case 'add_staff_damages':
+        add_StaffDamages();
+        break;
         
     case 'listStaffCA':
         datatable_StaffCA();
@@ -31,6 +35,10 @@ switch($action){
     
     case 'listStaffLoan':
         datatable_StaffLoan();
+        break;
+
+    case 'listStaffDamages':
+        datatable_StaffDamages();
         break;
     
     case 'listPaidStaffCA':
@@ -41,12 +49,20 @@ switch($action){
         datatable_PaidStaffLoan();
         break;
 
+    case 'listPaidStaffDamages':
+        datatable_PaidStaffDamages();
+        break;
+
     case 'get_staff_ca':
         get_staffCA();
         break;
     
     case 'get_staff_loan':
         get_staffLoan();
+        break;
+
+    case 'get_staff_damages':
+        get_staffDamages();
         break;
     
     case 'update_staff_ca':
@@ -55,6 +71,10 @@ switch($action){
     
     case 'update_staff_loan':
         update_staffLoan();
+        break;
+
+    case 'update_staff_damages':
+        update_staffDamages();
         break;
 }
 
@@ -73,6 +93,11 @@ function add_StaffLoan(){
     return;
 }
 
+function add_StaffDamages(){
+    EmployeeCredits::add('staff_damages');
+    return;
+}
+
 function datatable_StaffCA(){
     EmployeeCredits::fetchDataList('staff_ca');
     return;
@@ -80,6 +105,11 @@ function datatable_StaffCA(){
 
 function datatable_StaffLoan(){
     EmployeeCredits::fetchDataList('staff_loan');
+    return;
+}
+
+function datatable_StaffDamages(){
+    EmployeeCredits::fetchDataList('staff_damages');
     return;
 }
 
@@ -93,12 +123,22 @@ function datatable_PaidStaffLoan(){
     return;
 }
 
+function datatable_PaidStaffDamages(){
+    EmployeeCredits::fetchDataList('paid_staff_damages');
+    return;
+}
+
 function get_staffCA(){
     EmployeeCredits::getData();
     return;
 }
 
 function get_staffLoan(){
+    EmployeeCredits::getData();
+    return;
+}
+
+function get_staffDamages(){
     EmployeeCredits::getData();
     return;
 }
@@ -110,6 +150,11 @@ function update_staffCA(){
 
 function update_staffLoan(){
     EmployeeCredits::update('staff_loan');
+    return;
+}
+
+function update_staffDamages(){
+    EmployeeCredits::update('staff_damages');
     return;
 }
 ?>
