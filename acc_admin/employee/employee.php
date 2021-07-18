@@ -37,20 +37,14 @@
                 <div class="table-responsive">
                     <table id="active-employee-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
                         <thead class="text-primary text-sm">
-                            <th class="text-center" width=25>
-                                #
+                            <th  class="text-center" width=25 style="cursor: pointer;">
+                                <input type="checkbox" id="check_all"/>
                             </th>
                             <th>
                                 Employee ID #
                             </th>
                             <th>
                                 Name
-                            </th>
-                            <th>
-                                Card No.
-                            </th>
-                            <th>
-                                FingerPrint No.
                             </th>
                             <th>
                                 Contact No.
@@ -61,6 +55,9 @@
                             <th>
                                 Position
                             </th>
+                            <th>
+                                Status
+                            </th>
                             <th class="text-center">
                                 Action
                             </th>
@@ -68,7 +65,7 @@
                     </table>
                 </div>
                 <div class="btn-group">
-                    <button type="submit" class="btn btn-danger" name="delete"><i class="material-icons">delete</i> Remove Selected</button>
+                    <button id="remove_active_employee" type="button" class="btn btn-danger"><i class="material-icons">delete</i> Remove Selected</button>
                 </div>
             </div>
         </div>
@@ -88,25 +85,16 @@
             </div>
             <div id="display-employee" class="card-body" style="display: none;">
                 <div class="table-responsive">
-                    <table id="removed-table" class="table table-hover">
+                    <table id="removed-employee-table" class="table table-hover table-striped table-bordered">
                         <thead class="text-info">
-                            <th>
-                                #
+                            <th class="text-center" width=25>
+                                <input type="checkbox" id="check_all_removed"/>
                             </th>
                             <th>
-                                Profile
+                                Employee ID#
                             </th>
                             <th>
-                                First Name
-                            </th>
-                            <th>
-                                Last Name
-                            </th>
-                            <th>
-                                Card #
-                            </th>
-                            <th>
-                                FingerPrint #
+                                Name
                             </th>
                             <th>
                                 Email Address
@@ -115,44 +103,16 @@
                                 Position
                             </th>
                             <th>
+                                Status
+                            </th>
+                            <th class="text-center">
                                 Action
                             </th>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <input type="checkbox" name="selector[]" id="selector[]" value="' . $result->PROID . '" />
-                                </td>
-                                <td>
-                                    <img src="<?php echo $web_root; ?>res/sly.jpg" alt="" height="50" width="50">
-                                </td>
-                                <td>
-                                    Sly
-                                </td>
-                                <td>
-                                    Bacalso
-                                </td>
-                                <td>
-                                    1025
-                                </td>
-                                <td>
-                                    120
-                                </td>
-                                <td>
-                                    nasa.sly14@gmail.com
-                                </td>
-                                <td class="text-danger">
-                                    Software Engineer
-                                </td>
-                                <td>
-                                    <a title="edit" class="btn btn-info btn-sm" href="' . web_root . 'admin/products/index.php?view=edit&id=' . $result->PROID . '">Print <i class="material-icons">print</i></a>
-                                </td>
-                            </tr>
-                        </tbody>
                     </table>
                 </div>
                 <div class="btn-group">
-                    <button type="submit" class="btn btn-danger" name="delete"><i class="fa fa-trash fw-fa"></i> Remove Selected</button>
+                    <button id="delete_removed_employee" type="button" class="btn btn-danger"><i class="material-icons">delete</i> Delete Selected</button>
                 </div>
             </div>
         </div>

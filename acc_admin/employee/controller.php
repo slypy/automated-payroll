@@ -30,6 +30,10 @@ switch($action){
         datatable_EmployeeList();
         break;
 
+    case 'listRemovedEmployee':
+        datatable_RemovedEmployeeList();
+        break;
+
     case 'get_employee_data':
         getEmployeeData();
         break;
@@ -38,8 +42,20 @@ switch($action){
         updateEmployeeData();
         break;
 
+    case 'remove_employee_data':
+        removeEmployeeData();
+        break;
+
+    case 'remove_selected_employees':
+        removeSelectedEmployeeData();
+        break;
+
     case 'delete_employee_data':
         deleteEmployeeData();
+        break;
+
+    case 'delete_selected_employees':
+        deleteSelectedEmployeeData();
         break;
 
     case 'listPositions':
@@ -147,7 +163,12 @@ function doAdd_ShiftingType(){
 
 
 function datatable_EmployeeList(){
-    Employee::fetchList();
+    Employee::fetchList('active-employee');
+    return;
+}
+
+function datatable_RemovedEmployeeList(){
+    Employee::fetchList('removed-employee');
     return;
 }
 
@@ -222,8 +243,8 @@ function updateLatePolicy(){
     return;
 }
 
-function deleteEmployeeData(){
-    Employee::delete();
+function removeEmployeeData(){
+    Employee::remove();
     return;
 }
 
@@ -234,5 +255,20 @@ function delete_Position(){
 
 function delete_shiftingType(){
     ShiftingHours::deleteRow();
+    return;
+}
+
+function removeSelectedEmployeeData(){
+    Employee::removeSelected();
+    return;
+}
+
+function deleteEmployeeData(){
+    Employee::delete();
+    return;
+}
+
+function deleteSelectedEmployeeData(){
+    Employee::deleteSelected();
     return;
 }

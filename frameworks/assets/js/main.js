@@ -196,19 +196,6 @@ $(document).ready(function () {
             .addClass("active");
     });
 
-    // Data Table for removed employees
-    $("#removed-table").DataTable({
-        responsive: true,
-        bPaginate: true,
-        bFilter: true,
-        bInfo: false,
-        dom: "ftipr",
-        bAutoWidth: false,
-        searchable: true,
-        orderable: true,
-        sort: false,
-        pageLength: 10,
-    });
 
     /*============== Start Holiday Pay Table ===============*/
 
@@ -899,8 +886,13 @@ $(document).ready(function () {
         pageLength: 15,
         columnDefs: [
             {
-                targets: [8],
+                targets: 6,
+                width: '20px',
+            },
+            {
+                targets: [6,7],
                 className: "td-actions text-center",
+                width: 100
             },
             {
                 targets: [0],
@@ -909,11 +901,56 @@ $(document).ready(function () {
         ],
     });
 
+    // Data Table for removed employees
+    $("#removed-employee-table").DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: {
+                action: "listRemovedEmployee",
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 15,
+        columnDefs: [
+            {
+                targets: 5,
+                width: '25px'
+            },
+            {
+                targets: [5,6],
+                className: "td-actions text-center",
+                width: 100
+            },
+            {
+                targets: [0],
+                className: "text-center",
+            },
+        ],
+    });
+
+
+    $('#check_all').change(function(){
+        $('.checked_remove_employee').prop('checked', $(this).prop('checked'));
+    });
+    
+    $('#check_all_removed').change(function(){
+        $('.checked_delete_employee').prop('checked', $(this).prop('checked'));
+    });
+
     $("#addEmployee").on("submit", function (event) {
         event.preventDefault();
-
-        var newEmployeeData = $("#addEmployee").serialize();
-
+        var newEmployeeData=$("#addEmployee").serialize();
         $.ajax({
             url: "controller.php?action=add_employee",
             method: "POST",
@@ -1010,42 +1047,61 @@ $(document).ready(function () {
                     },
                     "show"
                 );
-                $("#updateEmployee #employee_number").val(data[1]);
-                $("#updateEmployee #card_id").val(data[2]);
-                $("#updateEmployee #fingerprint_number").val(data[3]);
-                $("#updateEmployee #worker_type").val(data[4]);
-                $("#updateEmployee #job_position").val(data[5]);
-                $("#updateEmployee #shifting_type").val(data[6]);
-                $("#updateEmployee #first_name").val(data[7]);
-                $("#updateEmployee #last_name").val(data[8]);
-                $("#updateEmployee #middle_name").val(data[9]);
-                $("#updateEmployee #birth_date").val(data[10]);
-                $("#updateEmployee #age").val(data[11]);
-                $("#updateEmployee #gender").val(data[12]);
-                $("#updateEmployee #civil_status").val(data[13]);
-                $("#updateEmployee #full_address").val(data[14]);
-                $("#updateEmployee #email").val(data[15]);
-                $("#updateEmployee #contact_number").val(data[16]);
-                $("#updateEmployee #contact_person").val(data[17]);
-                $("#updateEmployee #contact_person_number").val(data[18]);
-                $("#updateEmployee #relationship").val(data[19]);
-                $("#updateEmployee #duration_date").val(data[20]);
-                $("#updateEmployee #start_date").val(data[21]);
-                $("#updateEmployee #end_date").val(data[22]);
-                $("#updateEmployee #sss_number").val(data[23]);
-                $("#updateEmployee #employee_er").val(data[24]);
-                $("#updateEmployee #employee_ee").val(data[25]);
-                $("#updateEmployee #sss_active_loan").val(data[26]);
-                $("#updateEmployee #philhealth_number").val(data[27]);
-                $("#updateEmployee #philhealth_per_month").val(data[28]);
-                $("#updateEmployee #pag_ibig_number").val(data[29]);
-                $("#updateEmployee #pag_ibig_per_month").val(data[30]);
-                $("#updateEmployee #pag_ibig_active_loan").val(data[31]);
+                $("#updateEmployee #employee_number").val(data[2]);
+                $("#updateEmployee #card_id").val(data[3]);
+                $("#updateEmployee #fingerprint_number").val(data[4]);
+                $("#updateEmployee #worker_type").val(data[5]);
+                $("#updateEmployee #job_position").val(data[6]);
+                $("#updateEmployee #shifting_type").val(data[7]);
+                $("#updateEmployee #first_name").val(data[8]);
+                $("#updateEmployee #last_name").val(data[9]);
+                $("#updateEmployee #middle_name").val(data[10]);
+                $("#updateEmployee #birth_date").val(data[11]);
+                $("#updateEmployee #age").val(data[12]);
+                $("#updateEmployee #gender").val(data[13]);
+                $("#updateEmployee #civil_status").val(data[14]);
+                $("#updateEmployee #full_address").val(data[15]);
+                $("#updateEmployee #email").val(data[16]);
+                $("#updateEmployee #contact_number").val(data[17]);
+                $("#updateEmployee #contact_person").val(data[18]);
+                $("#updateEmployee #contact_person_number").val(data[19]);
+                $("#updateEmployee #relationship").val(data[20]);
+                $("#updateEmployee #duration_date").val(data[21]);
+                $("#updateEmployee #start_date").val(data[22]);
+                $("#updateEmployee #end_date").val(data[23]);
+                $("#updateEmployee #sss_number").val(data[24]);
+                $("#updateEmployee #employee_er").val(data[25]);
+                $("#updateEmployee #employee_ee").val(data[26]);
+                $("#updateEmployee #sss_active_loan").val(data[27]);
+                $("#updateEmployee #philhealth_number").val(data[28]);
+                $("#updateEmployee #philhealth_per_month").val(data[29]);
+                $("#updateEmployee #pag_ibig_number").val(data[30]);
+                $("#updateEmployee #pag_ibig_per_month").val(data[31]);
+                $("#updateEmployee #pag_ibig_active_loan").val(data[32]);
             },
         });
     });
 
     $("#active-employee-table").on("click", ".delete", function () {
+        var EmployeeID = $(this).attr("id");
+        if (confirm("Are you sure you want to remove this Employee?")) {
+            $.ajax({
+                url: "controller.php",
+                method: "GET",
+                data: {
+                    employee_id: EmployeeID,
+                    action: "remove_employee_data",
+                },
+                success: function () {
+                    $("#active-employee-table").DataTable().draw();
+                    $('#removed-employee-table').DataTable().draw();
+                },
+            });
+        } else {
+            return false;
+        }
+    });
+    $("#removed-employee-table").on("click", ".delete", function () {
         var EmployeeID = $(this).attr("id");
         if (confirm("Are you sure you want to delete this Employee?")) {
             $.ajax({
@@ -1057,10 +1113,55 @@ $(document).ready(function () {
                 },
                 success: function () {
                     $("#active-employee-table").DataTable().draw();
+                    $('#removed-employee-table').DataTable().draw();
                 },
             });
         } else {
             return false;
+        }
+    });
+
+    $('#remove_active_employee').on('click', function(){
+        var selected_employee=[];
+        $('input:checkbox[class=checked_remove_employee]:checked').each(function(){
+            selected_employee.push($(this).val());
+        });
+        if(selected_employee.length>0){
+            if(confirm("Are you sure want to remove the selected employees?")){
+                $.ajax({
+                    url: 'controller.php?action=remove_selected_employees',
+                    type: 'POST',
+                    data: {
+                        selected_employee: selected_employee
+                    },
+                    success: function(){
+                        $('#active-employee-table').DataTable().draw();
+                        $('#removed-employee-table').DataTable().draw();
+                    }
+                })
+            }
+        }
+    });
+
+    $('#delete_removed_employee').on('click', function(){
+        var selected_removed_employee=[];
+        $('input:checkbox[class=checked_delete_employee]:checked').each(function(){
+            selected_removed_employee.push($(this).val());
+        });
+        if(selected_removed_employee.length>0){
+            if(confirm("Are you sure want to delete the selected employees?")){
+                $.ajax({
+                    url: 'controller.php?action=delete_selected_employees',
+                    type: 'POST',
+                    data: {
+                        selected_removed_employee: selected_removed_employee
+                    },
+                    success: function(){
+                        $('#active-employee-table').DataTable().draw();
+                        $('#removed-employee-table').DataTable().draw();
+                    }
+                })
+            }
         }
     });
 
@@ -1147,37 +1248,37 @@ $(document).ready(function () {
                     },
                     "show"
                 );
-                $("#employeeInfo #employee_number").val(data[1]);
-                $("#employeeInfo #card_id").val(data[2]);
-                $("#employeeInfo #fingerprint_number").val(data[3]);
-                $("#employeeInfo #worker_type").val(data[4]);
-                $("#employeeInfo #job_position").val(data[5]);
-                $("#employeeInfo #shifting_type").val(data[6]);
-                $("#employeeInfo #first_name").val(data[7]);
-                $("#employeeInfo #last_name").val(data[8]);
-                $("#employeeInfo #middle_name").val(data[9]);
-                $("#employeeInfo #birth_date").val(data[10]);
-                $("#employeeInfo #age").val(data[11]);
-                $("#employeeInfo #gender").val(data[12]);
-                $("#employeeInfo #civil_status").val(data[13]);
-                $("#employeeInfo #full_address").val(data[14]);
-                $("#employeeInfo #email").val(data[15]);
-                $("#employeeInfo #contact_number").val(data[16]);
-                $("#employeeInfo #contact_person").val(data[17]);
-                $("#employeeInfo #contact_person_number").val(data[18]);
-                $("#employeeInfo #relationship").val(data[19]);
-                $("#employeeInfo #duration_date").val(data[20]);
-                $("#employeeInfo #start_date").val(data[21]);
-                $("#employeeInfo #end_date").val(data[22]);
-                $("#employeeInfo #sss_number").val(data[23]);
-                $("#employeeInfo #employee_er").val(data[24]);
-                $("#employeeInfo #employee_ee").val(data[25]);
-                $("#employeeInfo #sss_active_loan").val(data[26]);
-                $("#employeeInfo #philhealth_number").val(data[27]);
-                $("#employeeInfo #philhealth_per_month").val(data[28]);
-                $("#employeeInfo #pag_ibig_number").val(data[29]);
-                $("#employeeInfo #pag_ibig_per_month").val(data[30]);
-                $("#employeeInfo #pag_ibig_active_loan").val(data[31]);
+                $("#employeeInfo #employee_number").val(data[2]);
+                $("#employeeInfo #card_id").val(data[3]);
+                $("#employeeInfo #fingerprint_number").val(data[4]);
+                $("#employeeInfo #worker_type").val(data[5]);
+                $("#employeeInfo #job_position").val(data[6]);
+                $("#employeeInfo #shifting_type").val(data[7]);
+                $("#employeeInfo #first_name").val(data[8]);
+                $("#employeeInfo #last_name").val(data[9]);
+                $("#employeeInfo #middle_name").val(data[10]);
+                $("#employeeInfo #birth_date").val(data[11]);
+                $("#employeeInfo #age").val(data[12]);
+                $("#employeeInfo #gender").val(data[13]);
+                $("#employeeInfo #civil_status").val(data[14]);
+                $("#employeeInfo #full_address").val(data[15]);
+                $("#employeeInfo #email").val(data[16]);
+                $("#employeeInfo #contact_number").val(data[17]);
+                $("#employeeInfo #contact_person").val(data[18]);
+                $("#employeeInfo #contact_person_number").val(data[19]);
+                $("#employeeInfo #relationship").val(data[20]);
+                $("#employeeInfo #duration_date").val(data[21]);
+                $("#employeeInfo #start_date").val(data[22]);
+                $("#employeeInfo #end_date").val(data[23]);
+                $("#employeeInfo #sss_number").val(data[24]);
+                $("#employeeInfo #employee_er").val(data[25]);
+                $("#employeeInfo #employee_ee").val(data[26]);
+                $("#employeeInfo #sss_active_loan").val(data[27]);
+                $("#employeeInfo #philhealth_number").val(data[28]);
+                $("#employeeInfo #philhealth_per_month").val(data[29]);
+                $("#employeeInfo #pag_ibig_number").val(data[30]);
+                $("#employeeInfo #pag_ibig_per_month").val(data[31]);
+                $("#employeeInfo #pag_ibig_active_loan").val(data[32]);
             },
         });
     });
@@ -1188,10 +1289,7 @@ $(document).ready(function () {
              /***/
 
     $("#worker_type").on("change", function () {
-        if (
-            $("#worker_type").val() === "Regular" ||
-            $("#worker_type").val() === "Contractual"
-        ) {
+        if ($("#worker_type").val() === "Regular" || $("#worker_type").val() === "Contractual") {
             $("div[data-id='employee-gov'").show();
             $("div[data-id='employee-gov'] input").attr("disabled", false);
         } else {
@@ -1967,6 +2065,38 @@ const db = {
     11: ["Danel Kiamco", "employee"],
     12: ["John Doe", "employee"],
 };
+
+function checkedBoxRemove(){
+    let length=$('.checked_remove_employee').length,
+            total_checked=0;
+        
+    $('.checked_remove_employee').each(function(){
+        if(this.checked){
+                total_checked+=1;
+        }
+    });
+
+    if(total_checked == length)
+        $('#check_all').prop('checked', true);
+    else
+        $('#check_all').prop('checked', false);
+}
+
+function checkedBoxDelete(){
+    let length=$('.checked_delete_employee').length,
+            total_checked=0;
+        
+    $('.checked_delete_employee').each(function(){
+        if(this.checked){
+                total_checked+=1;
+        }
+    });
+
+    if(total_checked == length)
+        $('#check_all_removed').prop('checked', true);
+    else
+        $('#check_all_removed').prop('checked', false);
+}
 
 function searchDB(elem) {
     let selector = document.getElementById("selector");
