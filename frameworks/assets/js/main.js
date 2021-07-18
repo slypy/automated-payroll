@@ -4,9 +4,7 @@ $(document).ready(function () {
     $full_page = $(".full-page");
     $sidebar_responsive = $("body > .navbar-collapse");
     window_width = $(window).width();
-    fixed_plugin_open = $(
-        ".sidebar .sidebar-wrapper .nav li.active a p"
-    ).html();
+    fixed_plugin_open = $(".sidebar .sidebar-wrapper .nav li.active a p").html();
     if (window_width > 767 && fixed_plugin_open == "Dashboard") {
         if ($(".fixed-plugin .dropdown").hasClass("show-dropdown")) {
             $(".fixed-plugin .dropdown").addClass("open");
@@ -26,20 +24,15 @@ $(document).ready(function () {
 
     $(".fixed-plugin .active-color span").click(function () {
         $full_page_background = $(".full-page-background");
-
         $(this).siblings().removeClass("active");
         $(this).addClass("active");
-
         var new_color = $(this).data("color");
-
         if ($sidebar.length != 0) {
             $sidebar.attr("data-color", new_color);
         }
-
         if ($full_page.length != 0) {
             $full_page.attr("filter-color", new_color);
         }
-
         if ($sidebar_responsive.length != 0) {
             $sidebar_responsive.attr("data-color", new_color);
         }
@@ -48,9 +41,7 @@ $(document).ready(function () {
     $(".fixed-plugin .background-color .badge").click(function () {
         $(this).siblings().removeClass("active");
         $(this).addClass("active");
-
         var new_color = $(this).data("background-color");
-
         if ($sidebar.length != 0) {
             $sidebar.attr("data-background-color", new_color);
         }
@@ -58,16 +49,10 @@ $(document).ready(function () {
 
     $(".fixed-plugin .img-holder").click(function () {
         $full_page_background = $(".full-page-background");
-
         $(this).parent("li").siblings().removeClass("active");
         $(this).parent("li").addClass("active");
-
         var new_image = $(this).find("img").attr("src");
-
-        if (
-            $sidebar_img_container.length != 0 &&
-            $(".switch-sidebar-image input:checked").length != 0
-        ) {
+        if ($sidebar_img_container.length != 0 && $(".switch-sidebar-image input:checked").length != 0) {
             $sidebar_img_container.fadeOut("fast", function () {
                 $sidebar_img_container.css(
                     "background-image",
@@ -77,52 +62,29 @@ $(document).ready(function () {
             });
         }
 
-        if (
-            $full_page_background.length != 0 &&
-            $(".switch-sidebar-image input:checked").length != 0
-        ) {
-            var new_image_full_page = $(".fixed-plugin li.active .img-holder")
-                .find("img")
-                .data("src");
-
+        if ($full_page_background.length != 0 && $(".switch-sidebar-image input:checked").length != 0) {
+            var new_image_full_page = $(".fixed-plugin li.active .img-holder").find("img").data("src");
             $full_page_background.fadeOut("fast", function () {
-                $full_page_background.css(
-                    "background-image",
-                    'url("' + new_image_full_page + '")'
-                );
+                $full_page_background.css("background-image",'url("' + new_image_full_page + '")');
                 $full_page_background.fadeIn("fast");
             });
         }
 
         if ($(".switch-sidebar-image input:checked").length == 0) {
-            var new_image = $(".fixed-plugin li.active .img-holder")
-                .find("img")
-                .attr("src");
-            var new_image_full_page = $(".fixed-plugin li.active .img-holder")
-                .find("img")
-                .data("src");
+            var new_image = $(".fixed-plugin li.active .img-holder").find("img").attr("src");
+            var new_image_full_page = $(".fixed-plugin li.active .img-holder").find("img").data("src");
 
-            $sidebar_img_container.css(
-                "background-image",
-                'url("' + new_image + '")'
-            );
-            $full_page_background.css(
-                "background-image",
-                'url("' + new_image_full_page + '")'
-            );
+            $sidebar_img_container.css("background-image",'url("' + new_image + '")');
+            $full_page_background.css("background-image",'url("' + new_image_full_page + '")');
         }
 
         if ($sidebar_responsive.length != 0) {
-            $sidebar_responsive.css(
-                "background-image",
-                'url("' + new_image + '")'
-            );
+            $sidebar_responsive.css("background-image",'url("' + new_image + '")');
         }
     });
 
     $(".switch-sidebar-image input").change(function () {
         $full_page_background = $(".full-page-background");
-
         $input = $(this);
 
         if ($input.is(":checked")) {
@@ -130,12 +92,10 @@ $(document).ready(function () {
                 $sidebar_img_container.fadeIn("fast");
                 $sidebar.attr("data-image", "#");
             }
-
             if ($full_page_background.length != 0) {
                 $full_page_background.fadeIn("fast");
                 $full_page.attr("data-image", "#");
             }
-
             background_image = true;
         } else {
             if ($sidebar_img_container.length != 0) {
@@ -147,7 +107,6 @@ $(document).ready(function () {
                 $full_page.removeAttr("data-image", "#");
                 $full_page_background.fadeOut("fast");
             }
-
             background_image = false;
         }
     });
@@ -187,13 +146,7 @@ $(document).ready(function () {
 
     // add class active in li .nav-item on curren url
     $(function () {
-        $(
-            '.nav-item a[href^="/PayRoll2/acc_admin/' +
-                location.pathname.split("/")[3] +
-                '"]'
-        )
-            .closest("li")
-            .addClass("active");
+        $('.nav-item a[href^="/PayRoll2/acc_admin/'+location.pathname.split("/")[3]+'"]').closest("li").addClass("active");
     });
 
 
@@ -526,9 +479,7 @@ $(document).ready(function () {
     });
 
     function toAMPM(time) {
-        time = time
-            .toString()
-            .match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 
         if (time.length > 1) {
             time = time.slice(1);
@@ -538,35 +489,31 @@ $(document).ready(function () {
                 time[0] = "0" + time[0].toString();
             }
         }
-
         return time.join("");
     }
 
     function to24(time12h) {
         var [time, modifier] = time12h.split(" ");
         var [hours, minutes] = time.split(":");
-
         if (hours === "12") {
             hours = "00";
         }
-
         if (modifier === "PM") {
             hours = parseInt(hours, 10) + 12;
         }
-
         return `${hours}:${minutes}`;
     }
 
     function diffTime(start, end) {
-        start = start.split(":");
-        end = end.split(":");
-        var startDate = new Date(0, 0, 0, start[0], start[1], 0);
-        var endDate = new Date(0, 0, 0, end[0], end[1], 0);
-        var diff = endDate.getTime() - startDate.getTime();
-        var hours = Math.floor(diff / 1000 / 60 / 60);
-        diff -= hours * (1000 * 60 * 60);
-        var minutes = Math.floor(diff / 1000 / 60);
-        diff -= minutes * (1000 * 60);
+        start=start.split(":");
+        end=end.split(":");
+        var startDate=new Date(0, 0, 0, start[0], start[1], 0);
+        var endDate=new Date(0, 0, 0, end[0], end[1], 0);
+        var diff=endDate.getTime()-startDate.getTime();
+        var hours=Math.floor(diff/1000/60/60);
+        diff-=hours*(1000*60*60);
+        var minutes=Math.floor(diff/1000/60);
+        diff-=minutes*(1000*60);
 
         // If using time pickers with 24 hours format, add the below line get exact hours
         if (hours < 0) hours = hours + 24;
@@ -1206,31 +1153,19 @@ $(document).ready(function () {
         })
         .trigger("shown.bs.modal");
 
-    $("#info-employee-form")
-        .on("shown.bs.modal", function () {
-            if (
-                $("#employeeInfo #worker_type").val() === "Regular" ||
-                $("#employeeInfo #worker_type").val() === "Contractual"
-            ) {
-                $("#employeeInfo div[data-id='employee-gov']").show();
-                $("#employeeInfo div[data-id='employee-gov'] input").attr(
-                    "disabled",
-                    false
-                );
-            } else {
-                $("#employeeInfo div[data-id='employee-gov']").hide();
-                $("#employeeInfo div[data-id='employee-gov'] input").attr(
-                    "disabled",
-                    true
-                );
-            }
-        })
-        .trigger("shown.bs.modal");
+    $("#info-employee-form").on("shown.bs.modal", function () {
+        if ($("#employeeInfo #worker_type").val() === "Regular" || $("#employeeInfo #worker_type").val() === "Contractual") {
+            $("#employeeInfo div[data-id='employee-gov']").show();
+                $("#employeeInfo div[data-id='employee-gov'] input").attr("disabled", false);
+        } else {
+            $("#employeeInfo div[data-id='employee-gov']").hide();
+            $("#employeeInfo div[data-id='employee-gov'] input").attr("disabled", true);
+        }
+    }).trigger("shown.bs.modal");
 
     $("#active-employee-table").on("click", ".info", function () {
         $("#employeeInfo input").prop("readonly", true);
         $("#employeeInfo select").css("pointer-events", "none");
-
         var EmployeeID = $(this).attr("id");
         $.ajax({
             url: "controller.php",
@@ -1284,9 +1219,9 @@ $(document).ready(function () {
     });
 
     /*****
-             * this event handler is for select Worker type
-             * to show and hide the Gov. Ageny data input
-             /***/
+    * this event handler is for select Worker type
+    * to show and hide the Gov. Ageny data input
+    /***/
 
     $("#worker_type").on("change", function () {
         if ($("#worker_type").val() === "Regular" || $("#worker_type").val() === "Contractual") {
@@ -1308,8 +1243,6 @@ $(document).ready(function () {
         }
     });
     /*============= END of active employee table =============*/
-
-
 
     /** ====== Employee Credits ====== **/
 
@@ -1377,7 +1310,6 @@ $(document).ready(function () {
     $('#employee_number').keyup(function(){
         var that = this,
         value = $(this).val();
-        
         if(value.length >= 1){
             if(searchRequest != null)
                 searchRequest.abort();
@@ -1400,13 +1332,10 @@ $(document).ready(function () {
             });
         }
     });
-
     
-
     $('#addStaffCA').on('submit', function(event){
         event.preventDefault();
         var CashDATA = $('#addStaffCA').serialize();
-
         $.ajax({
             url: 'controller.php?action=add_staff_ca',
             method: 'POST',
@@ -1448,7 +1377,6 @@ $(document).ready(function () {
     $('#updateStaffCA').on('submit', function(event){
         event.preventDefault();
         var CashDATA = $('#updateStaffCA').serialize();
-
         $.ajax({
             url: 'controller.php?action=update_staff_ca',
             method: 'POST',
@@ -1550,12 +1478,10 @@ $(document).ready(function () {
     $('#addStaffLoan #loan_amount').keyup(function(){
         var loan_amount=parseFloat($(this).val()),
             loan_interest=parseFloat($('#addStaffLoan #loan_interest').val());
-        
         if (isNaN(loan_amount) || isNaN(loan_interest)){
             loan_amount=0;
             loan_interest=0;
         }
-
         var sub_total=parseFloat(loan_amount*loan_interest)/100,
             total_balance=parseFloat(sub_total)+parseFloat(loan_amount);
         $('#loan_balance').val(parseFloat(total_balance));
@@ -1564,12 +1490,10 @@ $(document).ready(function () {
     $('#addStaffLoan #loan_interest').keyup(function(){
         var loan_interest=parseFloat($(this).val()),
             loan_amount=parseFloat($('#addStaffLoan #loan_amount').val());
-        
         if (isNaN(loan_amount) || isNaN(loan_interest)){
             loan_amount=0;
             loan_interest=0;
         }
-
         var sub_total=parseFloat(loan_amount*loan_interest)/100,
             total_balance=parseFloat(sub_total)+parseFloat(loan_amount);
         $('#loan_balance').val(parseFloat(total_balance));
@@ -1578,7 +1502,6 @@ $(document).ready(function () {
     $('#addStaffLoan').on('submit',function(event){
         event.preventDefault();
         var LoanData=$(this).serialize();
-        
         $.ajax({
             url: 'controller.php?action=add_staff_loan',
             method: 'POST',
@@ -1700,11 +1623,10 @@ $(document).ready(function () {
     $('#addStaffDamages #employee_number').keyup(function(){
         var that = this,
         value = $(this).val();
-        
         if(value.length >= 1){
             if(searchRequest != null)
                 searchRequest.abort();
-            
+    
             searchRequest = $.ajax({
                 url: 'controller.php',
                 type: 'GET',
@@ -1727,7 +1649,6 @@ $(document).ready(function () {
     $('#addStaffDamages').on('submit', function(event){
         event.preventDefault();
         var Damage_Data = $(this).serialize();
-
         $.ajax({
             url: 'controller.php?action=add_staff_damages',
             type: 'POST',
@@ -1742,7 +1663,6 @@ $(document).ready(function () {
 
     $('#staff-damages-table').on('click', '.update', function(){
         var Damage_ID=$(this).attr('id');
-        
         $.ajax({
             url: 'controller.php',
             type: 'GET', 
@@ -1756,7 +1676,6 @@ $(document).ready(function () {
                     backdrop: 'static',
                     keyboard: false,
                 }, 'show');
-
                 $('#updateStaffDamages #employee_number').val(data[1]);
                 $('#updateStaffDamages #employee_name').val(data[2]);
                 $('#updateStaffDamages #date_issue').val(data[3]);
@@ -1770,7 +1689,6 @@ $(document).ready(function () {
     $('#updateStaffDamages').on('submit', function(event){
         event.preventDefault();
         var Pay_Data = $(this).serialize();
-        
         $.ajax({
             url: 'controller.php?action=update_staff_damages',
             type: 'POST',
@@ -1916,7 +1834,6 @@ $(document).ready(function () {
                     });
                 }
             });
-
             seq = 0;
         },
 
@@ -1926,7 +1843,7 @@ $(document).ready(function () {
                     seq2++;
                     data.element.animate({
                         opacity: {
-                            begin: seq2 * delays2,
+                            begin: seq2*delays2,
                             dur: durations2,
                             from: 0,
                             to: 1,
@@ -1935,25 +1852,21 @@ $(document).ready(function () {
                     });
                 }
             });
-
             seq2 = 0;
         },
     };
-
     dashboard.initDashboardPageCharts();
 
     $(window).resize(function () {
         dashboard.initSidebarsCheck();
-
         // reset the seq for charts drawing animations
         seq = seq2 = 0;
-
         setTimeout(function () {
             dashboard.initDashboardPageCharts();
         }, 500);
     });
 
-        /*****
+    /*****
      * this event handler is to display Remove Employees
      * On Click
      ***/
@@ -2068,14 +1981,12 @@ const db = {
 
 function checkedBoxRemove(){
     let length=$('.checked_remove_employee').length,
-            total_checked=0;
-        
+        total_checked=0;   
     $('.checked_remove_employee').each(function(){
         if(this.checked){
-                total_checked+=1;
+            total_checked+=1;
         }
     });
-
     if(total_checked == length)
         $('#check_all').prop('checked', true);
     else
@@ -2084,14 +1995,13 @@ function checkedBoxRemove(){
 
 function checkedBoxDelete(){
     let length=$('.checked_delete_employee').length,
-            total_checked=0;
+        total_checked=0;
         
     $('.checked_delete_employee').each(function(){
         if(this.checked){
-                total_checked+=1;
+            total_checked+=1;
         }
     });
-
     if(total_checked == length)
         $('#check_all_removed').prop('checked', true);
     else
