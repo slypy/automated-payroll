@@ -177,6 +177,7 @@
     </div>
 </div>
 
+<!-- Employee Miscellaneous section -->
 <div id="tbl-misc" class="row" style="margin-top: -40px; display: none">
     <div class="col-md-12">
         <div class="card">
@@ -195,22 +196,19 @@
                     <hr>
                 </div>
                 <div class="table-responsive">
-                    <table id="staffCA-table" class="table table-sm table-hover" cellspacing="0">
+                    <table id="employee-misc-table" class="table table-sm table-hover" cellspacing="0">
                         <thead class="text-primary text-sm">
-                            <th>
-                                Transaction #
-                            </th>
                             <th>
                                 Employee ID #
                             </th>
                             <th>
                                 Name
                             </th>
-                            <th>
-                                Date of Cash Advance
-                            </th>
                             <th class="text-center">
-                                ₱ CA Amount
+                                Misc.
+                            </th>
+                            <th>
+                                ₱ Amount
                             </th>
                             <th class="text-center">
                                 Salary Deduction
@@ -219,33 +217,6 @@
                                 Action
                             </th>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <?php echo date('Ydm'); ?>
-                                </td>
-                                <td>
-                                    SM-202121023
-                                </td>
-                                <td>
-                                    Sly Bacalso
-                                </td>
-                                <td>
-                                    Jun 25, 2021
-                                </td>
-                                <td class="text-warning text-center">
-                                    5500
-                                </td>
-                                <td class="text-danger text-center">
-                                    5500
-                                </td>
-                                <td class="td-actions text-center">
-                                    <button title="delete" type="button" class="btn btn-danger" rel="tooltip">
-                                        <i class="material-icons">delete</i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
                     </table>
                 </div>
             </div>

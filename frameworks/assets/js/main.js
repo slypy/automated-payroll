@@ -1323,8 +1323,9 @@ $(document).ready(function () {
                 },
                 dataType: 'json',
                 success: function(data){
+
                     if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
-                        $('#employee_name').val(`${data[7]} ${data[8]}`);
+                        $('#employee_name').val(`${data[8]} ${data[9]}`);
                     } else {
                         $('#employee_name').val('');
                     }
@@ -1466,7 +1467,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function(data){
                     if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
-                        $('#addStaffLoan #employee_name').val(`${data[7]} ${data[8]}`);
+                        $('#addStaffLoan #employee_name').val(`${data[8]} ${data[9]}`);
                     } else {
                         $('#addStaffLoan #employee_name').val('');
                     }
@@ -1562,9 +1563,34 @@ $(document).ready(function () {
     })
      /*============= END Staff loan =============*/
 
+
+    /*============== START Employee Miscellaneous ===============*/
+    $('#employee-misc-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: 'controller.php',
+            type: 'GET',
+            data: {
+                action: 'listEmployeeMisc',
+            },
+            dataType: 'json',
+        },
+        retrieve: true,
+        dom: 'ftipr',
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        
+    })
+    /*============== END Employee Miscellaneous ===============*/
     
-     /*============= START Staff damages =============*/
-     $('#staff-damages-table').DataTable({
+    /*============= START Staff damages =============*/
+    $('#staff-damages-table').DataTable({
         serverSide: true,
         ajax: {
             url: "controller.php",
@@ -1637,7 +1663,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function(data){
                     if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
-                        $('#addStaffDamages #employee_name').val(`${data[7]} ${data[8]}`);
+                        $('#addStaffDamages #employee_name').val(`${data[8]} ${data[9]}`);
                     } else {
                         $('#addStaffDamages #employee_name').val('');
                     }

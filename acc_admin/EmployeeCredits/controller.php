@@ -40,6 +40,10 @@ switch($action){
     case 'listStaffDamages':
         datatable_StaffDamages();
         break;
+
+    case 'listEmployeeMisc':
+
+        break;
     
     case 'listPaidStaffCA':
         datatable_PaidStaffCA();
