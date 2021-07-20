@@ -224,6 +224,42 @@
     </div>
 </div>
 
+<div id="paid-tbl-employee-misc" class="row" style="display: none">
+    <div class="col-md-12">
+        <div class="card card-plain">
+            <div id="paid-employee-misc" class="card-header card-header-primary" style="cursor: pointer;">
+                <h4 class="card-title mt-0">Click to show/hide paid damages</h4>
+            </div>
+            <div id="display-paid-employeeMisc" class="card-body" style="display: none;">
+                <div class="table-responsive">
+                    <table id="paid-employee-misc-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
+                        <thead class="text-primary text-sm">
+                            <th>
+                                Employee ID #
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th class="text-center">
+                                Misc.
+                            </th>
+                            <th>
+                                ₱ Amount
+                            </th>
+                            <th class="text-center">
+                                Salary Deduction
+                            </th>
+                            <th class="text-center">
+                                Action
+                            </th>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="tbl-damage" class="row" style="margin-top: -40px; display: none">
     <div class="col-md-12">
         <div class="card">

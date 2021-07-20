@@ -17,108 +17,107 @@ switch($action){
     case 'get_employee_name':
         getEmployeeName();
         break;
-    
+
+    # Staff cash advance parameter
+    case 'listStaffCA':
+        datatable_StaffCA();
+        break;
+    case 'listPaidStaffCA':
+        datatable_PaidStaffCA();
+        break;
     case 'add_staff_ca':
         add_StaffCA();
+        break;
+    case 'get_staff_ca':
+        get_staffCA();
+        break;
+     case 'update_staff_ca':
+        update_staffCA();
+        break;
+
+    # Staff loan parameter
+    case 'listStaffLoan':
+        datatable_StaffLoan();
+        break;
+    case 'listPaidStaffLoan';
+        datatable_PaidStaffLoan();
         break;
     case 'add_staff_loan':
         add_StaffLoan();
         break;
-    
-    case 'add_staff_damages':
-        add_StaffDamages();
-        break;
-        
-    case 'listStaffCA':
-        datatable_StaffCA();
-        break;
-    
-    case 'listStaffLoan':
-        datatable_StaffLoan();
-        break;
-
-    case 'listStaffDamages':
-        datatable_StaffDamages();
-        break;
-
-    case 'listEmployeeMisc':
-
-        break;
-    
-    case 'listPaidStaffCA':
-        datatable_PaidStaffCA();
-        break;
-
-    case 'listPaidStaffLoan';
-        datatable_PaidStaffLoan();
-        break;
-
-    case 'listPaidStaffDamages':
-        datatable_PaidStaffDamages();
-        break;
-
-    case 'get_staff_ca':
-        get_staffCA();
-        break;
-    
     case 'get_staff_loan':
         get_staffLoan();
         break;
-
-    case 'get_staff_damages':
-        get_staffDamages();
-        break;
-    
-    case 'update_staff_ca':
-        update_staffCA();
-        break;
-    
     case 'update_staff_loan':
         update_staffLoan();
         break;
 
+    # Staff damages parameter
+    case 'listStaffDamages':
+        datatable_StaffDamages();
+        break;
+    case 'listPaidStaffDamages':
+        datatable_PaidStaffDamages();
+        break;
+    case 'add_staff_damages':
+        add_StaffDamages();
+        break;
+    case 'get_staff_damages':
+        get_staffDamages();
+        break;
     case 'update_staff_damages':
         update_staffDamages();
         break;
+
+    # Employee Miscellaneous
+    case 'listEmployeeMisc':
+        datatable_EmployeeMisc();
+        break;
+    case 'listPaidEmployeeMisc':
+        datatable_PaidEmployeeMisc();
+        break;
+    case 'add_employee_misc':
+        # TODO
+        break;
+    case 'get_employee_misc':
+        # TODO
+        break;
+    case 'update_employee_misc':
+        # TODO
+        break;
 }
+
 
 function getEmployeeName(){
     Employee::getDataName();
     return;
 }
 
-function add_StaffCA(){
-    EmployeeCredits::add('staff_ca');
-    return;
-}
-
-function add_StaffLoan(){
-    EmployeeCredits::add('staff_loan');
-    return;
-}
-
-function add_StaffDamages(){
-    EmployeeCredits::add('staff_damages');
-    return;
-}
-
+# Staff Cash Advance function
 function datatable_StaffCA(){
     EmployeeCredits::fetchDataList('staff_ca');
     return;
 }
-
-function datatable_StaffLoan(){
-    EmployeeCredits::fetchDataList('staff_loan');
-    return;
-}
-
-function datatable_StaffDamages(){
-    EmployeeCredits::fetchDataList('staff_damages');
-    return;
-}
-
 function datatable_PaidStaffCA(){
     EmployeeCredits::fetchDataList('paid_staff_ca');
+    return;
+}
+function add_StaffCA(){
+    EmployeeCredits::add('staff_ca');
+    return;
+}
+function get_staffCA(){
+    EmployeeCredits::getData();
+    return;
+}
+function update_staffCA(){
+    EmployeeCredits::update('staff_ca');
+    return;
+}
+
+# Staff Loan function
+function datatable_StaffLoan(){
+    EmployeeCredits::fetchDataList('staff_loan');
     return;
 }
 
@@ -126,39 +125,60 @@ function datatable_PaidStaffLoan(){
     EmployeeCredits::fetchDataList('paid_staff_loan');
     return;
 }
-
-function datatable_PaidStaffDamages(){
-    EmployeeCredits::fetchDataList('paid_staff_damages');
+function add_StaffLoan(){
+    EmployeeCredits::add('staff_loan');
     return;
 }
-
-function get_staffCA(){
-    EmployeeCredits::getData();
-    return;
-}
-
 function get_staffLoan(){
     EmployeeCredits::getData();
     return;
 }
-
-function get_staffDamages(){
-    EmployeeCredits::getData();
-    return;
-}
-
-function update_staffCA(){
-    EmployeeCredits::update('staff_ca');
-    return;
-}
-
 function update_staffLoan(){
     EmployeeCredits::update('staff_loan');
     return;
 }
 
+# Staff Damages function
+function datatable_StaffDamages(){
+    EmployeeCredits::fetchDataList('staff_damages');
+    return;
+}
+function datatable_PaidStaffDamages(){
+    EmployeeCredits::fetchDataList('paid_staff_damages');
+    return;
+}
+function add_StaffDamages(){
+    EmployeeCredits::add('staff_damages');
+    return;
+}
+function get_staffDamages(){
+    EmployeeCredits::getData();
+    return;
+}
 function update_staffDamages(){
     EmployeeCredits::update('staff_damages');
     return;
 }
-?>
+
+
+# Employee Miscellaneous function
+function datatable_EmployeeMisc(){
+    # TODO
+    return;
+}
+function datatable_PaidEmployeeMisc(){
+    # TODO
+    return;
+}
+function add_EmployeeMisc(){
+    # TODO
+    return;
+}
+function get_EmployeeMisc(){
+    # TODO
+    return;
+}
+function update_EmployeeMisc(){
+    # TODO 
+    return;
+}

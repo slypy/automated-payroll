@@ -1585,8 +1585,43 @@ $(document).ready(function () {
         searching: true,
         bFilter: true,
         pageLength: 10,
-        
-    })
+        columnDefs: [
+            {
+                targets: [5],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+
+    $('#paid-employee-misc-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: 'controller.php',
+            type: 'GET',
+            data: {
+                action: 'listPaidEmployeeMisc',
+            },
+            dataType: 'json',
+        },
+        retrieve: true,
+        dom: 'ftipr',
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [5],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+
+    
     /*============== END Employee Miscellaneous ===============*/
     
     /*============= START Staff damages =============*/
