@@ -231,6 +231,14 @@ $(document).ready(function () {
     switch(dir_name){
         case 'dtr':
             $('#employee-dtr-table').DataTable({
+                serverSide: true,
+                ajax: {
+                    url: 'controller.php',
+                    type: 'GET',
+                    data: {
+                        action: 'listDTRRecord'
+                    },
+                },
                 dom: "ftipr",
                 bAutoWidth: false,
                 paging: true,

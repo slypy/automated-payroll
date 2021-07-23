@@ -29,38 +29,15 @@
                                 Time Out
                             </th>
                             <th>
-                                Time Late
+                                Over Time In
                             </th>
                             <th>
-                                Penalty Amount
+                                Over Time Out
                             </th>
-
+                            <th>
+                                Total Worked Hours
+                            </th>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    20210301
-                                </td>
-                                <td>
-                                    Sly Kint Bacalso
-                                </td>
-                                <td>
-                                    <?php echo date('(D) M d, Y', strtotime(date('Y-m-d'))); ?>
-                                </td>
-                                <td>
-                                    8:00 AM
-                                </td>
-                                <td>
-                                    8:00 PM
-                                </td>
-                                <td class="text-danger">
-                                    0 hours
-                                </td>
-                                <td class="text-warning">
-                                    ₱ 0
-                                </td>
-                            </tr>
-                        </tbody>
                     </table>
                 </div>
                 <div>

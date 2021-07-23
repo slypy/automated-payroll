@@ -14,6 +14,13 @@ switch($action){
         Page::redir("../index.php");
         break;
 
+    case 'listDTRRecord':
+        datatable_DTRRecord();
+        break;
 }
 
+function datatable_DTRRecord(){
+    DTR::fetchRecordDTRData();
+    return;
+}
 ?>
