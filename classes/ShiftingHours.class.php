@@ -22,7 +22,11 @@ class ShiftingHours{
         $query = Db::fetch(self::$db_tbl, "", "", "", "", "", "");
 
         while($result = Db::assoc($query)){
-            echo '<option value="'.$result['shifting_type_name'].'">'.$result['shifting_type_name'].'</option>';
+            if(strtolower($result['shifting_type_name']) == 'open shift'){
+                echo '<option value="'.$result['shifting_type_name'].'">'.$result['shifting_type_name'].' (anytime - '.$result['total_work_hours'].' hrs)</option>';
+            } else {
+                echo '<option value="'.$result['shifting_type_name'].'">'.$result['shifting_type_name'].' ('.$result['start_time'].' - '.$result['end_time'].')</option>';
+            }
         }
         return;
     }
@@ -44,14 +48,24 @@ class ShiftingHours{
         $listData = array();
         while($tbl_shifting = Db::assoc($query)){
             $dataRow = array();
-            $dataRow[] = $tbl_shifting['shifting_type_name'];
-            $dataRow[] = $tbl_shifting['start_time'];
-            $dataRow[] = $tbl_shifting['end_time'];
-            $dataRow[] = $tbl_shifting['break_time'];
-            $dataRow[] = $tbl_shifting['total_work_hours'];
-            $dataRow[] = '<button type="button" name="update" id="'.$tbl_shifting['id'].'" class="btn btn-success update"><i class="material-icons">edit</i></button>
-            <button type="button" name="delete" id="'.$tbl_shifting['id'].'" class="btn btn-danger delete"><i class="material-icons">delete</i></button>';
 
+            if(strtolower($tbl_shifting['shifting_type_name']) == 'open shift'){
+                $dataRow[] = $tbl_shifting['shifting_type_name'];
+                $dataRow[] = 'any time';
+                $dataRow[] = 'any time';
+                $dataRow[] = $tbl_shifting['break_time'].' hrs.mins';
+                $dataRow[] = $tbl_shifting['total_work_hours'].' hrs.mins';
+                $dataRow[] = '<button type="button" name="update" id="'.$tbl_shifting['id'].'" class="btn btn-success update"><i class="material-icons">edit</i></button>';
+            } else {
+                $dataRow[] = $tbl_shifting['shifting_type_name'];
+                $dataRow[] = $tbl_shifting['start_time'];
+                $dataRow[] = $tbl_shifting['end_time'];
+                $dataRow[] = $tbl_shifting['break_time'].' hrs.mins';
+                $dataRow[] = $tbl_shifting['total_work_hours'].' hrs.mins';
+                $dataRow[] = '<button type="button" name="update" id="'.$tbl_shifting['id'].'" class="btn btn-success update"><i class="material-icons">edit</i></button>
+                <button type="button" name="delete" id="'.$tbl_shifting['id'].'" class="btn btn-danger delete"><i class="material-icons">delete</i></button>';
+            }
+        
             $listData[] = $dataRow;
         }
 

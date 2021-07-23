@@ -5,11 +5,6 @@ $action = (isset($_GET['page']) && $_GET['page'] != '') ? $_GET['page'] : '';
 
 if(Account::loggedIn()){
 	switch($action){
-		case 'time-in-out':
-			$page_title = 'Update Employee Time-In/Out';
-			$page_content = 'update_employee_time-in-out.php';
-			break;
-
 		case 'shifting-hours':
 			$page_title = 'Shifting Schedules';
 			$page_content = 'shifting_hours.php';

@@ -110,11 +110,6 @@
         </div>
     </div>
 </div>
-
-<!-- ----------------------------------------------------------------------------------------- -->
-<!-- ------------------------------- Navagition Top modals ----------------------------------- -->
-<!-- ----------------------------------------------------------------------------------------- -->
-
 <!-- ------------------------------------------------------------------------------------ -->
 <!-- ------------------------------- Main Body modals ----------------------------------- -->
 <!-- ------------------------------------------------------------------------------------ -->
@@ -224,7 +219,7 @@
                                     <select id="shifting_type" class="select-text" name="shifting_type" required style="background-color: white;">
                                         <option value="" selected></option>
                                     </select>
-                                    <label class="select-label" style="border-radius: 5px;">Time Shifting</label>
+                                    <label class="select-label" style="border-radius: 5px;">Shifting Shedule</label>
                                 </div>
                             </div>
                         </div>
@@ -244,7 +239,7 @@
                             </div>
                             <div class="material-textfield">
                                 <!-- middle_name: $("#middle_name").val() -->
-                                <input id="middle_name" placeholder=" " name="middle_name" class="fn" type="text" required>
+                                <input id="middle_name" placeholder=" " name="middle_name" class="fn" type="text" value="">
                                 <label>Middle Name</label>
                             </div>
                         </div>
@@ -264,7 +259,7 @@
                             <div>
                                 <div class="material-textfield" style="margin-left: -20px;">
                                     <!-- age: $("#age").val() -->
-                                    <input id="age" placeholder=" " name="age" class="fn" type="number" required style="width: 50px;">
+                                    <input id="age" placeholder=" " name="age" class="fn" type="number" required style="width: 50px;" readonly>
                                     <label>Age</label>
                                 </div>
                             </div>
@@ -548,7 +543,7 @@
                                     <select id="shifting_type" class="select-text" name="shifting_type" required style="background-color: white;">
                                         <option value="" selected></option>
                                     </select>
-                                    <label class="select-label" style="border-radius: 5px;">Time Shifting</label>
+                                    <label class="select-label" style="border-radius: 5px;">Shifting Schedule</label>
                                 </div>
                             </div>
                         </div>

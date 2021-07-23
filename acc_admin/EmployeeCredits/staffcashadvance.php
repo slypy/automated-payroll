@@ -189,14 +189,14 @@
                         </h3>
                     </div>
                     <div>
-                        <a href="#registration-form" data-target="#new-ca-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"><i class="material-icons">add</i> New</a>
+                        <a href="#registration-form" data-target="#new-employee-misc-form" data-toggle="modal" data-backdrop="static" class="btn btn-success btn-sm"><i class="material-icons">add</i> New</a>
                     </div>
                 </div>
                 <div class="header-line">
                     <hr>
                 </div>
                 <div class="table-responsive">
-                    <table id="employee-misc-table" class="table table-sm table-hover" cellspacing="0">
+                    <table id="employee-misc-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th>
                                 Employee ID #
@@ -660,6 +660,25 @@
                     </div>
                     <button type="submit" name="updatestaffCA" class="btn btn-success btn-md">Submit</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form id="addEmployeeMisc">
+    <div id="new-employee-misc-form" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-header-title">
+                        <h3 class="modal-title" id="exampleModalLabel">New Employee Miscellaneous</h3>
+                        <p class="modal-title" id="exampleModalLabel">complete the form to submit</p>
+                    </div>
+                    <button class="close" id="btnclose" type="button" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+
                 </div>
             </div>
         </div>

@@ -1,6 +1,17 @@
+<?php
+
+if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+  $ssl = 'https';
+}
+else {
+  $ssl = 'http';
+}
+
+$app_url = ($ssl)."://".$_SERVER['HTTP_HOST'].(dirname($_SERVER["SCRIPT_NAME"]) == DIRECTORY_SEPARATOR ? "" : "/"). trim(str_replace("\\", "/", dirname($_SERVER["SCRIPT_NAME"])), "/");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title><?php echo Config::SYSTEM_NAME ?></title>
     <?php
@@ -8,7 +19,6 @@
     include "../../modules/list.php";
     ?>
 </head>
-
 <body>
     <div class="wrapper">
         <div class="sidebar" data-color="torquoise" data-background-color="white" style="z-index: 999;">
@@ -27,7 +37,7 @@
             <div id="sidebar-scroll" class="sidebar-wrapper" onmouseover="this.style.overflow='overlay'" onmouseout="this.style.overflow='hidden'">
                 <ul class="nav">
                     <!-- Dashboard -->
-                    <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/dashboard/">
+                    <li class="nav-item">
                         <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/dashboard/">
                             <i class="material-icons">dashboard</i>
                             <p>Dashboard</p>
@@ -41,7 +51,7 @@
                     </li>
                     <!-- Employee -->
                     <hr style="width: 230px;">
-                    <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/employee/">
+                    <li class="nav-item">
                         <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/employee/">
                             <i class="material-icons">assignment_ind</i>
                             <p>Employees</p>
@@ -57,14 +67,14 @@
                     <!-- Payroll Report -->
                     <hr style="width: 230px;">
                     <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/reports/">
-                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/reports/">
+                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/payroll/">
                             <i class="material-icons">receipt</i>
                             <p>Payroll</p>
                         </a>
                     </li>
                     <hr style="width: 230px;">
-                    <li class="nav-item" href="<?php echo $web_root; ?>acc_admin/HolidayPay/">
-                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/HolidayPay/">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo $web_root; ?>acc_admin/holiday-pay/">
                             <i class="material-icons">account_balance_wallet</i>
                             <p>Holiday Pay</p>
                         </a>
@@ -74,7 +84,7 @@
         </div>
         <div class="main-panel">
             <!-- Navigation bar -->
-            <nav class="navbar navbar-expand-lg navbar-light navbar-absolute fixed-top" style="max-height: 55px; z-index: 99; box-shadow: 0px 0px 5px 0px rgb(167, 167, 167)">
+            <nav class="navbar navbar-expand-lg navbar-light bg-primary navbar-absolute fixed-top" style="max-height: 55px; z-index: 99; box-shadow: 0px 0px 5px 0px rgb(167, 167, 167)">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
 
@@ -82,14 +92,17 @@
                         # request current url
                         $u_url = $_SERVER['REQUEST_URI'];
                         # create matching string url 
-                        $u_employee_url = $web_root . 'acc_admin/employee/index.php?page=time-in-out';
                         $s_employee_url = $web_root . 'acc_admin/employee/index.php?page=shifting-hours';
                         $p_employee_url = $web_root . 'acc_admin/employee/index.php?page=job-positions';
-
+                        $u_employee_dtr_url = $web_root.'acc_admin/dtr/index.php?page=employee-dtr';
 
                         # if match echo back button in the left top navigation bar of the time-in-out page
-                        if (strval($u_url) === strval($u_employee_url) || strval($u_url) === strval($s_employee_url) || strval($u_url) === strval($p_employee_url)) {
-                            echo '<a href="' . $web_root . 'acc_admin/employee/" class="btn btn-primary btn-sm"> <i class="material-icons">arrow_back</i> Back</a>';
+                        if (strval($u_url) === strval($s_employee_url) || strval($u_url) === strval($p_employee_url)) {
+                            echo '<a href="' . $web_root . 'acc_admin/employee/" class="btn btn-secondary btn-sm"> <i class="material-icons">arrow_back</i> Back</a>';
+                        } else if(strval($u_url) === strval($u_employee_dtr_url)){
+                            echo '<a href="' . $web_root . 'acc_admin/dtr/" class="btn btn-secondary btn-sm"> <i class="material-icons">arrow_back</i> Back</a>';
+                        } else {
+                            # do nothing
                         }
                         ?>
 
@@ -104,7 +117,8 @@
                             $url = $_SERVER['REQUEST_URI'];
                             # create matching string url
                             $employee_url = $web_root . 'acc_admin/employee/';
-                            $staffcash_advance_url = $web_root . 'acc_admin/EmployeeCredits/';
+                            $employee_dtr_url = $web_root.'acc_admin/dtr/';
+                            $staffcash_advance_url = $web_root.'acc_admin/EmployeeCredits/';
                         
                             if (strval($url) == strval($employee_url)) {
                                 echo '
@@ -113,15 +127,11 @@
                                 </li>
                                 <li class="nav-item" style="margin-left: 20px;">
                                     <a href="' . $web_root . 'acc_admin/employee/index.php?page=shifting-hours" class="btn btn-warning btn-sm"> <i class="material-icons">access_time</i> Shifting Schedules</a>
-                                </li> 
-                                                      
-                                <li class="nav-item" style="margin-left: 20px;">
-                                    <a href="' . $web_root . 'acc_admin/employee/index.php?page=time-in-out" class="btn btn-warning btn-sm"> <i class="material-icons">update</i> Update employee\'s dtr</a>
                                 </li>';
                             } else if (strval($url) == strval($staffcash_advance_url)) {
                                 echo '
                                 <li class="nav-item">
-                                    <button id="staffCA-btn" class="btn btn-primary btn-sm"> <i class="material-icons">monetization_on</i> Staff Cash Advance</button>
+                                    <button id="staffCA-btn" class="btn btn-secondary btn-sm"> <i class="material-icons">monetization_on</i> Staff Cash Advance</button>
                                 </li> 
                                 <li class="nav-item" style="margin-left:20px">
                                     <button id="loan-btn" class="btn btn-warning btn-sm"> <i class="material-icons">monetization_on</i> loan</button>
@@ -132,6 +142,12 @@
                                 <li class="nav-item" style="margin-left: 20px;">
                                     <button id="damage-btn" class="btn btn-warning btn-sm"> <i class="material-icons">show_chart</i> Damage record</button>
                                 </li>';
+                            } else if(strval($url) == strval($employee_dtr_url)){
+                                echo '<li class="nav-item" style="margin-left: 20px;">
+                                <a href="' . $web_root . 'acc_admin/dtr/index.php?page=employee-dtr" class="btn btn-warning btn-sm"> <i class="material-icons">update</i> Update employee\'s dtr</a>
+                            </li>';
+                            } else {
+                                # do nothing
                             }
 
                             ?>

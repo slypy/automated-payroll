@@ -7,7 +7,7 @@ interface Config{
     const MySQLHost = "localhost"; 
 	const MySQLData = "kmb-solutions";
 	const MySQLUser = "root";
-	const MySQLPass = "";
+	const MySQLPass = "SlyTheGreatGenius";
     const MySQLPort = 3306;
 }
 

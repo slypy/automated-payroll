@@ -448,20 +448,4 @@ class Db extends mysqli implements Config{
 	public static function getCount($table, $where, $whereValue, $order, $limit){
 		return self::fetchAll($table, $where, $whereValue, $order, $limit)->rowCount();
 	}
-
-
-	public static function get($table, $colToken, $tokenValue, $field){
-		$con = self::connectDB(); 
-		try{
-			$query = $con->prepare("SELECT $field FROM $table WHERE $colToken  ");
-			$query->bindParam(1, $tokenValue);
-			$query->execute();
-			if($query->rowCount()){
-				$data = $query->fetch(PDO::FETCH_NUM);
-				return $data[0];
-			}
-		} catch(Exception $e){
-			die($e->getMessage());
-		}
-	}
 }

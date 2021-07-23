@@ -163,11 +163,11 @@ function update_staffDamages(){
 
 # Employee Miscellaneous function
 function datatable_EmployeeMisc(){
-    # TODO
+    EmployeeCredits::fetchDataList('employee_misc');
     return;
 }
 function datatable_PaidEmployeeMisc(){
-    # TODO
+    EmployeeCredits::fetchDataList('paid_employee_misc');
     return;
 }
 function add_EmployeeMisc(){

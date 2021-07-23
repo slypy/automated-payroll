@@ -26,7 +26,7 @@
 <script src="<?php echo $web_root; ?>frameworks/assets/js/plugins/dataTables.bootstrap5.min.js" type="text/javascript"></script>
 <script src="<?php echo $web_root; ?>frameworks/assets/js/plugins/chartist.min.js"></script>
 <script src="<?php echo $web_root; ?>frameworks/assets/js/material-dashboard.js" type="text/javascript"></script>
-
-<!-- <script defer src="<?php echo $web_root; ?>frameworks/assets/js/main.js" type="text/javascript"></script> -->
+<!-- 
+<script defer src="<?php echo $web_root; ?>frameworks/assets/js/main.js" type="text/javascript"></script> -->
 
 <script defer src="<?php echo $web_root; ?>frameworks/assets/js/main.js?v=<?php echo time(); ?>" type="text/javascript"></script>
