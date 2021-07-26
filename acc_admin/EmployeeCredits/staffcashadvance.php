@@ -17,7 +17,7 @@
                     <hr>
                 </div>
                 <div class="table-responsive">
-                    <table id="staff-ca-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
+                    <table id="staff-ca-table" class="table table-sm table-hover table-bordered" cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th>
                                 Employee ID #
@@ -53,7 +53,7 @@
             </div>
             <div id="display-paid-tbl-staffCA" class="card-body" style="display: none;">
                 <div class="table-responsive">
-                    <table id="paid-staff-ca-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
+                    <table id="paid-staff-ca-table" class="table table-sm table-hover table-bordered" cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th>
                                 Employee ID #
@@ -101,7 +101,7 @@
                     <hr>
                 </div>
                 <div class="table-responsive">
-                    <table id="staff-loan-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
+                    <table id="staff-loan-table" class="table table-sm table-hover table-bordered" cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th>
                                 Employee ID #
@@ -143,7 +143,7 @@
             </div>
             <div id="display-paid-staffLoan" class="card-body" style="display: none;">
                 <div class="table-responsive">
-                    <table id="paid-staff-loan-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
+                    <table id="paid-staff-loan-table" class="table table-sm table-hover table-bordered" cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th>
                                 Employee ID #
@@ -196,7 +196,7 @@
                     <hr>
                 </div>
                 <div class="table-responsive">
-                    <table id="employee-misc-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
+                    <table id="employee-misc-table" class="table table-sm table-hover table-bordered" cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th>
                                 Employee ID #
@@ -232,7 +232,7 @@
             </div>
             <div id="display-paid-employeeMisc" class="card-body" style="display: none;">
                 <div class="table-responsive">
-                    <table id="paid-employee-misc-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
+                    <table id="paid-employee-misc-table" class="table table-sm table-hover table-bordered" cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th>
                                 Employee ID #
@@ -278,7 +278,7 @@
                     <hr>
                 </div>
                 <div class="table-responsive">
-                    <table id="staff-damages-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
+                    <table id="staff-damages-table" class="table table-sm table-hover table-bordered" cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th>
                                 Employee ID #
@@ -317,7 +317,7 @@
             </div>
             <div id="display-paid-staffDamages" class="card-body" style="display: none;">
                 <div class="table-responsive">
-                    <table id="paid-staff-damages-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
+                    <table id="paid-staff-damages-table" class="table table-sm table-hover table-bordered" cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th>
                                 Employee ID #

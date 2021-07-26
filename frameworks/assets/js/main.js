@@ -239,6 +239,21 @@ $(document).ready(function () {
                         action: 'listDTRRecord'
                     },
                 },
+                retrieve: true,
+                dom: "ftipr",
+                bAutoWidth: false,
+                paging: true,
+                lengthChange: false,
+                ordering: false,
+                searching: true,
+                bFilter: true,
+                bInfo: true,
+                pageLength: 15,
+            });
+            break;
+
+        case 'payroll':
+            $('#payroll-report-table').DataTable({
                 dom: "ftipr",
                 bAutoWidth: false,
                 paging: true,
@@ -247,13 +262,26 @@ $(document).ready(function () {
                 bInfo: false,
                 searching: true,
                 bFilter: true,
-                bInfo: true,
                 pageLength: 15,
-            });
-            break;
-            
-        case 'payroll':
+                drawCallback: function(settings){
+                    var api = this.api(), data;
 
+                    var floatval = function(i){
+                        return typeof(i) === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof(i) === 'number' ? i : 0;
+                    }
+
+                    var NetPay_total = api.column(3).data().reduce(function(a, b){
+                        return floatval(a) + floatval(b);
+                    }, 0);
+
+                    var GrossPay_total = api.column(4).data().reduce(function(a, b){
+                        return floatval(a) + floatval(b);
+                    }, 0)
+
+                    $(api.column(3).footer()).html('$' + NetPay_total);
+                    $(api.column(4).footer()).html('$' + GrossPay_total);
+                }
+            });
             break;
 
         case 'employee':

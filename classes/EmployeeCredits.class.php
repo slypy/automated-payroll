@@ -357,23 +357,23 @@ class EmployeeCredits{
         if(isset($_GET['ca_id'])){
             $query = Db::fetch(self::$tbl_staffCA, '', 'id = ?', $_GET['ca_id'], '', '', '');
             $row =  Db::num($query);
-            
             echo json_encode($row);
             unset($_GET['ca_id']);
         } else if(isset($_GET['loan_id'])){
             $query = Db::fetch(self::$tbl_staffLoan, '', 'id = ?', $_GET['loan_id'], '', '', '');
             $row = Db::num($query);
-            
+            echo json_encode($row);
+        } else if(isset($_GET['misc_id'])){
+            $query = Db::fetch(self::$tbl_employeeMisc, '', 'id = ?', $_GET['misc_id'], '', '','');
+            $row = Db::num($query);
             echo json_encode($row);
         } else if(isset($_GET['damage_id'])){
             $query = Db::fetch(self::$tbl_staffDamages, '', 'id = ?', $_GET['damage_id'], '', '', '');
             $row = Db::num($query);
-            
             echo json_encode($row);
         } else {
             //do nothing
         }
-
         return;
     }
 
@@ -381,15 +381,13 @@ class EmployeeCredits{
         switch($type){
             case 'staff_ca':
                 if(isset($_POST['employee_number'])){
-                    $employee_number = $_POST['employee_number'];
-                    $employee_name = $_POST['employee_name'];
-                    $ca_date = $_POST['ca_date'];
-                    $ca_amount = $_POST['ca_amount'];
-                    $ca_remarks = $_POST['ca_remarks'];
-                    $ca_pay_amount = $_POST['ca_pay_amount'];
-
+                    $employee_number    = $_POST['employee_number'];
+                    $employee_name      = $_POST['employee_name'];
+                    $ca_date            = $_POST['ca_date'];
+                    $ca_amount          = $_POST['ca_amount'];
+                    $ca_remarks         = $_POST['ca_remarks'];
+                    $ca_pay_amount      = $_POST['ca_pay_amount'];
                     $total = $ca_amount - $ca_pay_amount;
-        
                     Db::update(self::$tbl_staffCA, array("employee_number", "employee_name", "date_cash_advance", "salary_deduction", "remarks"), array($employee_number, $employee_name, $ca_date, $total, $ca_remarks), "employee_number = ? AND date_cash_advance = ? AND remarks = ?", array($employee_number, $ca_date, $ca_remarks));
                 }
                 break;
@@ -405,11 +403,14 @@ class EmployeeCredits{
                     $due_date           = $_POST['due_date'];
                     $loan_remarks       = $_POST['loan_remarks'];
                     $loan_pay_amount    = $_POST['loan_pay_amount'];
-
                     $total = $loan_balance - $loan_pay_amount;
-
                     Db::update(self::$tbl_staffLoan, array('employee_number', 'employee_name', 'date_of_loan', 'due_date', 'loan_amount', 'loan_interest', 'loan_balance', 'loan_remarks'), array($employee_id, $employee_name, $date_of_loan, $due_date, $loan_amount, $loan_interest, $total, $loan_remarks), "employee_number = ? AND date_of_loan = ? AND due_date = ? AND loan_remarks = ?", array($employee_id, $date_of_loan, $due_date, $loan_remarks));
                 }
+                break;
+
+            case 'employee_misc':
+
+                break;
             
             case 'staff_damages':
                 if(isset($_POST['employee_number'])){

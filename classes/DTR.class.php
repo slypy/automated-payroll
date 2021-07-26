@@ -22,6 +22,14 @@ class DTR{
     public static function fetchRecordDTRData(){
         $query = Db::fetch(self::$tbl_dtr, '', '', '', '', '', '', '');
 
+        $limit = $_GET['start'].', '.$_GET['length'];
+        if($_GET['length'] != -1){
+            $query = Db::fetch(self::$tbl_dtr, '','','','', $limit, '');
+        }
+        if(!empty($_GET['search']['value'])){
+            $like_val = '%'.$_GET['search']['value'].'%';
+            $query = Db::fetch(self::$tbl_dtr, '', 'employee_id LIKE ? OR employee_name LIKE ?', array($like_val, $like_val), '', '', '');
+        }
         $list_data = array();
         while($tbl_DTR = Db::assoc($query)){
             $dataRow = array();
@@ -35,7 +43,6 @@ class DTR{
             $dataRow[] = $tbl_DTR['total_work_hours'];
             $list_data[] = $dataRow;
         }
-
         $query2 = Db::fetch(self::$tbl_dtr, '', '', '', '', '', '');
         $numRows = Db::count($query2);
 
@@ -45,7 +52,10 @@ class DTR{
             'recordsFiltered'   => $numRows,
             'data'              => $list_data
         );
-
         echo json_encode($result_data);
+    }
+
+    public static function updateRecord(){
+        
     }
 }

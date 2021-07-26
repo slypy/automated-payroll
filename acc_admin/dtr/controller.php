@@ -17,10 +17,28 @@ switch($action){
     case 'listDTRRecord':
         datatable_DTRRecord();
         break;
+
+    case 'addDTRRecord':
+
+        break;
+
+    case 'updateDTRRecord':
+        update_DTRRecord();
+        break;
 }
 
 function datatable_DTRRecord(){
     DTR::fetchRecordDTRData();
+    return;
+}
+
+function add_DTRRecord(){
+    DTR::addRecord();
+    return;
+}
+
+function update_DTRRecord(){
+    DTR::updateRecord();
     return;
 }
 ?>

@@ -19,7 +19,6 @@ class Db extends mysqli implements Config{
 		} catch(Exception $e){
 			self::returnedSQlError($e); 
 		}
-
 		return $db;// always connect to the database when necessary and kill the  connection when done please;
 	}
 
@@ -27,28 +26,25 @@ class Db extends mysqli implements Config{
 		$con = self::connectDB(); 
 		try{
 			$test = "INSERT INTO $table("; 
-				foreach ($columns as $key => $value) {
-					
-					if($key == (count($columns) - 1)){
-						$test.= $value; 
-					} else {
-						$test.= $value.", "; 
-					}
+			foreach ($columns as $key => $value) {
+				
+				if($key == (count($columns) - 1)){
+					$test.= $value; 
+				} else {
+					$test.= $value.", "; 
 				}
+			}
 			$test.=	") VALUES("; 
-			    foreach ($columns as $key => $value) {
-			    	if($key == (count($columns) - 1)){
-						$test.= "?"; 
-					} else {
-						$test.= "?, "; 
-					}
-			    }
+			foreach ($columns as $key => $value) {
+			    if($key == (count($columns) - 1)){
+					$test.= "?"; 
+				} else {
+					$test.= "?, "; 
+				}
+			}
 			$test.= ") ";
-
-             $query = $con->prepare($test);
-
+            $query = $con->prepare($test);
             $paramsCount = count($colValues); 
-
             $start = 0; 
 			while($start < $paramsCount){
 				$keyData = $start +1; 
@@ -59,11 +55,8 @@ class Db extends mysqli implements Config{
 				} else {
 					$query->bindParam($keyData, $colValues[$start]);
 				}
-
 				$start ++; 
 			} 
-
-
 			$query->execute(); 
 			return 1; // this means the data has been updated
 		} catch(Exception $e){

@@ -29,13 +29,16 @@
                                 Time Out
                             </th>
                             <th>
+                                Regular Time
+                            </th>
+                            <th>
                                 Over Time In
                             </th>
                             <th>
                                 Over Time Out
                             </th>
                             <th>
-                                Total Worked Hours
+                                Total
                             </th>
                         </thead>
                     </table>

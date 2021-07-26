@@ -27,7 +27,7 @@
                     <hr>
                 </div>
                 <div class="table-responsive">
-                    <table id="active-employee-table" class="table table-sm table-hover table-striped table-bordered" cellspacing="0">
+                    <table id="active-employee-table" class="table table-sm table-hover table-bordered" cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th  class="text-center" width=25 style="cursor: pointer;">
                                 <input type="checkbox" id="check_all"/>
@@ -77,7 +77,7 @@
             </div>
             <div id="display-employee" class="card-body" style="display: none;">
                 <div class="table-responsive">
-                    <table id="removed-employee-table" class="table table-hover table-striped table-bordered">
+                    <table id="removed-employee-table" class="table table-hover  table-bordered">
                         <thead class="text-info">
                             <th class="text-center" width=25>
                                 <input type="checkbox" id="check_all_removed"/>

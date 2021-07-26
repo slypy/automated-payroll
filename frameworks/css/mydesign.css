@@ -12,7 +12,6 @@ img, h5, h5{
     user-select: none;
 }
 
-
 .navbar{
     width: 100%;
     position: fixed;
@@ -261,4 +260,3 @@ footer{
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
-
