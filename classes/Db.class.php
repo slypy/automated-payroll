@@ -1,7 +1,6 @@
 <?php 
 
 class Db extends mysqli implements Config{
-
 	public static function returnedSQlError($e){
 		// $e should be exception raised if the sql fails
 		// you can edit this to decide what happens if anything goes wrong within your queries
@@ -14,7 +13,6 @@ class Db extends mysqli implements Config{
 	public static function connectDB(){
 		try{
 			$db = new PDO("mysql:host=".Config::MySQLHost.";dbname=".Config::MySQLData,Config::MySQLUser, Config::MySQLPass);
-
 			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch(Exception $e){
 			self::returnedSQlError($e); 
@@ -27,7 +25,6 @@ class Db extends mysqli implements Config{
 		try{
 			$test = "INSERT INTO $table("; 
 			foreach ($columns as $key => $value) {
-				
 				if($key == (count($columns) - 1)){
 					$test.= $value; 
 				} else {
@@ -49,7 +46,6 @@ class Db extends mysqli implements Config{
 			while($start < $paramsCount){
 				$keyData = $start +1; 
 				$lastKey = count($colValues) + 1; 
-
 				if($start == count($colValues)){
 					$query->bindParam($lastKey, $colValues[$start]);
 				} else {
@@ -64,14 +60,12 @@ class Db extends mysqli implements Config{
 		}
 	}
 
-
 	public static function update($table, array $columns,  array $colValues, $where, $whereValue){
 		// whereValue can take an array if where clause has more than one data
         // Db::update("test", array("email", "name", "location"), array("bensonkarue30@gmail.com.com", "benson", "karatina"), "hotelId = ? ", "hotelId"); 
         // update table set col1 = 2, col2 = 3, col4 =5 WHERE ( WHERE  some = ? and another some  = ? )
         $con = self::connectDB(); 
         try{
-
 			$sql = "UPDATE $table SET "; 
 			     foreach ($columns as $key => $data) {
 			     	if($key == (count($columns)- 1)){
@@ -81,36 +75,26 @@ class Db extends mysqli implements Config{
 			     	}
 			     } 
 			$sql.= "WHERE ";
-
 			$sql.= $where;
-
 			$query = $con->prepare($sql); 
-
 			// we can use our sql a query data
-
 			if(!is_array($whereValue)){
-
 				$paramsCount = count($columns) + 1; // updating where there is only one condition 
-
-
 				$start = 0; 
 				while($start < $paramsCount){
 					$keyData = $start +1; 
 					$lastKey = count($colValues) + 1; 
-
 					if($start == count($colValues)){
 						$query->bindParam($lastKey, $whereValue);
 					} else {
 						$query->bindParam($keyData, $colValues[$start]);
 					}
-
 					$start ++; 
 				} 
 
 			} else {
 				$start = 0; 
 				$paramsCount = count($whereValue) + count($colValues); 
-
 				while($start < $paramsCount){
 					$keyData = $start + 1;
 					if($keyData <= count($colValues)){
@@ -120,17 +104,11 @@ class Db extends mysqli implements Config{
 						$newKey = $start - count($colValues);
 						$query->bindParam($keyData, $whereValue[$newKey]);
 					}
-
 					$start ++;
 				}
 			}
-
 			$query->execute(); 
-
 			return 1; // this means the data has been updated;
-
-
-
         } catch(Exception $e){
         	die($e->getMessage());
         } 
@@ -143,7 +121,6 @@ class Db extends mysqli implements Config{
 		// check this
 		$con = self::connectDB();
 		try{
-			
 			if($where != ""){
 				$query = $con->prepare("DELETE FROM $table WHERE $where ");
 				if(is_array($whereValue)){
@@ -171,22 +148,18 @@ class Db extends mysqli implements Config{
 	// this method (Db::fetchAll(params)) is deprecated, use Db::fetch(params) instead
 	public static function fetchAll($table, $where, $whereValue, $order,$limit){
 		// Db::fetchAll("tableName", "col = ? ", "id DESC");
-
 		$con = self::connectDB();
 		if($limit == ""){
 			$limit = ""; 
 		} else {
 			$limit = " LIMIT $limit "; 
-
 		}
-
 		if($order == ""){
 			$order = "";
 		} else {
 			$order = "ORDER BY $order"; 
 		}
 		try{
-			
 			if($where != ""){
 				$query = $con->prepare("SELECT * FROM $table WHERE $where  $order  $limit ");
 				if(!is_array($whereValue)){
@@ -195,11 +168,8 @@ class Db extends mysqli implements Config{
 					$count = count($whereValue); 
 					$start = 0; 
 					while($start < $count){
-
 						$paramKey = $start + 1; 
-
 						$query->bindParam($paramKey, $whereValue[$start]);
-
 						$start ++;
 					}
 				}
@@ -207,7 +177,6 @@ class Db extends mysqli implements Config{
 				$query = $con->prepare("SELECT * FROM $table  $order  $limit");
 			}
 			$query->execute(); 
-
 			return $query; 
 		} catch(Exception $e){
 			die($e); 
@@ -235,7 +204,6 @@ class Db extends mysqli implements Config{
 		}
 		$con = self::connectDB();
 		try{
-			
 			if($where != ""){
 				$query = $con->prepare("SELECT * FROM $table WHERE $where $groupBy  $order $limit ");
 				if(!is_array($whereValue)){
@@ -259,7 +227,6 @@ class Db extends mysqli implements Config{
 		}
 	}
 
-
 	// this method (Db::fetchCols(params)) is deprecated, use Db::fetch(params) instead
 	public static function fetchCols($table, array $cols,  $where, $whereValue, $order,$limit){
 		// Db::fetchAll("tableName", "col = ? ", "id DESC");
@@ -275,10 +242,8 @@ class Db extends mysqli implements Config{
 			$order = "ORDER BY $order"; 
 		}
 		try{ 
-			
 			if($where != ""){
 				$sql ="SELECT "; 
-
 				foreach ($cols as $key => $value) {
 					$lastCol = count($cols) - 1;  
 					if($key == $lastCol){
@@ -287,7 +252,6 @@ class Db extends mysqli implements Config{
 						$sql .= $value+", "; 
 					}
 				}
-				 
 				$sql .=  " FROM $table WHERE $where  $order  $limit "; 
 				$query = $con->prepare($sql);
 				if(!is_array($whereValue)){
@@ -306,7 +270,6 @@ class Db extends mysqli implements Config{
 				}
 			}  else {
 				$sql ="SELECT "; 
-
 				foreach ($cols as $key => $value) {
 					$lastCol = count($cols) - 1;  
 					if($key == $lastCol){
@@ -315,36 +278,19 @@ class Db extends mysqli implements Config{
 						$sql .= $value+", "; 
 					}
 				}
-				 
 				$sql .=  " FROM $table  $order $limit "; 
 				$query = $con->prepare($sql);
 			}
 			$query->execute(); 
-
 			return $query; 
 		} catch(Exception $e){
 			die($e); 
 		}
 	}
 
-
-	# fetchLike is a search method from your database
-	public static function fetchLike($table, $col, $filter){
-		try{
-			$con = self::connectDB();
-			$query = $con->prepare("SELECT * FROM $table WHERE $col LIKE '%$filter%'");
-			$query->execute();
-
-			return $query;
-		} catch (Exception $e){
-			die($e);
-		}
-	}
-
 	# fetch method should be used instead of fetchSpeical, fetchAll and fetchCols. 
 	# fetch is the valid function that does the work of 'fetchSpecial', 'fetchAll', and 'fetchCols', 
 	# always use this method when fetching anything from your database
-
 	public static function fetch($table, $columns,  $whereClause, $whereValue, $orderBy, $limit, $groupBy){
 		if($limit == ""){
 			$limit = ""; 
@@ -380,8 +326,6 @@ class Db extends mysqli implements Config{
 			} else {
 				$query = $con->prepare("SELECT * FROM $table  $groupBy $orderBy  $limit");
 			}
-			
-			
 		} else {
 			// $query = $con->prepare("SELECT email, password.. FROM table $whereClause")
 			// here means the columns are in array
@@ -401,7 +345,6 @@ class Db extends mysqli implements Config{
 			} else {
 				$sql .= "$columns ";
 			}
-			
 			if($whereValue != ""){
 				$sql .= "FROM $table WHERE $whereClause $groupBy $orderBy $limit"; 
 				$query = $con->prepare($sql); 

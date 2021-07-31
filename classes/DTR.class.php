@@ -1,9 +1,13 @@
 <?php 
 
 class DTR{
-    protected static $tbl_dtr = 'tbl_dtr';
+    private static $tbl_dtr = 'tbl_dtr';
+    private static $tbl_employee_image = 'tbl_employee_image';
 
-    public static function addRecord(){
+    /**
+     * @param
+     */
+    public static function addRecordWithScanner(){
         if(isset($_POST['employee_id'])){
             $employee_id        = $_POST['employee_id'];
             $employee_name      = $_POST['employee_name'];
@@ -12,16 +16,28 @@ class DTR{
             $time_out           = $_POST['time_out'];
             $over_time_in       = $_POST['over_time_in'];
             $over_time_out      = $_POST['over_time_out'];
+            $captured_image     = $_POST['captured_image'];
             $total_work_hours   = floatval($_POST['total_work_hours']);
-
             Db::insert(self::$tbl_dtr, array('employee_id', 'employee_name', 'date', 'time_in', 'time_out', 
             'over_time_in', 'over_time_out', 'total_work_hours'), array($employee_id, $employee_name, $date, $time_in, $time_out, $over_time_in, $over_time_out, $total_work_hours));
+            Db::insert(self::$tbl_employee_image, array('employee_id', 'employee_image'), array($employee_id, $captured_image));
+        }
+    }
+
+    public static function addRecordNoScanner(){
+        if(isset($_POST['employee_id'])){
+            $employee_id        = $_POST['employee_id'];
+            $employee_name      = $_POST['employee_name'];
+            $date               = $_POST['date'];
+            $time_in            = $_POST['time_in'];
+            $time_out           = $_POST['time_out'];
+            $total_work_hours   = floatval($_POST['total_work_hours']);
+            Db::insert(self::$tbl_dtr, array('employee_id', 'employee_name', 'date',  'time_in', 'time_out', 'over_time_in', 'over_time_out', 'total_work_hours'), array($employee_id, $employee_name, $date, $time_in, $time_out, 'none', 'none', $total_work_hours));
         }
     }
 
     public static function fetchRecordDTRData(){
         $query = Db::fetch(self::$tbl_dtr, '', '', '', '', '', '', '');
-
         $limit = $_GET['start'].', '.$_GET['length'];
         if($_GET['length'] != -1){
             $query = Db::fetch(self::$tbl_dtr, '','','','', $limit, '');
@@ -45,7 +61,6 @@ class DTR{
         }
         $query2 = Db::fetch(self::$tbl_dtr, '', '', '', '', '', '');
         $numRows = Db::count($query2);
-
         $result_data = array(
             'draw'              => intval($_GET['draw']),
             'recordsTotal'      => $numRows, 
@@ -56,6 +71,10 @@ class DTR{
     }
 
     public static function updateRecord(){
+        
+    }
+
+    public static function removeRecord(){
         
     }
 }

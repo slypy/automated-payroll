@@ -8,7 +8,7 @@ $action = (isset($_GET['action']) && $_GET['action'] != '') ? $_GET['action'] : 
 # Switch the case what action got from the URL to be performed in this controller module
 switch($action){
     case 'logout':
-        // destroy all sessions and cookies
+        //case logout destroy all sessions and cookies so that the login session will not having error
         @session_destroy(); 
         setcookie("usr", "" ,time()-(60*60*24*7*30),"/", "","",TRUE);
         Page::redir("../index.php");
@@ -19,7 +19,11 @@ switch($action){
         break;
 
     case 'addDTRRecord':
+        add_DTRRecord('no-scanner');
+        break;
 
+    case 'addDTRRecordWithScanner':
+        add_DTRRecord('with-scanner');
         break;
 
     case 'updateDTRRecord':
@@ -32,8 +36,16 @@ function datatable_DTRRecord(){
     return;
 }
 
-function add_DTRRecord(){
-    DTR::addRecord();
+function add_DTRRecord($type){
+    switch($type){
+        case 'no-scanner':
+            DTR::addRecordNoScanner();
+            break;
+
+        case 'with-scanner':
+            DTR::addRecordWithScanner();
+            break;
+    }
     return;
 }
 
