@@ -14,6 +14,10 @@ switch($action){
         Page::redir("../index.php");
         break;
 
+    case 'getDTRdata':
+        getDTRdata();
+        break;
+
     case 'listDTRRecord':
         datatable_DTRRecord();
         break;
@@ -29,6 +33,20 @@ switch($action){
     case 'updateDTRRecord':
         update_DTRRecord();
         break;
+
+    case 'get_employee_name':
+        getEmployeeName();
+        break;
+
+}
+function getEmployeeName(){
+    Employee::getDataName();
+    return;
+}
+
+function getDTRdata(){
+    DTR::getDTRData();
+    return;
 }
 
 function datatable_DTRRecord(){

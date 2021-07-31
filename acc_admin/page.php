@@ -131,9 +131,13 @@
                                     <button id="damage-btn" class="btn btn-warning btn-sm"> <i class="material-icons">show_chart</i> Damage record</button>
                                 </li>';
                             } else if(strval($url) == strval($employee_dtr_url)){
-                                echo '<li class="nav-item" style="margin-left: 20px;">
-                                <a href="' . $web_root . 'acc_admin/dtr/index.php?page=employee-dtr" class="btn btn-warning btn-sm"> <i class="material-icons">update</i> Update employee\'s dtr</a>
-                            </li>';
+                                echo '
+                                <li class="nav-item" style="margin-left: 20px;">
+                                    <button data-target="#add-dtr-form" data-toggle="modal" data-backdrop="static" class="btn btn-warning btn-sm"> <i class="material-icons">add</i> Add DTR Manually</a>
+                                </li>
+                                <li class="nav-item" style="margin-left: 20px;">
+                                    <a href="' . $web_root . 'acc_admin/dtr/index.php?page=employee-dtr" class="btn btn-warning btn-sm"> <i class="material-icons">update</i> Update employee\'s dtr</a>
+                                </li>';
                             } else {
                                 # do nothing
                             }

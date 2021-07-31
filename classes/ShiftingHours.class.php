@@ -40,9 +40,8 @@ class ShiftingHours{
         }
 
         if(!empty($_GET['search']['value'])){
-            $like_val = $_GET['search']['value'];
-
-            $query = Db::fetchLike(self::$db_tbl, "shifting_type_name", $like_val);
+            $like_val = '%'.$_GET['search']['value'].'%';
+            $query = Db::fetch(self::$db_tbl,'', 'shifting_type_name LIKE ?', $like_val, '', '', '');
         }
 
         $listData = array();

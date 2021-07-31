@@ -1,7 +1,6 @@
 $(document).ready(function () {
     // load this at the very first to avoid delay of setting active current list
     $('.nav-item a[href^="/acc_admin/'+location.pathname.split('/')[2] +'"]').closest("li").addClass("active");
-
     $sidebar = $(".sidebar");
     $sidebar_img_container = $sidebar.find(".sidebar-background");
     $full_page = $(".full-page");
@@ -64,7 +63,6 @@ $(document).ready(function () {
                 $sidebar_img_container.fadeIn("fast");
             });
         }
-
         if ($full_page_background.length != 0 && $(".switch-sidebar-image input:checked").length != 0) {
             var new_image_full_page = $(".fixed-plugin li.active .img-holder").find("img").data("src");
             $full_page_background.fadeOut("fast", function () {
@@ -72,15 +70,12 @@ $(document).ready(function () {
                 $full_page_background.fadeIn("fast");
             });
         }
-
         if ($(".switch-sidebar-image input:checked").length == 0) {
             var new_image = $(".fixed-plugin li.active .img-holder").find("img").attr("src");
             var new_image_full_page = $(".fixed-plugin li.active .img-holder").find("img").data("src");
-
             $sidebar_img_container.css("background-image",'url("' + new_image + '")');
             $full_page_background.css("background-image",'url("' + new_image_full_page + '")');
         }
-
         if ($sidebar_responsive.length != 0) {
             $sidebar_responsive.css("background-image",'url("' + new_image + '")');
         }
@@ -89,7 +84,6 @@ $(document).ready(function () {
     $(".switch-sidebar-image input").change(function () {
         $full_page_background = $(".full-page-background");
         $input = $(this);
-
         if ($input.is(":checked")) {
             if ($sidebar_img_container.length != 0) {
                 $sidebar_img_container.fadeIn("fast");
@@ -116,31 +110,25 @@ $(document).ready(function () {
 
     $(".switch-sidebar-mini input").change(function () {
         $body = $("body");
-
         $input = $(this);
-
         if (md.misc.sidebar_mini_active == true) {
             $("body").removeClass("sidebar-mini");
             md.misc.sidebar_mini_active = false;
-
             $(".sidebar .sidebar-wrapper, .main-panel").perfectScrollbar();
         } else {
             $(".sidebar .sidebar-wrapper, .main-panel").perfectScrollbar(
                 "destroy"
             );
-
             setTimeout(function () {
                 $("body").addClass("sidebar-mini");
 
                 md.misc.sidebar_mini_active = true;
             }, 300);
         }
-
         // we simulate the window Resize so the charts will get updated in realtime.
         var simulateWindowResize = setInterval(function () {
             window.dispatchEvent(new Event("resize"));
         }, 180);
-
         // we stop the simulation of Window Resize after the animations are completed
         setTimeout(function () {
             clearInterval(simulateWindowResize);
@@ -197,6 +185,10 @@ $(document).ready(function () {
      * @returns {number} Sum of time difference start and end.
      */
     function diffTime(start, end) {
+        if (start.toString().split(' ')[1] == "AM", "PM"){
+            start=to24(start);
+            end=to24(end);
+        }
         start=start.split(":");
         end=end.split(":");
         var startDate=new Date(0, 0, 0, start[0], start[1], 0);
@@ -249,6 +241,141 @@ $(document).ready(function () {
                 bFilter: true,
                 bInfo: true,
                 pageLength: 15,
+            });
+
+            $('#type').change(function(){
+                var d = new Date(),        
+                h = d.getHours(),
+                m = d.getMinutes();
+                if(h < 10) h = '0' + h; 
+                if(m < 10) m = '0' + m; 
+
+                switch(this.value){
+                    case 'Time In':
+                        $('#i_time_in').val(h+':'+m);
+                        $('#time_in').show();
+                        $('#time_out').hide();
+                        $('#over_time_in').hide();
+                        $('#over_time_out').hide();
+                        break;
+                    case 'Time Out':
+                        $('#time_out').show();
+                        $('#i_time_out').val(h+':'+m);
+                        $('#time_in').hide();
+                        $('#over_time_in').hide();
+                        $('#over_time_out').hide();
+                        break;
+                    case 'Over Time In':
+                        $('#time_in').hide();
+                        $('#time_out').hide();
+                        $('#over_time_in').show();
+                        $('#i_over_time_in').val(h+':'+m);
+                        $('#over_time_out').hide();
+                        break;
+                    case 'Over Time Out':
+                        $('#time_in').hide();
+                        $('#time_out').hide();
+                        $('#over_time_in').hide();
+                        $('#over_time_out').show();
+                        $('#i_over_time_out').val(h+':'+m);
+                        break;
+                }
+            }).trigger('change');
+
+            $('#employee_id').keyup(function(){
+                var that = this,
+                value = $(this).val();
+                if(value.length >= 1){
+                    if(searchRequest != null)
+                        searchRequest.abort();
+                    
+                    searchRequest = $.ajax({
+                        url: 'controller.php',
+                        type: 'GET',
+                        data: {
+                            action: 'get_employee_name',
+                            employee_id: value,
+                        },
+                        dataType: 'json',
+                        success: function(data){
+
+                            if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
+                                $('#employee_name').val(`${data[8]} ${data[9]}`);
+                            } else {
+                                $('#employee_name').val('');
+                            }
+                        },
+                    });
+                }
+            });
+
+            $('#addDTRRecord').submit(function(event){
+                event.preventDefault();
+                // don't serialize the form because it should be manually listed for necessary functions
+                var DTR_DATA = {
+                    employee_id: $('#employee_id').val(),
+                    employee_name: $('#employee_name').val(),
+                    type: $('#type').val(),
+                    date: $('#date').val(),
+                    time_in: toAMPM($('#i_time_in').val()),
+                    time_out: toAMPM($('#i_time_out').val()),
+                    over_time_in: toAMPM($('#i_over_time_in').val()),
+                    over_time_out: toAMPM($('#i_over_time_out').val()),
+                }
+
+                if($('#i_time_out').val() != ''){
+                    // declare outer variable
+                    var start, break_time;
+                    $.ajax({
+                        url: 'controller.php',
+                        // make ajax async false to set the value of outer variable
+                        async: false,
+                        type: 'GET',
+                        data: {
+                            action: 'getDTRdata',
+                            employee_id: DTR_DATA.employee_id
+                        },
+                        dataType: 'json',
+                        success: function(data){
+                            //now we can set a value data json to start
+                            start = data[4];
+                            break_time = data[13];
+                        }
+                    });
+                    var end = toAMPM($('#i_time_out').val());
+                    // push new POST key:val total_work_hours: diff time(start and end) to DTR_DATA object
+                    DTR_DATA.total_work_hours = (diffTime(start, end) - break_time);
+                }
+
+                if($('#i_over_time_out').val() != ''){
+                    var ot_start, ot_end, initial_total_hours;
+                    $.ajax({
+                        url: 'controller.php',
+                        async: false,
+                        type: 'GET',
+                        data: {
+                            action: 'getDTRdata',
+                            employee_id: DTR_DATA.employee_id
+                        },
+                        dataType: 'json',
+                        success: function(data){
+                            initial_total_hours = (data[8])*1;
+                            ot_start = data[6];
+                        }
+                    });
+                    ot_end = $('#i_over_time_out').val();
+                    DTR_DATA.total_work_hours = (diffTime(ot_start, ot_end))+initial_total_hours;
+                }
+                $.ajax({
+                    url: 'controller.php?action=addDTRRecord',
+                    type: 'POST',
+                    data: DTR_DATA,
+                    success: function(){
+                        $('#addDTRRecord')[0].reset();
+                        $('#add-dtr-form').modal('hide');
+                        $('#employee-dtr-table').DataTable().draw();
+                    }
+                })
             });
             break;
 

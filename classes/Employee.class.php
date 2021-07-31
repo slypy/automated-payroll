@@ -75,7 +75,7 @@
                 $_SESSION['employee_data_already_taken'] = "Employee id number is already exist! try use different ID numbers";
                 return false;
             } else {
-                Db::insert(self::$tbl_employees, array("employee_status","employee_number", "card_id", "fingerprint_number", "worker_type", "job_position", "shifting_type", "first_name", "last_name", "middle_name", "birth_date", "age", "gender", "civil_status", "full_address", "email", "contact_number", "contact_person", "contact_person_number", "relationship", "duration_date", "start_date", 
+                Db::insert(self::$tbl_employees, array("employee_status","employee_number", "card_id", "fingerprint_number", "worker_type", "job_position", "shifting_type_name", "first_name", "last_name", "middle_name", "birth_date", "age", "gender", "civil_status", "full_address", "email", "contact_number", "contact_person", "contact_person_number", "relationship", "duration_date", "start_date", 
                 "end_date", "sss_number", "employee_er", "employee_ee", "sss_active_loan", "philhealth_number", "philhealth_per_month", "pag_ibig_number", "pag_ibig_per_month", "pag_ibig_active_loan"), array("active",$employee_number, $card_id, $fingerprint_number, $worker_type, $job_position, $shifting_type, $first_name, $last_name, $middle_name, $birth_date, $age, $gender, $civil_status, $full_address, $email, $contact_number, $contact_person, $contact_person_number, $relationship, $duration_date, $start_date, $end_date, $sss_number, $employee_er, $employee_ee, $sss_active_loan, $philhealth_number, $philhealth_per_month, $pag_ibig_number, $pag_ibig_per_month, $pag_ibig_active_loan));
 
                 return;
@@ -103,7 +103,7 @@
                         $dataRow[] = $tbl_employee['employee_number'];
                         $dataRow[] = $tbl_employee['first_name'].' '. $tbl_employee['last_name'];
                         $dataRow[] = $tbl_employee['contact_number'];
-                        $dataRow[] = $tbl_employee['shifting_type'];
+                        $dataRow[] = $tbl_employee['shifting_type_name'];
                         $dataRow[] = $tbl_employee['job_position'];
                         $dataRow[] = '<button type="button" class="btn btn-success" disabled>'.$tbl_employee['employee_status'].'</button>';
                         $dataRow[] = '<button type="button" name="update" id="'.$tbl_employee['id'].'" class="btn btn-success update"><i class="material-icons">edit</i></button> <button type="button" name="info" id="'.$tbl_employee['id'].'" class="btn btn-info info"><i class="material-icons">info</i></button> <button type="button" name="delete" id="'.$tbl_employee['id'].'" class="btn btn-danger delete"><i class="material-icons">delete</i></button>';
@@ -243,7 +243,7 @@
                     $pag_ibig_active_loan   = $_POST['pag_ibig_active_loan'];
                 }
             }
-            Db::update(self::$tbl_employees, array("employee_number", "card_id", "fingerprint_number", "worker_type", "job_position", "shifting_type", "first_name", "last_name", "middle_name", "birth_date", "age", "gender", "civil_status", "full_address", "email", "contact_number", "contact_person", "contact_person_number", "relationship", "duration_date", "start_date", "end_date", "sss_number", "employee_er", "employee_ee", "sss_active_loan", "philhealth_number", "philhealth_per_month", "pag_ibig_number", "pag_ibig_per_month", "pag_ibig_active_loan"), array($employee_number, $card_id, $fingerprint_number, $worker_type, $job_position, $shifting_type, $first_name, $last_name, $middle_name, $birth_date, $age, $gender, $civil_status, $full_address, $email, $contact_number, $contact_person, $contact_person_number, $relationship, $duration_date, $start_date, $end_date, $sss_number, $employee_er, $employee_ee, $sss_active_loan, $philhealth_number, $philhealth_per_month, $pag_ibig_number, $pag_ibig_per_month, $pag_ibig_active_loan), "employee_number = ?", $employee_number);
+            Db::update(self::$tbl_employees, array("employee_number", "card_id", "fingerprint_number", "worker_type", "job_position", "shifting_type_name", "first_name", "last_name", "middle_name", "birth_date", "age", "gender", "civil_status", "full_address", "email", "contact_number", "contact_person", "contact_person_number", "relationship", "duration_date", "start_date", "end_date", "sss_number", "employee_er", "employee_ee", "sss_active_loan", "philhealth_number", "philhealth_per_month", "pag_ibig_number", "pag_ibig_per_month", "pag_ibig_active_loan"), array($employee_number, $card_id, $fingerprint_number, $worker_type, $job_position, $shifting_type, $first_name, $last_name, $middle_name, $birth_date, $age, $gender, $civil_status, $full_address, $email, $contact_number, $contact_person, $contact_person_number, $relationship, $duration_date, $start_date, $end_date, $sss_number, $employee_er, $employee_ee, $sss_active_loan, $philhealth_number, $philhealth_per_month, $pag_ibig_number, $pag_ibig_per_month, $pag_ibig_active_loan), "employee_number = ?", $employee_number);
 
             return;
         }
