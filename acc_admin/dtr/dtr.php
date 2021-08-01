@@ -84,23 +84,23 @@
                             <label class="select-label" style="border-radius: 5px;">Type</label>
                         </div>
                         <div class="material-textfield" style="margin-top: 20px;">
-                            <input id="date" placeholder=" " name="date" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;" value="<?php echo date("Y-m-d", strtotime(date('Y-m-d'))); ?>" required>
+                            <input id="date" placeholder=" " name="date" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;" value="<?php echo date("Y-m-d", strtotime(date('Y-m-d'))); ?>">
                             <label>Date</label>
                         </div>
                         <div id="time_in" class="material-textfield" style=" display: none;   margin-top: 20px">
-                            <input id="i_time_in" placeholder=" " name="time_in" type="time" style="width: 220px;" value="0">
+                            <input id="i_time_in" placeholder=" " name="time_in" type="time" style="width: 220px;" value="">
                             <label>Time In</label>
                         </div>
                         <div id="time_out" class="material-textfield" style=" display: none;  margin-top: 20px">
-                            <input id="i_time_out" placeholder=" " name="time_out" type="time" style="width: 220px;" value="0">
+                            <input id="i_time_out" placeholder=" " name="time_out" type="time" style="width: 220px;" value="">
                             <label>Time Out</label>
                         </div>
                         <div id="over_time_in" class="material-textfield" style="display: none;  margin-top: 20px">
-                            <input id="i_over_time_in" placeholder=" " name="over_time_in" type="time" style="width: 220px;" value="0">
+                            <input id="i_over_time_in" placeholder=" " name="over_time_in" type="time" style="width: 220px;" value="">
                             <label>Time In</label>
                         </div>
                         <div id="over_time_out" class="material-textfield" style="margin-top: 20px; display: none;">
-                            <input id="i_over_time_out" placeholder=" " name="over_time_out" type="time" style="width: 220px;" value="0">
+                            <input id="i_over_time_out" placeholder=" " name="over_time_out" type="time" style="width: 220px;" value="">
                             <label>Over Time Out</label>
                         </div>
                     </div>

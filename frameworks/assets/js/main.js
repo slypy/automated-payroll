@@ -185,10 +185,6 @@ $(document).ready(function () {
      * @returns {number} Sum of time difference start and end.
      */
     function diffTime(start, end) {
-        if (start.toString().split(' ')[1] == "AM", "PM"){
-            start=to24(start);
-            end=to24(end);
-        }
         start=start.split(":");
         end=end.split(":");
         var startDate=new Date(0, 0, 0, start[0], start[1], 0);
@@ -254,30 +250,46 @@ $(document).ready(function () {
                     case 'Time In':
                         $('#i_time_in').val(h+':'+m);
                         $('#time_in').show();
+                        $('#i_time_in').attr('disabled', false);
                         $('#time_out').hide();
+                        $('#i_time_out').attr('disabled', true);
                         $('#over_time_in').hide();
+                        $('#i_over_time_in').attr('disabled', true);
                         $('#over_time_out').hide();
+                        $('#i_over_time_out').attr('disabled', true);
                         break;
                     case 'Time Out':
                         $('#time_out').show();
                         $('#i_time_out').val(h+':'+m);
+                        $('#i_time_out').attr('disabled', false);
                         $('#time_in').hide();
+                        $('#i_time_in').attr('disabled', true);
                         $('#over_time_in').hide();
+                        $('#i_over_time_in').attr('disabled', true);
                         $('#over_time_out').hide();
+                        $('#i_over_time_out').attr('disabled', true);
                         break;
                     case 'Over Time In':
                         $('#time_in').hide();
+                        $('#i_time_in').attr('disabled', true);
                         $('#time_out').hide();
+                        $('#i_time_out').attr('disabled', true);
                         $('#over_time_in').show();
                         $('#i_over_time_in').val(h+':'+m);
+                        $('#i_over_time_in').attr('disabled', false);
                         $('#over_time_out').hide();
+                        $('#i_over_time_out').attr('disabled', true);
                         break;
                     case 'Over Time Out':
                         $('#time_in').hide();
+                        $('#i_time_in').attr('disabled', true);
                         $('#time_out').hide();
+                        $('#i_time_out').attr('disabled', true);
                         $('#over_time_in').hide();
+                        $('#i_over_time_in').attr('disabled', true);
                         $('#over_time_out').show();
                         $('#i_over_time_out').val(h+':'+m);
+                        $('#i_over_time_out').attr('disabled', false);
                         break;
                 }
             }).trigger('change');
@@ -333,18 +345,19 @@ $(document).ready(function () {
                         type: 'GET',
                         data: {
                             action: 'getDTRdata',
+                            date: DTR_DATA.date,
                             employee_id: DTR_DATA.employee_id
                         },
                         dataType: 'json',
                         success: function(data){
                             //now we can set a value data json to start
-                            start = data[4];
+                            start = to24(data[4]);
                             break_time = data[13];
                         }
                     });
-                    var end = toAMPM($('#i_time_out').val());
+                    var end = $('#i_time_out').val();
                     // push new POST key:val total_work_hours: diff time(start and end) to DTR_DATA object
-                    DTR_DATA.total_work_hours = (diffTime(start, end) - break_time);
+                    DTR_DATA.total_work_hours = (diffTime(start,end) - break_time);
                 }
 
                 if($('#i_over_time_out').val() != ''){
@@ -355,12 +368,13 @@ $(document).ready(function () {
                         type: 'GET',
                         data: {
                             action: 'getDTRdata',
+                            date: DTR_DATA.date,
                             employee_id: DTR_DATA.employee_id
                         },
                         dataType: 'json',
                         success: function(data){
                             initial_total_hours = (data[8])*1;
-                            ot_start = data[6];
+                            ot_start = to24(data[6]);
                         }
                     });
                     ot_end = $('#i_over_time_out').val();

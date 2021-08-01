@@ -14,10 +14,15 @@ class DTR{
             $over_time_in       = $_POST['over_time_in'];
             $over_time_out      = $_POST['over_time_out'];
             $captured_image     = $_POST['captured_image'];
-            $total_work_hours   = floatval($_POST['total_work_hours']);
-            Db::insert(self::$tbl_dtr, array('employee_id', 'employee_name', 'date', 'time_in', 'time_out', 
-            'over_time_in', 'over_time_out', 'total_work_hours'), array($employee_id, $employee_name, $date, $time_in, $time_out, $over_time_in, $over_time_out, $total_work_hours));
-            Db::insert(self::$tbl_employee_image, array('employee_id', 'employee_image'), array($employee_id, $captured_image));
+            $total_work_hours   = 0;
+
+            $query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND date = ? AND time_out = ? OR over_time_out = ?', array($employee_id, $date, '', ''), '', '','');
+            $result = Db::assoc($query);
+
+            if(Db::count($query) == 0){
+                Db::insert(self::$tbl_dtr, array('employee_id', 'employee_name', 'date',  'time_in', 'time_out', 'over_time_in', 'over_time_out', 'total_work_hours'), array($employee_id, $employee_name, $date, $time_in, $time_out, $over_time_in, $over_time_out, $total_work_hours));
+                Db::insert(self::$tbl_employee_image, array('employee_id', 'employee_image'), array($employee_id, $captured_image));
+            }
         }
     }
 
@@ -31,24 +36,36 @@ class DTR{
             $over_time_in       = $_POST['over_time_in'];
             $over_time_out      = $_POST['over_time_out'];
             $total_work_hours   = 0;
-            if($time_out != ''){
-                $time_out         = $_POST['time_out'];
-                $total_work_hours = floatval($_POST['total_work_hours']);
-                Db::update(self::$tbl_dtr, array('time_out', 'total_work_hours'), array($time_out , $total_work_hours), 'employee_id = ? and date = ?', array($employee_id, $date));
-            } else if ($over_time_in != ''){
-                Db::update(self::$tbl_dtr, array('over_time_in'), array($over_time_in), 'employee_id = ? and date = ?', array($employee_id, $date));
-            } else if($over_time_out != ''){
-                $total_work_hours = floatval($_POST['total_work_hours']);
-                Db::update(self::$tbl_dtr, array('over_time_out', 'total_work_hours'), array($over_time_out , $total_work_hours), 'employee_id = ? and date = ?', array($employee_id, $date));
-            } else {
+
+            $query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND date = ? AND time_out = ? OR over_time_out = ?', array($employee_id, $date, '', ''), '', '','');
+            $result = Db::assoc($query);
+            if(Db::count($query) == 0){
                 Db::insert(self::$tbl_dtr, array('employee_id', 'employee_name', 'date',  'time_in', 'time_out', 'over_time_in', 'over_time_out', 'total_work_hours'), array($employee_id, $employee_name, $date, $time_in, $time_out, $over_time_in, $over_time_out, $total_work_hours));
+            } 
+            if($result['time_out'] == ''){
+                if($time_out != ''){
+                    $time_out         = $_POST['time_out'];
+                    $total_work_hours = floatval($_POST['total_work_hours']);
+                    Db::update(self::$tbl_dtr, array('time_out', 'total_work_hours'), array($time_out , $total_work_hours), 'employee_id = ? and date = ?', array($employee_id, $date));
+                }
+            }
+            if($result['over_time_in'] == ''){
+                if ($over_time_in != ''){
+                    Db::update(self::$tbl_dtr, array('over_time_in'), array($over_time_in), 'employee_id = ? and date = ?', array($employee_id, $date));
+                }
+            }
+            if($result['over_time_out'] == ''){
+                if($over_time_out != ''){
+                    $total_work_hours = floatval($_POST['total_work_hours']);
+                    Db::update(self::$tbl_dtr, array('over_time_out', 'total_work_hours'), array($over_time_out , $total_work_hours), 'employee_id = ? and date = ?', array($employee_id, $date));
+                }
             }
         }
     }
 
     public static function getDTRData(){
         if(isset($_GET['employee_id'])){
-            $query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ?', $_GET['employee_id'], '', '', '');
+            $query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND date = ?', array($_GET['employee_id'], $_GET['date']), '', '', '');
             $query2 = Db::fetch('tbl_shifting_hours s JOIN tbl_employees e ON s.shifting_type_name = e.shifting_type_name', '', 'employee_number = ?', $_GET['employee_id'], '', '', '');
             $result = Db::num($query);
             $result2 = Db::num($query2);
@@ -58,10 +75,10 @@ class DTR{
     }
 
     public static function fetchRecordDTRData(){
-        $query = Db::fetch(self::$tbl_dtr, '', '', '', '', '', '', '');
+        $query = Db::fetch(self::$tbl_dtr, '', '', '', 'id DESC', '', '');
         $limit = $_GET['start'].', '.$_GET['length'];
         if($_GET['length'] != -1){
-            $query = Db::fetch(self::$tbl_dtr, '','','','', $limit, '');
+            $query = Db::fetch(self::$tbl_dtr, '','','','id DESC', $limit, '');
         }
         if(!empty($_GET['search']['value'])){
             $like_val = '%'.$_GET['search']['value'].'%';
