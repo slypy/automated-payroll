@@ -11,9 +11,12 @@
         <form id="check-id">
             <input id="card_id" type="text" name="card_id">
         </form>
+        <form id="uploadImage">
+            <input id="image_data" type="hidden" name="image_data" value="">
+        </form>
     </div>
-
 </div>
+
 
 <script>
     $(document).ready(function() {
@@ -21,9 +24,8 @@
             width: 400,
             height: 400,
             image_format: 'jpeg',
-            jpeg_quality: 100,
+            jpeg_quality: 90,
             flip_horiz: true,
-            fps: 60,
             constraints: {
                 width: {
                     exact: 400
@@ -175,8 +177,24 @@
                 data: SCANNED_DTR_DATA,
                 success: function() {
                     Webcam.snap((data_uri) => {
-                        Webcam.upload(data_uri, 'upload-image.php');
-                        Webcam.reset();
+                        $('#image_data').val(data_uri);
+
+                        $('#uploadImage').submit(function(event){
+                            event.preventDefault();
+                            $.ajax({
+                                url: 'controller.php?action=uploadImage',
+                                type: 'POST',
+                                data: $(this).serialize(),
+                                success: () => {
+                                    $('#uploadImage')[0].reset();
+                                    console.log('Image uploaded');
+                                },
+
+                                error: (e) => {
+                                    console.log(e);
+                                }
+                            })
+                        }).trigger('submit');
                     });
                     console.log("updated");
                     $('#check-id')[0].reset();
