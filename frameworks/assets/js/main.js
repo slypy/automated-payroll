@@ -239,16 +239,13 @@ $(document).ready(function () {
                 pageLength: 15,
             });
 
-            $('#type').change(function(){
-                var d = new Date(),        
-                h = d.getHours(),
-                m = d.getMinutes();
-                if(h < 10) h = '0' + h; 
-                if(m < 10) m = '0' + m; 
+            setInterval(() => {
+                $('#employee-dtr-table').DataTable().draw();
+            },1000);
 
-                switch(this.value){
+            $('#type').change(function(){
+                switch($(this).val()){
                     case 'Time In':
-                        $('#i_time_in').val(h+':'+m);
                         $('#time_in').show();
                         $('#i_time_in').attr('disabled', false);
                         $('#time_out').hide();
@@ -260,7 +257,7 @@ $(document).ready(function () {
                         break;
                     case 'Time Out':
                         $('#time_out').show();
-                        $('#i_time_out').val(h+':'+m);
+                        
                         $('#i_time_out').attr('disabled', false);
                         $('#time_in').hide();
                         $('#i_time_in').attr('disabled', true);
@@ -275,7 +272,6 @@ $(document).ready(function () {
                         $('#time_out').hide();
                         $('#i_time_out').attr('disabled', true);
                         $('#over_time_in').show();
-                        $('#i_over_time_in').val(h+':'+m);
                         $('#i_over_time_in').attr('disabled', false);
                         $('#over_time_out').hide();
                         $('#i_over_time_out').attr('disabled', true);
@@ -288,7 +284,6 @@ $(document).ready(function () {
                         $('#over_time_in').hide();
                         $('#i_over_time_in').attr('disabled', true);
                         $('#over_time_out').show();
-                        $('#i_over_time_out').val(h+':'+m);
                         $('#i_over_time_out').attr('disabled', false);
                         break;
                 }

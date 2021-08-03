@@ -6,6 +6,7 @@
 body {
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 .clock {
@@ -29,7 +30,7 @@ body {
 }
 
 .hms {
-    font-size: 98pt;
+    font-size: 120pt;
     font-weight: 200;
 }
 
@@ -41,4 +42,60 @@ body {
 .date {
     font-size: 15pt;
     font-weight: 900;
+}
+
+.scan-container {
+    position: relative;
+    background-color: black;
+}
+
+#employee-camera{
+    margin-left: 203px;
+}
+
+.message {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 40px;
+    width: 350px;
+    color: white;
+    background-color: rgb(73, 158, 62);
+    border-radius: 5px;
+    transform: translate(65%, -150%);
+    z-index: 999;
+}
+
+#id-input{
+    position: absolute;
+    top: -100px;
+    z-index: -1;
+}
+
+.container-top{
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+    z-index: 999;
+}
+
+.blink {
+    animation: fade 3000ms infinite;
+    -webkit-animation: fade 3000ms infinite;
+}
+
+@keyframes fade {
+    from {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.2;
+    }
+    to {
+        opacity: 1;
+    }
 }

@@ -264,6 +264,7 @@ var Webcam = {
 		if (this.userMedia) {
 			// setup webcam video container
 			var video = document.createElement('video');
+			video.setAttribute('class', 'input_video');
 			video.setAttribute('autoplay', 'autoplay');
 			video.setAttribute('playsinline', 'playsinline');
 			video.style.width = '' + this.params.dest_width + 'px';

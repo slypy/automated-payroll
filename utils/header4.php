@@ -8,5 +8,5 @@
 <script src="<?php echo $web_root; ?>frameworks/assets/js/core/jquery.min.js"></script>
 <script src="<?php echo $web_root; ?>frameworks/assets/js/core/popper.min.js"></script>
 <script src="<?php echo $web_root; ?>frameworks/assets/js/plugins/moment.min.js"></script>
-<script src="<?php echo $web_root; ?>frameworks/js/webcam.min.js"></script>
+<script src="<?php echo $web_root; ?>frameworks/js/webcam.js?v=1"></script>
 <script src="<?php echo $web_root; ?>frameworks/assets/js/core/bootstrap-material-design.min.js"></script>

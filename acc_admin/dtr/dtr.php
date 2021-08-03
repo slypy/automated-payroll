@@ -88,7 +88,7 @@
                             <label>Date</label>
                         </div>
                         <div id="time_in" class="material-textfield" style=" display: none;   margin-top: 20px">
-                            <input id="i_time_in" placeholder=" " name="time_in" type="time" style="width: 220px;" value="">
+                            <input id="i_time_in" placeholder=" " name="time_in" type="time" style="width: 220px;" value="<?php echo date("H:i", strtotime(date('Y-m-d H:i'))); ?>">
                             <label>Time In</label>
                         </div>
                         <div id="time_out" class="material-textfield" style=" display: none;  margin-top: 20px">

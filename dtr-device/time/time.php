@@ -5,13 +5,14 @@
         <br>
         <span class="date"></span>
     </div>
-    <div style="margin-bottom: -70px;">
+    <div style="margin-bottom: -70px; display:flex; flex-direction: column;">
         <a href="<?php echo $web_root ?>dtr-device/time/index.php?page=scan" class="btn btn-secondary btn-lg">Go Now</a>
     </div>
 </div>
 <script>
     function updateTime() {
         var dateInfo = new Date();
+        dateInfo.toLocaleString('en-US', {timeZone: 'Asia/Manila'});
         /* time */
         var hr,
             _min = (dateInfo.getMinutes() < 10) ? "0" + dateInfo.getMinutes() : dateInfo.getMinutes(),

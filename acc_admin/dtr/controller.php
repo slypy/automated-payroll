@@ -23,11 +23,7 @@ switch($action){
         break;
 
     case 'addDTRRecord':
-        add_DTRRecord('no-scanner');
-        break;
-
-    case 'addDTRRecordWithScanner':
-        add_DTRRecord('with-scanner');
+        add_DTRRecord();
         break;
 
     case 'updateDTRRecord':
@@ -54,17 +50,8 @@ function datatable_DTRRecord(){
     return;
 }
 
-function add_DTRRecord($type){
-    switch($type){
-        case 'no-scanner':
-            DTR::addRecordNoScanner();
-            break;
-
-        case 'with-scanner':
-            DTR::addRecordWithScanner();
-            break;
-    }
-    return;
+function add_DTRRecord(){
+    DTR::addRecordNoScanner();
 }
 
 function update_DTRRecord(){
