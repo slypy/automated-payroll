@@ -5,7 +5,7 @@
                 <h4 class="card-title">Over Time Maximum Hours</h4>
             </div>
             <div class="card-body table-responsive">
-                <table id="over-time-table" class="table table-sm table-hover table-bordered" cellspacing="0">
+                <table id="over-time-table" class="table table-sm table-hover " cellspacing="0">
                     <thead class="text-primary text-sm">
                         <th>
                             
@@ -27,7 +27,7 @@
                 <h4 class="card-title">Late Policy</h4>
             </div>
             <div class="card-body table-responsive">
-                <table id="late-policy-table" class="table table-sm table-hover  table-bordered" cellspacing="0">
+                <table id="late-policy-table" class="table table-sm table-hover " cellspacing="0">
                     <thead class="text-primary text-sm">
                         <th>
                             Late After
@@ -61,7 +61,7 @@
                     <hr>
                 </div>
                 <div class="table-responsive">
-                    <table id="employee-shifting-hours-table" class="table table-sm table-hover table-bordered" cellspacing="0">
+                    <table id="employee-shifting-hours-table" class="table table-sm table-hover " cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th>
                                 Name
@@ -78,7 +78,7 @@
                             <th>
                                 Total Maximum Working Hours
                             </th>
-                            <th class="text-center" width=100>
+                            <th class="text-left" width=100>
                                 Action
                             </th>
                         </thead>

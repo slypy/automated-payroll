@@ -27,7 +27,7 @@
                     <hr>
                 </div>
                 <div class="table-responsive">
-                    <table id="active-employee-table" class="table table-sm table-hover table-bordered" cellspacing="0">
+                    <table id="active-employee-table" class="table table-sm table-hover " cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th  class="text-center" width=25 style="cursor: pointer;">
                                 <input type="checkbox" id="check_all"/>

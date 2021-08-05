@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table id="position-table" class="table table-hover table-striped table-bordered">
+                    <table id="position-table" class="table table-hover">
                         <thead class="text-info">
                             <th>
                                 Position List

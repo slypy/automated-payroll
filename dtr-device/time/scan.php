@@ -106,19 +106,12 @@
                 timeZone: 'Asia/Manila'
             });
             /* time */
-            var hr,
+            var hr = (dateInfo.getHours() < 10) ? "0" + dateInfo.getHours() : dateInfo.getHours(),
                 _min = (dateInfo.getMinutes() < 10) ? "0" + dateInfo.getMinutes() : dateInfo.getMinutes(),
-                sec = (dateInfo.getSeconds() < 10) ? "0" + dateInfo.getSeconds() : dateInfo.getSeconds(),
-                ampm = (dateInfo.getHours() >= 12) ? "PM" : "AM";
+                sec = (dateInfo.getSeconds() < 10) ? "0" + dateInfo.getSeconds() : dateInfo.getSeconds();
+    
             // replace 0 with 12 at midnight, subtract 12 from hour if 13–23
-            if (dateInfo.getHours() == 0) {
-                hr = 12;
-            } else if (dateInfo.getHours() > 12) {
-                hr = dateInfo.getHours() - 12;
-            } else {
-                hr = dateInfo.getHours();
-            }
-            return currentTime = hr + ":" + _min +" " + ampm;
+            return hr + ":" + _min;
         }
 
 
@@ -163,13 +156,13 @@
                 }
             });
 
-            if(time_in != ''){
-                SCANNED_DTR_DATA.total_work_hours = diffTime(to24(time_in), to24(TimeNow()));
-            }
+            // if(time_in != ''){
+            //     SCANNED_DTR_DATA.total_work_hours = diffTime(to24(time_in), to24(TimeNow()));
+            // }
             
-            if(over_time_in != ''){
-                SCANNED_DTR_DATA.total_work_hours = diffTime(to24(over_time_in), to24(TimeNow())) + itotal_work_hours;
-            }
+            // if(over_time_in != ''){
+            //     SCANNED_DTR_DATA.total_work_hours = diffTime(to24(over_time_in), to24(TimeNow())) + itotal_work_hours;
+            // }
 
             $.ajax({
                 url: 'controller.php?action=addDTRWithScanner',
@@ -178,24 +171,22 @@
                 success: function() {
                     Webcam.snap((data_uri) => {
                         $('#image_data').val(data_uri);
-
                         $('#uploadImage').submit(function(event){
-                            event.preventDefault();
                             $.ajax({
                                 url: 'controller.php?action=uploadImage',
                                 type: 'POST',
                                 data: $(this).serialize(),
                                 success: () => {
                                     $('#uploadImage')[0].reset();
-                                    console.log('Image uploaded');
                                 },
-
                                 error: (e) => {
                                     console.log(e);
                                 }
                             })
+                            event.preventDefault();
                         }).trigger('submit');
                     });
+
                     console.log("updated");
                     $('#check-id')[0].reset();
                 },

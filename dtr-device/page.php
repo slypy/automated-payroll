@@ -54,15 +54,15 @@
                         url: '../time/controller.php?action=addInitialDTR',
                         type: 'POST',
                         data: {
-                            date: today
+                            start_date: today
                         },
                         success: () => {
                             console.log("New day is up to work :)");
                         },
                         error: (e) => {
-                            console.log(e)
+                            alert(e);
                         }
-                    })
+                    });
                 }
             }, 1000);
         });

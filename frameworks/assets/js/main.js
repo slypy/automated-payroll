@@ -230,15 +230,76 @@ $(document).ready(function () {
                 retrieve: true,
                 dom: "ftipr",
                 bAutoWidth: false,
-                paging: true,
+                paging: false,
                 lengthChange: false,
                 ordering: false,
                 searching: true,
                 bFilter: true,
                 bInfo: true,
-                pageLength: 15,
+                columnDefs: [{
+                    targets: [4,7],
+                    className: 'text-warning'
+                },{
+                    targets: [5,8],
+                    className: 'text-danger'
+                }]
             });
 
+            $('#employee-dtr-record-table').DataTable({
+                serverSide: true,
+                ajax: {
+                    url: 'controller.php',
+                    type: 'GET',
+                    data: {
+                        action: 'getEmployeeDTRdata'
+                    },
+                },
+                retrieve: true,
+                sDom: 'lrtip',
+                bAutoWidth: false,
+                paging: false,
+                lengthChange: false,
+                ordering: false,
+                searching: true,
+                bFilter: true,
+                bInfo: true,
+                columnDefs: [{
+                    targets: 8,
+                    className: 'td-actions text-center'
+                }]
+            });
+
+            $('#search_data').keyup(function(){
+                $('#employee-dtr-record-table').DataTable().search($(this).val()).draw();
+            });
+
+            $('#search_data').keypress((e) => {
+                if(e.keyCode == 13) return false;
+            });
+            
+            $('#employee-dtr-record-table').on('click', '.update', function(){
+                var DTR_ID= $(this).attr('id');
+                
+                $.ajax({
+                    url: 'controller.php',
+                    type: 'GET',
+                    data: {
+                        action: 'getEmployeeDTRbyID',
+                        dtr_id: DTR_ID
+                    },
+                    dataType: 'json',
+                    success: (data) => {
+                        $('#update-time-in-form').modal({backdrop: "static", keyboard: false,},"show");
+                        $('#date').val(data[3]);
+                        $('#time_in').val(to24(data[4]));
+                        $('#time_out').val(to24(data[5]));
+                        $('#over_time_in').val(to24(data[6]));
+                        $('#over_time_out').val(to24(data[7]));
+                        $('#total_work_hours').val(data[8]);
+                    }
+                })
+            });
+            
             setInterval(() => {
                 $('#employee-dtr-table').DataTable().draw();
             },1000);
@@ -324,57 +385,12 @@ $(document).ready(function () {
                     employee_name: $('#employee_name').val(),
                     type: $('#type').val(),
                     date: $('#date').val(),
-                    time_in: toAMPM($('#i_time_in').val()),
-                    time_out: toAMPM($('#i_time_out').val()),
-                    over_time_in: toAMPM($('#i_over_time_in').val()),
-                    over_time_out: toAMPM($('#i_over_time_out').val()),
+                    time_in: $('#i_time_in').val(),
+                    time_out: $('#i_time_out').val(),
+                    over_time_in: $('#i_over_time_in').val(),
+                    over_time_out: $('#i_over_time_out').val(),
                 }
 
-                if($('#i_time_out').val() != ''){
-                    // declare outer variable
-                    var start, break_time;
-                    $.ajax({
-                        url: 'controller.php',
-                        // make ajax async false to set the value of outer variable
-                        async: false,
-                        type: 'GET',
-                        data: {
-                            action: 'getDTRdata',
-                            date: DTR_DATA.date,
-                            employee_id: DTR_DATA.employee_id
-                        },
-                        dataType: 'json',
-                        success: function(data){
-                            //now we can set a value data json to start
-                            start = to24(data[4]);
-                            break_time = data[13];
-                        }
-                    });
-                    var end = $('#i_time_out').val();
-                    // push new POST key:val total_work_hours: diff time(start and end) to DTR_DATA object
-                    DTR_DATA.total_work_hours = (diffTime(start,end) - break_time);
-                }
-
-                if($('#i_over_time_out').val() != ''){
-                    var ot_start, ot_end, initial_total_hours;
-                    $.ajax({
-                        url: 'controller.php',
-                        async: false,
-                        type: 'GET',
-                        data: {
-                            action: 'getDTRdata',
-                            date: DTR_DATA.date,
-                            employee_id: DTR_DATA.employee_id
-                        },
-                        dataType: 'json',
-                        success: function(data){
-                            initial_total_hours = (data[8])*1;
-                            ot_start = to24(data[6]);
-                        }
-                    });
-                    ot_end = $('#i_over_time_out').val();
-                    DTR_DATA.total_work_hours = (diffTime(ot_start, ot_end))+initial_total_hours;
-                }
                 $.ajax({
                     url: 'controller.php?action=addDTRRecord',
                     type: 'POST',
@@ -547,7 +563,7 @@ $(document).ready(function () {
                 columnDefs: [
                     {
                         targets: [5],
-                        className: "td-actions text-center",
+                        className: "td-actions text-left",
                     },
                 ],
             });

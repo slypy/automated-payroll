@@ -44,7 +44,7 @@ function ImageUpload(){
 
         $file_name = date('YmdHis').'.jpeg';
         
-        $result = file_put_contents( 'uploads/'.$file_name, $binary_data);
+        $result = file_put_contents('uploads/'.$file_name, $binary_data);
         if (!$result) die("Could not save image!  Check file permissions.");
     }
 }

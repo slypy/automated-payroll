@@ -11,31 +11,35 @@
                     <hr>
                 </div>
                 <div class="table-responsive">
-                    <table id="employee-dtr-table" class="table table-sm table-hover table-bordered" cellspacing="0">
+                    <table id="employee-dtr-table" class="table table-sm table-hover" cellspacing="0">
                         <thead class="text-primary text-sm">
                             <th>
                                 Date
                             </th>
                             <th>
-                                Employee ID#
+                                Employee ID
                             </th>
                             <th>
-                                Employee Name
+                                Name
                             </th>
                             <th>
-                                Time In
+                                Shift
                             </th>
                             <th>
-                                Time Out
+                                Time-In
                             </th>
                             <th>
-                                Regular Time
+                                Time-Out
                             </th>
                             <th>
-                                Over Time In
+                                Regular Hours
+                            </th>
+                           
+                            <th>
+                                Overtime-In
                             </th>
                             <th>
-                                Over Time Out
+                                Overtime-Out
                             </th>
                             <th>
                                 Total

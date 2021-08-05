@@ -18,6 +18,10 @@ switch($action){
         getDTRdata();
         break;
 
+    case 'getEmployeeDTRdata':
+        datatable_EmployeeDTRRecord();
+        break;
+
     case 'listDTRRecord':
         datatable_DTRRecord();
         break;
@@ -32,6 +36,10 @@ switch($action){
 
     case 'get_employee_name':
         getEmployeeName();
+        break;
+
+    case 'getEmployeeDTRbyID':
+        getEmployeeDTRbyID();
         break;
 
 }
@@ -56,6 +64,16 @@ function add_DTRRecord(){
 
 function update_DTRRecord(){
     DTR::updateRecord();
+    return;
+}
+
+function datatable_EmployeeDTRRecord(){
+    DTR::fetchEmployeeRecordDTRData();
+    return;
+}
+
+function getEmployeeDTRbyID(){
+    DTR::getDTRData();
     return;
 }
 ?>
