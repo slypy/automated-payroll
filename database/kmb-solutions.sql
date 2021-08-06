@@ -74,7 +74,7 @@ CREATE TABLE `tbl_admin_logs` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_dtr`
+-- Table structure for table `tbl_dtr` with generated
 --
 
 CREATE TABLE `tbl_dtr` (

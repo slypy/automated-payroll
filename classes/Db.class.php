@@ -292,81 +292,86 @@ class Db extends mysqli implements Config{
 	# fetch is the valid function that does the work of 'fetchSpecial', 'fetchAll', and 'fetchCols', 
 	# always use this method when fetching anything from your database
 	public static function fetch($table, $columns,  $whereClause, $whereValue, $orderBy, $limit, $groupBy){
-		if($limit == ""){
-			$limit = ""; 
-		} else {
-			$limit = " LIMIT $limit "; 
-		}
-		if($orderBy == ""){
-			$orderBy = "";
-		} else {
-			$orderBy = " ORDER BY $orderBy "; 
-		}
-		if($groupBy == ""){
-			$groupBy = "";
-		} else {
-			$groupBy = "GROUP BY $groupBy"; 
-		}
-		$con = self::connectDB(); 
-		if($columns == ""){
-			// select * from table where (email = ? AND data = ? or username = ? )
-			$query = $con->prepare("SELECT * FROM $table WHERE $whereClause $groupBy $orderBy $limit");
-			if($whereValue != ""){
-				if(is_array($whereValue)){
-					$n = 0; 
-					$countWhereValue = count($whereValue);
-					while($n < $countWhereValue){
-						$paramsCount = $n + 1; 
-						$query->bindParam($paramsCount, $whereValue[$n]);
-						$n++;
-					}
-				} else {
-					$query->bindParam(1, $whereValue); 
-				}
+		try{
+			if($limit == ""){
+				$limit = ""; 
 			} else {
-				$query = $con->prepare("SELECT * FROM $table  $groupBy $orderBy  $limit");
+				$limit = " LIMIT $limit "; 
 			}
-		} else {
-			// $query = $con->prepare("SELECT email, password.. FROM table $whereClause")
-			// here means the columns are in array
-			$sql = "SELECT "; 
-			if(is_array($columns)){
-				$colsCount = count($columns); 
-				$start = 0; 
-				while($start < $colsCount){
-					$commas = $start + 1; 
-					if($commas == $colsCount){
-						$sql .= $columns[$start]." ";
+			if($orderBy == ""){
+				$orderBy = "";
+			} else {
+				$orderBy = " ORDER BY $orderBy "; 
+			}
+			if($groupBy == ""){
+				$groupBy = "";
+			} else {
+				$groupBy = "GROUP BY $groupBy"; 
+			}
+			$con = self::connectDB(); 
+			if($columns == ""){
+				// select * from table where (email = ? AND data = ? or username = ? )
+				$query = $con->prepare("SELECT * FROM $table WHERE $whereClause $groupBy $orderBy $limit");
+				if($whereValue != ""){
+					if(is_array($whereValue)){
+						$n = 0; 
+						$countWhereValue = count($whereValue);
+						while($n < $countWhereValue){
+							$paramsCount = $n + 1; 
+							$query->bindParam($paramsCount, $whereValue[$n]);
+							$n++;
+						}
 					} else {
-						$sql .= $columns[$start].", "; 
-					}
-					$start ++; 
-				}
-			} else {
-				$sql .= "$columns ";
-			}
-			if($whereValue != ""){
-				$sql .= "FROM $table WHERE $whereClause $groupBy $orderBy $limit"; 
-				$query = $con->prepare($sql); 
-				if(is_array($whereValue)){
-					$n = 0; 
-					$countWhereValue = count($whereValue);
-					while($n < $countWhereValue){
-						$paramsCount = $n + 1; 
-						$query->bindParam($paramsCount, $whereValue[$n]);
-						$n++;
+						$query->bindParam(1, $whereValue); 
 					}
 				} else {
-					$query->bindParam(1, $whereValue); 
-				}	
+					$query = $con->prepare("SELECT * FROM $table  $groupBy $orderBy  $limit");
+				}
 			} else {
-				$sql .= "FROM $table $groupBy $orderBy $limit"; 
-				$query = $con->prepare($sql); 
-				$query = $con->prepare("SELECT * FROM $table  $groupBy $orderBy  $limit");
+				// $query = $con->prepare("SELECT email, password.. FROM table $whereClause")
+				// here means the columns are in array
+				$sql = "SELECT "; 
+				if(is_array($columns)){
+					$colsCount = count($columns); 
+					$start = 0; 
+					while($start < $colsCount){
+						$commas = $start + 1; 
+						if($commas == $colsCount){
+							$sql .= $columns[$start]." ";
+						} else {
+							$sql .= $columns[$start].", "; 
+						}
+						$start ++; 
+					}
+				} else {
+					$sql .= "$columns ";
+				}
+				if($whereValue != ""){
+					$sql .= "FROM $table WHERE $whereClause $groupBy $orderBy $limit"; 
+					$query = $con->prepare($sql); 
+					if(is_array($whereValue)){
+						$n = 0; 
+						$countWhereValue = count($whereValue);
+						while($n < $countWhereValue){
+							$paramsCount = $n + 1; 
+							$query->bindParam($paramsCount, $whereValue[$n]);
+							$n++;
+						}
+					} else {
+						$query->bindParam(1, $whereValue); 
+					}	
+				} else {
+					$sql .= "FROM $table $groupBy $orderBy $limit"; 
+					$query = $con->prepare($sql); 
+					$query = $con->prepare("SELECT * FROM $table  $groupBy $orderBy  $limit");
+				}
 			}
+			$query->execute(); 
+			return $query; 
+		} catch(Exception $e){
+			die($e);
 		}
-		$query->execute(); 
-		return $query; 
+		
 	}
 	
 	public static function count($query){

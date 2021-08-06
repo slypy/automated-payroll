@@ -71,6 +71,8 @@ class DTR{
     }
 
     public static function addRecordNoScanner(){
+        $query4 = Db::fetch('tbl_overtime', '', '', '', '', '', '');
+        $overtime_result = Db::num($query4);
         if(isset($_POST['employee_id'])){
             $employee_id        = $_POST['employee_id'];
             $employee_name      = $_POST['employee_name'];
@@ -79,37 +81,80 @@ class DTR{
             $time_out           = $_POST['time_out'];
             $over_time_in       = $_POST['over_time_in'];
             $over_time_out      = $_POST['over_time_out'];
-
+            
+            # FIXED add new DTR with specific time in
             $query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND start_date = ?', array($employee_id, $date), '', '','');
-
+            # if $query result is 0 then insert new DTR data with time_in value
             if(Db::count($query) == 0){
-                Db::insert(self::$tbl_dtr, array('employee_id', 'employee_name', 'start_date',  'time_in', 'end_date', 'time_out', 'over_time_in', 'over_time_out', ), array($employee_id, $employee_name, $date, $time_in, $time_out, $over_time_in, $over_time_out));
-            } 
+                $query2 = Db::fetch('tbl_shifting_hours s JOIN tbl_employees e ON s.shifting_type_name = e.shifting_type_name', '', 'employee_number = ?', $employee_id, '', '', '');
+                $result1 = Db::num($query2);
 
-            $result = Db::assoc($query);
-
-            if($result['time_in'] == ''){
-                if($time_in != ''){
-                    Db::update(self::$tbl_dtr, array('time_in'), array($time_in), 'employee_id = ? AND start_date = ?', array($employee_id, $date));
-                }
-            }
-            if($result['time_in'] != '' && $result['time_out'] == ''){
-                if($time_out != ''){
-                    $time_out         = $_POST['time_out'];
-                    Db::update(self::$tbl_dtr, array('end_date', 'time_out'), array($date, $time_out), 'employee_id = ? and start_date = ?', array($employee_id, $date));
+                if($time_out == '' && $over_time_in == '' && $over_time_out == ''){
+                    Db::insert(self::$tbl_dtr, array('employee_id', 'employee_name','regular_hrs', 'regular_ot_hrs', 'start_date',  'time_in', 'end_date', 'time_out', 'ot_start_date', 'over_time_in', 'ot_end_date','over_time_out'), array($employee_id, $employee_name, $result1[5], $overtime_result[2], $date, $time_in, '', $time_out, '',$over_time_in, '',$over_time_out));
                 }
             }
 
-            if($result['time_out'] != '' && $result['over_time_in'] == ''){
-                if ($over_time_in != ''){
-                    Db::update(self::$tbl_dtr, array('ot_start_date', 'over_time_in'), array($date ,$over_time_in), 'employee_id = ? and end_date = ?', array($employee_id, $date));
+            # if POST time_in is not empty string then do insert time_in
+            if($time_in != ''){
+                $time_in_query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND start_date = ? AND time_in = ?', array($employee_id, $date, ''), '', '','');
+                $time_in_result = Db::assoc($time_in_query);
+            
+                # if the specific time_in of the queried specific start_date insert time in
+                if($time_in_result['time_in'] == ''){
+                    Db::update(self::$tbl_dtr, array('time_in'), array($time_in), 'employee_id = ? AND start_date = ?', array($employee_id, $time_in_result['start_date']));
                 }
             }
-            if($result['over_time_in'] != '' && $result['over_time_out'] == ''){
-                if($over_time_out != ''){
-                    Db::update(self::$tbl_dtr, array('ot_end_date', 'over_time_out'), array($date,$over_time_out), 'employee_id = ? and ot_start_date = ?', array($employee_id, $date));
+
+            # if POST time_out is not empty string then do insert for time_out
+            if($time_out != ''){
+                # Queries empty string end_date and time_out and start_date and time_in is not an empty string
+                $time_out_query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND start_date != ? AND time_in != ? AND end_date = ? AND time_out = ?', array($employee_id, '', '', '', ''), '', '', '');
+                $time_out_result = Db::assoc($time_out_query);
+
+                if($time_out_result['time_out'] == ''){
+                    Db::update(self::$tbl_dtr, array('end_date', 'time_out'), array($date, $time_out), 'employee_id = ? AND start_date = ?', array($employee_id, $time_out_result['start_date']));
                 }
             }
+
+            if($over_time_in != '') {
+                $over_time_in_query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND start_date != ? AND time_in != ? AND end_date = ? AND ot_start_date = ? AND over_time_in = ?', array($employee_id, '', '', $date, '', ''), '', '', '');
+                $over_time_in_result = Db::assoc($over_time_in_query);
+
+                if($over_time_in_result['over_time_in'] == ''){
+                    Db::update(self::$tbl_dtr, array('ot_start_date', 'over_time_in'), array($date, $over_time_in), 'employee_id = ? AND end_date = ?', array($employee_id, $over_time_in_result['end_date']));
+                }
+            }
+
+            if($over_time_out != ''){
+                $over_time_out_query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND start_date != ? AND time_in != ? AND end_date != ? AND ot_start_date != ? AND over_time_in != ? AND ot_end_date = ?', array($employee_id, '', '', '', '', '', ''), '' ,'', '');
+                $over_time_out_result = Db::assoc($over_time_out_query);
+
+                if($over_time_out_result['over_time_out'] == ''){
+                    Db::update(self::$tbl_dtr, array('ot_end_date', 'over_time_out'), array($date, $over_time_out), 'employee_id = ? AND ot_start_date = ?', array($employee_id, $over_time_out_result['ot_start_date']));
+                }
+            }
+
+            // if($result['time_in'] != '' && $result['time_out'] == ''){
+            //     if($time_out != ''){
+            //         Db::update(self::$tbl_dtr, array('end_date', 'time_out'), array($date, $time_out), 'employee_id = ? and start_date = ?', array($employee_id, $result['start_date']));
+            //     }
+            // }
+
+
+
+            // $ot_query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND over_time_in != ? AND over_time_in = ?', array($employee_id, '', ''), '', '', '');
+            // $ot_result = Db::assoc($ot_query);
+
+            // if($result['time_out'] != '' && $result['over_time_in'] == ''){
+            //     if ($over_time_in != ''){
+            //         Db::update(self::$tbl_dtr, array('ot_start_date', 'over_time_in'), array($date ,$over_time_in), 'employee_id = ? and end_date = ?', array($employee_id,$date));
+            //     }
+            // }
+            // if($ot_result['over_time_in'] != '' && $ot_result['over_time_out'] == ''){
+            //     if($over_time_out != ''){
+            //         Db::update(self::$tbl_dtr, array('ot_end_date', 'over_time_out'), array($date,$over_time_out), 'employee_id = ? AND ot_start_date = ?', array($employee_id, $ot_result['ot_start_date']));
+            //     }
+            // }
         }
     }
 

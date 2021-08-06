@@ -42,7 +42,7 @@
                                 Overtime-Out
                             </th>
                             <th>
-                                Total
+                                Total Hrs
                             </th>
                         </thead>
                     </table>
