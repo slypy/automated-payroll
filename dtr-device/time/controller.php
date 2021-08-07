@@ -12,6 +12,10 @@ switch($action){
         add_InitialDTR();
         break;
 
+    case 'addInitialDTRNightShift':
+        add_InitialDTRNightShift();
+        break;
+
     case 'getDTRdata':
         get_DTRdata();
         break;
@@ -28,6 +32,11 @@ function add_DTRWithScanner(){
 
 function add_InitialDTR(){
     DTR::addInitialDTR();
+    return;
+}
+
+function add_InitialDTRNightShift(){
+    DTR::addInitialDTRforNightShift();
     return;
 }
 

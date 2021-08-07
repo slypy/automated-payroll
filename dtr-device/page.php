@@ -64,6 +64,22 @@
                         }
                     });
                 }
+
+                if(TimeNow() == "12:00:00 PM"){
+                    $.ajax({
+                        url: '../time/controller.php?action=addInitialDTRNightShift',
+                        type: 'POST',
+                        data: {
+                            start_date: today
+                        },
+                        success: () => {
+                            console.log("New day is up to work :)");
+                        },
+                        error: (e) => {
+                            alert(e);
+                        }
+                    });
+                }
             }, 1000);
         });
     </script>
