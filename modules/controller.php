@@ -34,7 +34,6 @@ function doAdd(){
         $firstname = htmlspecialchars($_POST["firstname"], ENT_QUOTES, 'UTF-8');
         $lastname = htmlspecialchars($_POST["lastname"], ENT_QUOTES, 'UTF-8');
         $username = htmlspecialchars($_POST["username"], ENT_QUOTES, 'UTF-8');
-        // $email = htmlspecialchars($_POST["email"], ENT_QUOTES, 'UTF-8');
         $password = htmlspecialchars($_POST["confirmpassword"], ENT_QUOTES, 'UTF-8');
         $position = htmlspecialchars($_POST["position"]);
 

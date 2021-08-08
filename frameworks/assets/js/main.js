@@ -247,7 +247,7 @@ $(document).ready(function () {
 
             setInterval(() => {
                 $('#employee-dtr-table').DataTable().draw();
-            },1000);
+            },5000);
 
             $('#employee-dtr-record-table').DataTable({
                 serverSide: true,
