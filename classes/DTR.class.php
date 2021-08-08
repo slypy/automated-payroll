@@ -326,10 +326,25 @@ class DTR{
     }
 
     public static function updateRecord(){
-        
-    }
+        if(isset($_POST['dtr_id'])){
+            $dtr_id         = $_POST['dtr_id'];
+            $start_date     = $_POST['start_date'];
+            $time_in        = $_POST['time_in'];
+            $end_date       = $_POST['end_date'];
+            $time_out       = $_POST['time_out'];
+            $ot_start_date  = $_POST['ot_start_date'];
+            $over_time_in   = $_POST['over_time_in'];
+            $ot_end_date    = $_POST['ot_end_date'];
+            $over_time_out  = $_POST['over_time_out'];
 
-    public static function removeRecord(){
-        
+            $acc_username   = $_POST['acc_username'];
+            $acc_password   = $_POST['acc_password'];
+
+            if(Account::authenticate($acc_username, $acc_password)){
+                Db::update(self::$tbl_dtr, array('start_date', 'time_in', 'end_date', 'time_out', 'ot_start_date', 'over_time_in', 'ot_end_date', 'over_time_out'), array($start_date, $time_in, $end_date, $time_out, $ot_start_date, $over_time_in, $ot_end_date, $over_time_out), 'id = ?', $dtr_id);
+            } else {
+                echo 'invalid_account';
+            }
+        }
     }
 }

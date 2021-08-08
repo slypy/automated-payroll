@@ -130,12 +130,13 @@
 
                 <!-- Footer Buttons -->
                 <div class="modal-footer" style="height: 75px">
+                    <input id="dtr_id" type="hidden" name="dtr_id">
                     <div class="material-textfield" style="margin-right: 0px;">
-                        <input id="user_admin" placeholder=" " name="user_admin" type="text" required style="width: 200px;" disabled="disabled" value="<?php echo $_SESSION['username']; ?>">
+                        <input id="acc_username" placeholder=" " name="acc_username" type="text" required style="width: 200px;" readonly value="<?php echo $_SESSION['username']; ?>">
                         <label>Edited By</label>
                     </div>
                     <div class="material-textfield" style="margin-right: 0px;">
-                        <input id="user_password" placeholder=" " name="user_password" type="text" required style="width: 200px;">
+                        <input id="acc_password" placeholder=" " name="acc_password" type="password" required style="width: 200px;">
                         <label>Input Admin Password</label>
                     </div>
                     <button type="submit" name="UpdateSalary" class="btn btn-success btn-md">Update</button>

@@ -245,6 +245,10 @@ $(document).ready(function () {
                 }]
             });
 
+            setInterval(() => {
+                $('#employee-dtr-table').DataTable().draw();
+            },1000);
+
             $('#employee-dtr-record-table').DataTable({
                 serverSide: true,
                 ajax: {
@@ -292,8 +296,8 @@ $(document).ready(function () {
                     },
                     dataType: 'json',
                     success: (data) => {
-                        console.log(data);
                         $('#update-time-in-form').modal({backdrop: "static", keyboard: false,},"show");
+                        $('#dtr_id').val(DTR_ID);
                         $('#start_date').val(data['start_date']);
                         $('#time_in').val(data['time_in']);
                         $('#end_date').val(data['end_date']);
@@ -313,9 +317,27 @@ $(document).ready(function () {
                 })
             });
             
-            setInterval(() => {
-                $('#employee-dtr-table').DataTable().draw();
-            },1000);
+            $('#updateEmployeeDTR').submit(function(event){
+                event.preventDefault();
+                var Update_DTR_DATA = $(this).serialize();
+
+                console.log(Update_DTR_DATA);
+                $.ajax({
+                    url: 'controller.php?action=updateDTRRecord',
+                    type: 'POST',
+                    data: Update_DTR_DATA,
+                    dataType: 'text',
+                    success: (message) => {
+                        if(message != 'invalid_account'){
+                            $('#update-time-in-form').modal('hide');
+                            $('#updateEmployeeDTR')[0].reset();
+                            $('#employee-dtr-record-table').DataTable().draw();
+                        } else {
+                            alert("Wrong Password");
+                        }
+                    }
+                })
+            })
 
             $('#type').change(function(){
                 switch($(this).val()){

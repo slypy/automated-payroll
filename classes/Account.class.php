@@ -9,7 +9,6 @@ class Account{
     }
 
     public static function add($firstname, $lastname, $username, $password, $position, $profile_pic){
-
         self::$query = Db::fetch("tbl_accounts", "id","username = ? ", array($username), "", "", "");
     
         /**
@@ -57,5 +56,10 @@ class Account{
             $_SESSION['invalid_account'] = "Invalid Username and Password. Please try again.";
             Page::redir("../login/index.php");   
         }
+    }
+
+    public static function authenticate($username, $password){
+        $query = Db::fetch('tbl_accounts', '', 'username = ? AND password = ?', array($username, $password), '', '', '');
+        return Db::count($query);
     }
 }
