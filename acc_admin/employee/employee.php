@@ -386,7 +386,7 @@
                             <div class="input-date">
                                 <div class="material-textfield">
                                     <!-- sss_number: $("#sss_number").val() -->
-                                    <input id="sss_number" placeholder=" " name="sss_number" type="text" required style="width: auto;">
+                                    <input id="sss_number" placeholder=" " name="sss_number" type="text" style="width: auto;" value="">
                                     <label>SSS number</label>
                                 </div>
                                 <p>eg. 34-8888123-8</p>
@@ -394,14 +394,14 @@
                             <div class="input-date">
                                 <div class="material-textfield">
                                     <!-- employee_er: $("#employee_er").val() -->
-                                    <input id="employee_er" placeholder=" " name="employee_er" type="number" step="0.01" required style="width: auto;">
+                                    <input id="employee_er" placeholder=" " name="employee_er" type="number" step="0.01" value="0" style="width: auto;">
                                     <label>₱ Employer</label>
                                 </div>
                             </div>
                             <div class="input-date">
                                 <div class="material-textfield">
                                     <!-- employee_ee: $("#employee_ee").val() -->
-                                    <input id="employee_ee" placeholder=" " name="employee_ee" type="number" step="0.01" required style="width: auto;">
+                                    <input id="employee_ee" placeholder=" " name="employee_ee" type="number" step="0.01" value="0" style="width: auto;">
                                     <label>₱ Employee</label>
                                 </div>
                             </div>
@@ -410,7 +410,7 @@
                             <div class="input-date">
                                 <div class="material-textfield">
                                     <!-- sss_active_loan: $("#sss_active_loan").val() -->
-                                    <input id="sss_active_loan" placeholder=" " name="sss_active_loan" type="number" step="0.01" required style="width: auto;">
+                                    <input id="sss_active_loan" placeholder=" " name="sss_active_loan" type="number" step="0.01" value="0" style="width: auto;">
                                     <label>₱ Any Active SSS Loan</label>
                                 </div>
                             </div>
@@ -422,7 +422,7 @@
                             <div class="input-date">
                                 <div class="material-textfield">
                                     <!-- philhealth_number: $("#philhealth_number").val() -->
-                                    <input id="philhealth_number" placeholder=" " name="philhealth_number" type="text" required style="width: auto;">
+                                    <input id="philhealth_number" placeholder=" " name="philhealth_number" type="text" value="" style="width: auto;">
                                     <label>Philhealth number</label>
                                 </div>
                                 <p>eg. 11-202188887</p>
@@ -430,7 +430,7 @@
                             <div class="input-date">
                                 <div class="material-textfield">
                                     <!-- philhealth_per_month: $("#philhealth_per_month").val() -->
-                                    <input id="philhealth_per_month" placeholder=" " name="philhealth_per_month" type="number" step="0.01" required style="width: auto;">
+                                    <input id="philhealth_per_month" placeholder=" " name="philhealth_per_month" type="number" step="0.01" value="0" style="width: auto;">
                                     <label>₱ Per Month</label>
                                 </div>
                             </div>
@@ -442,7 +442,7 @@
                             <div class="input-date">
                                 <div class="material-textfield">
                                     <!--  pag_ibig_number: $("#pag_ibig_number").val() -->
-                                    <input id="pag_ibig_number" placeholder=" " name="pag_ibig_number" type="text" required style="width: auto;">
+                                    <input id="pag_ibig_number" placeholder=" " name="pag_ibig_number" type="text" value="" style="width: auto;">
                                     <label>Pag-IBIG fund number</label>
                                 </div>
                                 <p>eg. 11-202188887</p>
@@ -450,14 +450,14 @@
                             <div class="input-date">
                                 <div class="material-textfield">
                                     <!-- pag_ibig_per_month: $("#pag_ibig_per_month").val() -->
-                                    <input id="pag_ibig_per_month" placeholder=" " name="pag_ibig_per_month" type="number" step="0.01" required style="width: auto;">
+                                    <input id="pag_ibig_per_month" placeholder=" " name="pag_ibig_per_month" type="number" step="0.01" value="0" style="width: auto;">
                                     <label>₱ Per Month</label>
                                 </div>
                             </div>
                             <div class="input-date">
                                 <div class="material-textfield">
                                     <!-- pag_ibig_active_loan: $("#pag_ibig_active_loan").val() -->
-                                    <input id="pag_ibig_active_loan" placeholder=" " name="pag_ibig_active_loan" type="number" step="0.01" required style="width: auto;">
+                                    <input id="pag_ibig_active_loan" placeholder=" " name="pag_ibig_active_loan" type="number" step="0.01" value="0" style="width: auto;">
                                     <label>₱ Any Active Loan</label>
                                 </div>
                             </div>
