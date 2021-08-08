@@ -69,9 +69,9 @@ class DTR{
              *   This code structure is in descending form to ignore 
              *   auto update on query condition
              * 
-             *  5th ⇑ :  first check over_time 
-             *  4th ⇑ :  second check over_time_in
-             *  3rd ⇑ :  third check time_out
+             *  5th ⇑ :  first time_out
+             *  4th ⇑ :  second check over_time_out
+             *  3rd ⇑ :  third check over_time_in
              *  2nd ⇑ :  fourth check time_in
              *  1st ⇑ :  fifth check if DTR is not in database 
              * |TRUE|       then insert new DTR data containing time_in value;
@@ -79,14 +79,6 @@ class DTR{
              * <param string={card_id, time, date}></param>
              * <Author> Sly Bacalso </Author>
              */
-
-            $tbl_dtr_query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND start_date = ?', array($employee_id, $date), '', '', '');
- 
-
-            $tbl_shifting_hours_query = Db::fetch('tbl_shifting_hours s JOIN tbl_employees e ON s.shifting_type_name = e.shifting_type_name', '', 'employee_number = ?', $employee_id, '', '', '');
-            $tbl_shifting_hours = Db::assoc($tbl_shifting_hours_query);
-            
-
             if($time_out_query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND start_date != ? AND time_in != ? AND end_date = ? AND time_out = ?', array($employee_id, '', '', '', ''), '', '', '')){
                 if($time_out_result = Db::assoc($time_out_query)){
                     if($time_out_result['time_out'] == ''){
@@ -110,10 +102,13 @@ class DTR{
             if($over_time_in_query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND start_date != ? AND time_in != ? AND end_date = ? AND time_out != ?  AND ot_start_date = ? AND over_time_in = ?', array($employee_id, '', '', $date, '', '', ''), 'id DESC','1','')){
 
                 if($over_time_in_result = Db::assoc($over_time_in_query)){
-                    if($over_time_in <= '12:00'){
+                    // check if time now is from 12:00AM to 12:00PM then do update for over_time_in whose time out at AM
+                    if($over_time_in < '12:00'){
                         Db::update(self::$tbl_dtr, array('ot_start_date', 'over_time_in'), array($date, $over_time_in), 'employee_id = ? AND start_date != ? AND end_date = ? ORDER BY id DESC LIMIT 1', array($employee_id, $over_time_in_result['end_date'],$over_time_in_result['end_date']));
 
                         return true;
+
+                    // else insert for the same start_date and end_date
                     } else {
                         Db::update(self::$tbl_dtr, array('ot_start_date', 'over_time_in'), array($date, $over_time_in), 'employee_id = ? AND start_date = ? AND end_date = ? ORDER BY id DESC LIMIT 1', array($employee_id, $over_time_in_result['end_date'],$over_time_in_result['end_date']));
                     }
@@ -129,6 +124,12 @@ class DTR{
                     }
                 }
             }
+
+            $tbl_dtr_query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND start_date = ?', array($employee_id, $date), '', '', '');
+ 
+
+            $tbl_shifting_hours_query = Db::fetch('tbl_shifting_hours s JOIN tbl_employees e ON s.shifting_type_name = e.shifting_type_name', '', 'employee_number = ?', $employee_id, '', '', '');
+            $tbl_shifting_hours = Db::assoc($tbl_shifting_hours_query);
 
             if(Db::count($tbl_dtr_query) == 0){
                 $tbl_shifting_hours_query = Db::fetch('tbl_shifting_hours s JOIN tbl_employees e ON s.shifting_type_name = e.shifting_type_name', '', 'employee_number = ?', $employee_id, '', '', '');
