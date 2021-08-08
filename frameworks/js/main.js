@@ -215,9 +215,9 @@ $(document).ready(function () {
         return age;
     }
 
-    // let dir_name = location.pathname.split('/')[2];
-    // switch(dir_name){
-    //     case 'dtr':
+    let dir_name = location.pathname.split('/')[2];
+    switch(dir_name){
+        case 'dtr':
             $('#employee-dtr-table').DataTable({
                 serverSide: true,
                 ajax: {
@@ -437,9 +437,9 @@ $(document).ready(function () {
                     }
                 })
             });
-            // break;
+            break;
 
-        // case 'payroll':
+        case 'payroll':
             $('#payroll-report-table').DataTable({
                 dom: "ftipr",
                 bAutoWidth: false,
@@ -469,9 +469,9 @@ $(document).ready(function () {
                     $(api.column(4).footer()).html('$' + GrossPay_total);
                 }
             });
-            // break;
+            break;
 
-        // case 'employee':
+        case 'employee':
             // Data Table for Active employees
             $("#active-employee-table").DataTable({
                 serverSide: true,
@@ -1314,9 +1314,9 @@ $(document).ready(function () {
                 });
             });
             
-            // break;
+            break;
 
-        // case 'EmployeeCredits':
+        case 'EmployeeCredits':
             $('#staff-ca-table').DataTable({
                 serverSide: true,
                 ajax: {
@@ -1824,9 +1824,9 @@ $(document).ready(function () {
                     }
                 })
             });
-            // break;
+            break;
 
-        // case 'holiday-pay':
+        case 'holiday-pay':
             $("#holiday-pay-table").DataTable({
                 serverSide: true,
                 ajax: {
@@ -1949,9 +1949,9 @@ $(document).ready(function () {
                     },
                 });
             });
-            // break;
+            break;
             
-        // default: 
+        default: 
             var dashboard = {
                 initDashboardPageCharts: function () {
                     dataDailySalesChart = {
@@ -2108,8 +2108,8 @@ $(document).ready(function () {
                     dashboard.initDashboardPageCharts();
                 }, 500);
             });
-            // break;
-    // }
+            break;
+    }
 
     
 
