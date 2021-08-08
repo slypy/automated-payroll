@@ -12,7 +12,7 @@ class Db extends mysqli implements Config{
 
 	public static function connectDB(){
 		try{
-			$db = new PDO("mysql:host=".Config::MySQLHost.";dbname=".Config::MySQLData,Config::MySQLUser, Config::MySQLPass);
+			$db = new PDO("mysql:host=".Config::MySQLHost.";dbname=".Config::MySQLDatabaseName,Config::MySQLUser, Config::MySQLPass);
 			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch(Exception $e){
 			self::returnedSQlError($e); 
