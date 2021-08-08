@@ -5,7 +5,6 @@ class Account{
 
     public static function loggedIn(){
         if(isset($_COOKIE["usr"]) && $_COOKIE["usr"] != "") return true;
-
         return false;
     }
 
@@ -44,6 +43,7 @@ class Account{
             $role = $idToken[5];
 
             setcookie("usr", self::$id, time()+(60*60*24*7*30),"/", "","",TRUE);
+            $_SESSION['username'] = self::$id = $idToken[3];
 
             switch($role){
                 case "admin":

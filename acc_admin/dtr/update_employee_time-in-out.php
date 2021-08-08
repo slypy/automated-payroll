@@ -31,8 +31,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="header-title">
-                    <h3>
-                        Employee's DTR
+                    <h3 id="EmployeeName">
                     </h3>
                 </div>
                 <div class="header-line">
@@ -92,31 +91,39 @@
 
                 <div class="modal-body">
                     <div class="update-time-in-form">
+                        <div class="material-textfield">
+                            <input id="start_date" placeholder=" " name="start_date" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;" value="">
+                            <label>Start Date</label>
+                        </div>
                         <div class="material-textfield" style="margin-right: 0px;">
-                            <input id="time_in" placeholder=" " name="time_in" type="time" required style="width: 220px;">
+                            <input id="time_in" placeholder=" " name="time_in" type="time" required style="width: 160px;">
                             <label>Time In</label>
                         </div>
+                        <div class="material-textfield">
+                            <input id="end_date" placeholder=" " name="end_date" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;" value="">
+                            <label>End Date</label>
+                        </div>
                         <div class="material-textfield" style="margin-right: 0px;">
-                            <input id="time_out" placeholder=" " name="time_out" type="time" required style="width: 220px;">
+                            <input id="time_out" placeholder=" " name="time_out" type="time" required style="width: 160px;">
                             <label>Time Out</label>
                         </div>
-                        <div class="material-textfield" style="margin-right: 55px;">
-                            <input id="date" placeholder=" " name="date" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;" value="">
-                            <label>Date</label>
-                        </div>
+
                     </div>
                     <div class="update-time-in-form">
+                        <div class="material-textfield">
+                            <input id="ot_start_date" placeholder=" " name="ot_start_date" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;" value="">
+                            <label>OT Start Date</label>
+                        </div>
                         <div class="material-textfield" style="margin-right: 0px;">
-                            <input id="over_time_in" placeholder=" " name="over_time_in" type="time" style="width: 220px;">
+                            <input id="over_time_in" placeholder=" " name="over_time_in" type="time" style="width: 160px;">
                             <label>Over Time In</label>
+                        </div><div class="material-textfield">
+                            <input id="ot_end_date" placeholder=" " name="ot_end_date" type="date" data-date="" data-date-format="MMM DD, YYYY" style="width: auto;" value="">
+                            <label>OT End Date</label>
                         </div>
                         <div class="material-textfield" style="margin-right: 0px;">
-                            <input id="over_time_out" placeholder=" " name="over_time_out" type="time" style="width: 220px;">
+                            <input id="over_time_out" placeholder=" " name="over_time_out" type="time" style="width: 160px;">
                             <label>Over Time Out</label>
-                        </div>
-                        <div class="material-textfield" style="margin-right: 0px;">
-                            <input id="total_work_hours" placeholder=" " name="total_work_hours" type="text" readonly style="width: auto;">
-                            <label>Total</label>
                         </div>
                     </div>
                 </div>
@@ -124,11 +131,11 @@
                 <!-- Footer Buttons -->
                 <div class="modal-footer" style="height: 75px">
                     <div class="material-textfield" style="margin-right: 0px;">
-                        <input id="user_admin" placeholder=" " name="user_admin" type="text" required style="width: 150px;" disabled="disabled" value="Admin">
+                        <input id="user_admin" placeholder=" " name="user_admin" type="text" required style="width: 200px;" disabled="disabled" value="<?php echo $_SESSION['username']; ?>">
                         <label>Edited By</label>
                     </div>
                     <div class="material-textfield" style="margin-right: 0px;">
-                        <input id="user_password" placeholder=" " name="user_password" type="text" required style="width: 250px;">
+                        <input id="user_password" placeholder=" " name="user_password" type="text" required style="width: 200px;">
                         <label>Input Admin Password</label>
                     </div>
                     <button type="submit" name="UpdateSalary" class="btn btn-success btn-md">Update</button>

@@ -293,15 +293,17 @@ class Db extends mysqli implements Config{
 	# always use this method when fetching anything from your database
 	public static function fetch($table, $columns,  $whereClause, $whereValue, $orderBy, $limit, $groupBy){
 		try{
-			if($limit == ""){
-				$limit = ""; 
-			} else {
-				$limit = " LIMIT $limit "; 
-			}
+			
 			if($orderBy == ""){
 				$orderBy = "";
 			} else {
 				$orderBy = " ORDER BY $orderBy "; 
+			}
+
+			if($limit == ""){
+				$limit = ""; 
+			} else {
+				$limit = " LIMIT $limit "; 
 			}
 			if($groupBy == ""){
 				$groupBy = "";

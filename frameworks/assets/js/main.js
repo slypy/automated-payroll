@@ -140,7 +140,7 @@ $(document).ready(function () {
      * @fires document#change
      */
     $("input[type='date']").on("change", function () {
-        this.setAttribute("data-date", moment(this.value, "YYYY-MM-DD").format(this.getAttribute("data-date-format")));
+        $(this).attr("data-date", moment($(this).val(), "YYYY-MM-DD").format(this.getAttribute("data-date-format")));
     }).trigger("change");
 
     /**
@@ -253,6 +253,10 @@ $(document).ready(function () {
                     data: {
                         action: 'getEmployeeDTRdata'
                     },
+                    dataType: 'json',
+                    complete: (data) => {
+                        $('#EmployeeName').text(data['responseJSON'].data[0][2])
+                    }
                 },
                 retrieve: true,
                 sDom: 'lrtip',
@@ -272,7 +276,6 @@ $(document).ready(function () {
             $('#search_data').keyup(function(){
                 $('#employee-dtr-record-table').DataTable().search($(this).val()).draw();
             });
-
             $('#search_data').keypress((e) => {
                 if(e.keyCode == 13) return false;
             });
@@ -289,13 +292,23 @@ $(document).ready(function () {
                     },
                     dataType: 'json',
                     success: (data) => {
+                        console.log(data);
                         $('#update-time-in-form').modal({backdrop: "static", keyboard: false,},"show");
-                        $('#date').val(data[3]);
-                        $('#time_in').val(to24(data[4]));
-                        $('#time_out').val(to24(data[5]));
-                        $('#over_time_in').val(to24(data[6]));
-                        $('#over_time_out').val(to24(data[7]));
-                        $('#total_work_hours').val(data[8]);
+                        $('#start_date').val(data['start_date']);
+                        $('#time_in').val(data['time_in']);
+                        $('#end_date').val(data['end_date']);
+                        $('#time_out').val(data['time_out']);
+                        $('#ot_start_date').val(data['ot_start_date']);
+                        $('#over_time_in').val(data['over_time_in']);
+                        $('#ot_end_date').val(data['ot_end_date']);
+                        $('#over_time_out').val(data['over_time_out']);
+
+                        $('#update-time-in-form').on('shown.bs.modal', function(){
+                            $('#start_date').trigger('change');
+                            $('#end_date').trigger('change');
+                            $('#ot_start_date').trigger('change');
+                            $('#ot_end_date').trigger('change');
+                        }).trigger('shown.bs.modal');
                     }
                 })
             });
