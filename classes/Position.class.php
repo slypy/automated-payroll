@@ -3,12 +3,9 @@
         protected static $db_tbl = "tbl_positions";
 
         public static function add($position_name, $wage_salary, $wage_type){
-
             $query = Db::fetch("tbl_positions", "id", "position_name = ?", $position_name, "", "", "");
-
             if(Db::count($query)){
                 $_SESSION['position_name_already_taken'] = "Position name is already exist! try use another name.";
-
                 return false;
             } else {
                 Db::insert(self::$db_tbl, array("position_name", "wage_salary", "wage_type"), array($position_name, $wage_salary, $wage_type));
@@ -16,29 +13,27 @@
         }
 
         public static function fetchName(){
-            $query = Db::fetch(self::$db_tbl, "", "", "", "", "", "");
-
+            $query = Db::fetch(self::$db_tbl, "position_name", "", "", "", "", "");
             while($result = Db::assoc($query)){
                 echo '<option value="'.$result['position_name'].'">'.$result['position_name'].'</option>';
             }
-
             return;
         }
 
         public static function fetchPositionList(){
-            $query = Db::fetch(self::$db_tbl, "", "", "", "", "", "");
+            $query = Db::fetch(self::$db_tbl, "id, position_namem, wage_salary, wage_type", "", "", "", "", "");
             
             # Page length
             $limit = $_GET['start'].', '.$_GET['length'];
             if($_GET["length"] != -1){
-                $query = Db::fetch(self::$db_tbl, "", "", "", "", $limit, "");
+                $query = Db::fetch(self::$db_tbl, "id, position_namem, wage_salary, wage_type", "", "", "", $limit, "");
             }
 
             # search respond after page length
             if(!empty($_GET["search"]["value"])){
-                $like_val = $_GET['search']['value'];
+                $like_val = '%'.$_GET['search']['value'].'%';
 
-                $query = Db::fetchLike(self::$db_tbl, "position_name", $like_val);
+                $query = Db::fetch(self::$db_tbl, 'id, position_namem, wage_salary, wage_type', 'position_name LIKE ?', $like_val, '', '', '');
             }
             
             # data array for 
@@ -53,7 +48,7 @@
             }
 
             # Datatable pagination
-            $query2 = Db::fetch(self::$db_tbl, "", "", "", "", "", "");
+            $query2 = Db::fetch(self::$db_tbl, "id", "", "", "", "", "");
             $numRows = Db::count($query2);
 
             $result_data = array(
@@ -69,9 +64,9 @@
 
         public static function getData(){
             if($_GET['pos_id']){
-                $query = Db::fetch(self::$db_tbl,"", "id = ?", $_GET['pos_id'], "", "", "");
+                $query = Db::fetch(self::$db_tbl, "position_name, wage_salary, wage_type", "id = ?", $_GET['pos_id'], "", "", "");
     
-                $row = DB::num($query);
+                $row = DB::assoc($query);
                 echo json_encode($row);
             }
         }

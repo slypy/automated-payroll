@@ -69,7 +69,7 @@
                     $pag_ibig_active_loan   = $_POST['pag_ibig_active_loan'];
                 }
             }
-            $query = Db::fetch(self::$tbl_employees, "", "employee_number = ? AND card_id = ? AND employee_status = ? AND fingerprint_number = ?", array($employee_number, $card_id, 'active',$fingerprint_number), "", "", "");
+            $query = Db::fetch(self::$tbl_employees, "id", "employee_number = ? AND card_id = ? AND employee_status = ? AND fingerprint_number = ?", array($employee_number, $card_id, 'active',$fingerprint_number), "", "", "");
 
             if(Db::count($query)){
                 $_SESSION['employee_data_already_taken'] = "Employee id number is already exist! try use different ID numbers";
@@ -85,15 +85,15 @@
         public static function fetchList($type){
             switch($type){
                 case 'active-employee':
-                    $query = Db::fetch(self::$tbl_employees, "", "employee_status = ?", "active", "", "", "");
+                    $query = Db::fetch(self::$tbl_employees, "id, employee_number, first_name, last_name, contact_number, shifting_type_name, job_position, employee_status", "employee_status = ?", "active", "", "", "");
 
                     $limit = $_GET['start'].', '.$_GET['length'];
                     if($_GET['length'] != -1){
-                        $query = Db::fetch(self::$tbl_employees, "", "employee_status = ?", "active", "", $limit, "");
+                        $query = Db::fetch(self::$tbl_employees, "id, employee_number, first_name, last_name, contact_number, shifting_type_name, job_position, employee_status", "employee_status = ?", "active", "", $limit, "");
                     }
                     if(!empty($_GET['search']['value'])){
                         $like_val = '%'.$_GET['search']['value'].'%';
-                        $query = Db::fetch(self::$tbl_employees, "","employee_status = ? AND CONCAT(TRIM(first_name),' ',TRIM(last_name)) LIKE ? AND employee_status = ? OR employee_number LIKE ? AND employee_status = ?", array('active', $like_val,'active', $like_val, 'active'), "", "", "");
+                        $query = Db::fetch(self::$tbl_employees, "id, employee_number, first_name, last_name, contact_number, shifting_type_name, job_position, employee_status","employee_status = ? AND CONCAT(TRIM(first_name),' ',TRIM(last_name)) LIKE ? AND employee_status = ? OR employee_number LIKE ? AND employee_status = ?", array('active', $like_val,'active', $like_val, 'active'), "", "", "");
                     }
 
                     $listData = array();
@@ -110,7 +110,7 @@
 
                         $listData[] = $dataRow;
                     }
-                    $query2 = Db::fetch(self::$tbl_employees, "", "", "", "", "", "");
+                    $query2 = Db::fetch(self::$tbl_employees, "id", "", "", "", "", "");
                     $numRows = Db::count($query2);
                     $result_data = array (
                         'draw'              => intval($_GET['draw']),
@@ -123,14 +123,14 @@
                     break;
                 
                 case 'removed-employee':
-                    $query = Db::fetch(self::$tbl_employees, "", "employee_status = ?", "removed", "", "", "");
+                    $query = Db::fetch(self::$tbl_employees, "id, employee_number, first_name,last_name, contact_number, job_position, employee_status", "employee_status = ?", "removed", "", "", "");
                     $limit = $_GET['start'].', '.$_GET['length'];
                     if($_GET['length'] != -1){
-                        $query = Db::fetch(self::$tbl_employees, "", "employee_status = ?", "removed", "", $limit, "");
+                        $query = Db::fetch(self::$tbl_employees, "id, employee_number, first_name, last_name, contact_number, job_position, employee_status", "employee_status = ?", "removed", "", $limit, "");
                     }
                     if(!empty($_GET['search']['value'])){
                         $like_val = '%'.$_GET['search']['value'].'%';
-                        $query = Db::fetch(self::$tbl_employees, "","employee_status = ? AND CONCAT(TRIM(first_name),' ',TRIM(last_name)) LIKE ? AND employee_status = ? OR employee_number LIKE ? AND employee_status = ?", array('removed', $like_val,'active', $like_val, 'removed'), "", "", "");
+                        $query = Db::fetch(self::$tbl_employees, "id, employee_number, first_name, last_name, contact_number, job_position, employee_status","employee_status = ? AND CONCAT(TRIM(first_name),' ',TRIM(last_name)) LIKE ? AND employee_status = ? OR employee_number LIKE ? AND employee_status = ?", array('removed', $like_val,'active', $like_val, 'removed'), "", "", "");
                     }
                     $listData = array();
                     while($tbl_employee = Db::assoc($query)){
@@ -144,7 +144,7 @@
                         $dataRow[] = '<button type="button" name="print" id="'.$tbl_employee['id'].'" class="btn btn-info print"><i class="material-icons">print</i> print</button> <button type="button" name="delete" id="'.$tbl_employee['id'].'" class="btn btn-danger delete"><i class="material-icons">delete</i></button>';
                         $listData[] = $dataRow;
                     }
-                    $query2 = Db::fetch(self::$tbl_employees, "", "", "", "", "", "");
+                    $query2 = Db::fetch(self::$tbl_employees, "id", "employee_status = ?", "removed", "", "", "");
                     $numRows = Db::count($query2);
                     $result_data = array (
                         'draw'              => intval($_GET['draw']),
@@ -160,8 +160,8 @@
 
         public static function getData(){
             if(isset($_GET['employee_id'])){
-                $query = Db::fetch(self::$tbl_employees, "", "id = ?" , $_GET['employee_id'], "", "", "");
-                $row = Db::num($query);
+                $query = Db::fetch(self::$tbl_employees, "employee_number, card_id, fingerprint_number, worker_type, job_position, shifting_type_name, first_name, last_name, middle_name, birth_date, age, gender, civil_status, full_address, email, contact_number, contact_person, contact_person_number, relationship, duration_date, start_date, end_date, sss_number, employee_er, employee_ee, sss_active_loan, philhealth_number, philhealth_per_month, pag_ibig_number, pag_ibig_per_month, pag_ibig_active_loan", "id = ?" , $_GET['employee_id'], "", "", "");
+                $row = Db::assoc($query);
                 echo json_encode($row);
             }
             return;

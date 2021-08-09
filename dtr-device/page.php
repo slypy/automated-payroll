@@ -49,7 +49,7 @@
                 if(dd < 10) dd = '0' + dd
                 var today = yyyy+'-'+mm+'-'+dd;
 
-                if (TimeNow() == "12:00:00 AM") {
+                if (TimeNow() == "12:11:30 AM") {
                     $.ajax({
                         url: '../time/controller.php?action=addInitialDTR',
                         type: 'POST',

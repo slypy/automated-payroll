@@ -32,16 +32,16 @@ class ShiftingHours{
     }
 
     public static function fetchList(){
-        $query = Db::fetch(self::$db_tbl, "", "", "", "", "", "");
+        $query = Db::fetch(self::$db_tbl, "id, shifting_type_name, start_time, end_time, break_time, total_work_hours", "", "", "", "", "");
 
         $limit = $_GET['start'].', '.$_GET['length'];
         if($_GET['length'] != -1){
-            $query = Db::fetch(self::$db_tbl, "", "", "", "", $limit, "");
+            $query = Db::fetch(self::$db_tbl, "id, shifting_type_name, start_time, end_time, break_time, total_work_hours", "", "", "", $limit, "");
         }
 
         if(!empty($_GET['search']['value'])){
             $like_val = '%'.$_GET['search']['value'].'%';
-            $query = Db::fetch(self::$db_tbl,'', 'shifting_type_name LIKE ?', $like_val, '', '', '');
+            $query = Db::fetch(self::$db_tbl,'id, shifting_type_name, start_time, end_time, break_time, total_work_hours', 'shifting_type_name LIKE ?', $like_val, '', '', '');
         }
 
         $listData = array();
@@ -68,7 +68,7 @@ class ShiftingHours{
             $listData[] = $dataRow;
         }
 
-        $query2 = Db::fetch(self::$db_tbl, "", "", "", "", "", "");
+        $query2 = Db::fetch(self::$db_tbl, "id", "", "", "", "", "");
         $numRows = Db::count($query2);
 
         $result_data = array (
@@ -83,14 +83,14 @@ class ShiftingHours{
 
     public static function fetchOverTime(){
         $query = Db::fetch(self::$overtime_tbl, "", "", "", "", "", "");
-        $tbl_overtime = Db::num($query);
+        $tbl_overtime = Db::assoc($query);
 
         $listData = array();
         $dataRow = array();
 
-        $dataRow[] = $tbl_overtime[1];
-        $dataRow[] = $tbl_overtime[2].' hours';
-        $dataRow[] = '<button type="button" name="update" id="'.$tbl_overtime[0].'" class="btn btn-success update"><i class="material-icons">edit</i></button>';
+        $dataRow[] = $tbl_overtime['over_time'];
+        $dataRow[] = $tbl_overtime['max_working_hours'].' hours';
+        $dataRow[] = '<button type="button" name="update" id="'.$tbl_overtime['id'].'" class="btn btn-success update"><i class="material-icons">edit</i></button>';
 
         $listData[] = $dataRow;
 
@@ -106,37 +106,31 @@ class ShiftingHours{
     }
 
     public static function fetchLatePolicy(){
-        $query = Db::fetch(self::$late_policy_tbl, "", "", "", "", "", "");
-        $tbl_latepolicy = Db::num($query);
-        
+        $query = Db::fetch(self::$late_policy_tbl, "id, late_after, penalty_amount", "", "", "", "", "");
+        $tbl_latepolicy = Db::assoc($query);
         $listData = array();
         $dataRow = array();
-
-        $float_time = explode('.', strval($tbl_latepolicy[1]));
-        
+        $float_time = explode('.', strval($tbl_latepolicy['late_after']));
         $late_after = '';
-
         if(count($float_time) > 1){
             if($float_time[0] == '0'){
                 $handle_min = str_split($float_time[1]);
-                
                 if(count($handle_min) > 1 && $handle_min[0] == '0'){
-                    $late_after = $handle_min[1].' min';
+                    $late_after = $handle_min['late_after'].' min';
                 } else if (count($handle_min) > 1){
-                    $late_after = $float_time[1].' min';
+                    $late_after = $float_time['late_after'].' min';
                 } else {
-                    $late_after = $float_time[1].'0 min';
+                    $late_after = $float_time['late_after'].'0 min';
                 }
             } else {
-                $late_after = $tbl_latepolicy[1].' hr';
+                $late_after = $tbl_latepolicy['late_after'].' hr';
             }
         } else {
-            $late_after = $tbl_latepolicy[1].' hr';
+            $late_after = $tbl_latepolicy['late_after'].' hr';
         }
-
         $dataRow[] = $late_after;
-        $dataRow[] = '₱ '.$tbl_latepolicy[2];
-        $dataRow[] = '<button type="button" name="update" id="'.$tbl_latepolicy[0].'" class="btn btn-success update"><i class="material-icons">edit</i></button>';
+        $dataRow[] = '₱ '.$tbl_latepolicy['penalty_amount'];
+        $dataRow[] = '<button type="button" name="update" id="'.$tbl_latepolicy['id'].'" class="btn btn-success update"><i class="material-icons">edit</i></button>';
 
         $listData[] = $dataRow;
 
@@ -159,9 +153,9 @@ class ShiftingHours{
 
     public static function getData(){
         if(isset($_GET['shift_id'])){
-            $query = Db::fetch(self::$db_tbl,"", "id = ?", $_GET['shift_id'], "", "", "");
+            $query = Db::fetch(self::$db_tbl,"shifting_type_name, start_time, end_time, break_time", "id = ?", $_GET['shift_id'], "", "", "");
 
-            $row = Db::num($query);
+            $row = Db::assoc($query);
             echo json_encode($row);
         } else if(isset($_GET['overtime_id'])){
             $query = Db::fetch(self::$overtime_tbl, "", "id = ?", $_GET['overtime_id'], "", "", "");

@@ -294,7 +294,7 @@ class DTR{
         }
         if(!empty($_GET['search']['value'])){
             $like_val = '%'.$_GET['search']['value'].'%';
-            $query = Db::fetch(self::$tbl_dtr, '', 'employee_id LIKE ? OR employee_name LIKE ? AND date = ?', array($like_val, $like_val, $date_now), '', '', '');
+            $query = Db::fetch(self::$tbl_dtr, '', 'employee_id LIKE ? OR employee_name LIKE ? AND start_date = ?', array($like_val, $like_val, $date_now), '', '', '');
         }
         $list_data = array();
         while($tbl_DTR = Db::assoc($query)){

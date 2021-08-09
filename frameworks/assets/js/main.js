@@ -215,1904 +215,1989 @@ $(document).ready(function () {
         return age;
     }
 
-    // let dir_name = location.pathname.split('/')[2];
-    // switch(dir_name){
-    //     case 'dtr':
-            $('#employee-dtr-table').DataTable({
-                serverSide: true,
-                ajax: {
-                    url: 'controller.php',
-                    type: 'GET',
-                    data: {
-                        action: 'listDTRRecord'
-                    },
-                },
-                retrieve: true,
-                dom: "ftipr",
-                bAutoWidth: false,
-                paging: false,
-                lengthChange: false,
-                ordering: false,
-                searching: true,
-                bFilter: true,
-                bInfo: true,
-                columnDefs: [{
-                    targets: [4,7],
-                    className: 'text-warning'
-                },{
-                    targets: [5,8],
-                    className: 'text-danger'
-                }]
-            });
+    
+    $('#employee-dtr-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: 'controller.php',
+            type: 'GET',
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: 'listDTRRecord'
+                }
+            },
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: false,
+        lengthChange: false,
+        ordering: false,
+        searching: true,
+        bFilter: true,
+        bInfo: true,
+        columnDefs: [{
+            targets: [4,7],
+            className: 'text-warning'
+        },{
+            targets: [5,8],
+            className: 'text-danger'
+        }]
+    });
 
-            setInterval(() => {
+    setInterval(() => {
+        $('#employee-dtr-table').DataTable().draw();
+    },5000);
+
+    $('#employee-dtr-record-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: 'controller.php',
+            type: 'GET',
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: 'getEmployeeDTRdata'
+                }
+                
+            },
+            dataType: 'json',
+            complete: (data) => {
+                $('#EmployeeName').text(data['responseJSON'].data[0][2])
+            }
+        },
+        retrieve: true,
+        sDom: 'lrtip',
+        bAutoWidth: false,
+        paging: false,
+        lengthChange: false,
+        ordering: false,
+        searching: true,
+        bFilter: true,
+        bInfo: true,
+        columnDefs: [{
+            targets: 8,
+            className: 'td-actions text-center'
+        }]
+    });
+
+    $('#search_data').keyup(function(){
+        $('#employee-dtr-record-table').DataTable().search($(this).val()).draw();
+    });
+    $('#search_data').keypress((e) => {
+        if(e.keyCode == 13) return false;
+    });
+    
+    $('#employee-dtr-record-table').on('click', '.update', function(){
+        var DTR_ID= $(this).attr('id');
+        
+        $.ajax({
+            url: 'controller.php',
+            type: 'GET',
+            data: {
+                action: 'getEmployeeDTRbyID',
+                dtr_id: DTR_ID
+            },
+            dataType: 'json',
+            success: (data) => {
+                $('#update-time-in-form').modal({backdrop: "static", keyboard: false,},"show");
+                $('#dtr_id').val(DTR_ID);
+                $('#start_date').val(data['start_date']);
+                $('#time_in').val(data['time_in']);
+                $('#end_date').val(data['end_date']);
+                $('#time_out').val(data['time_out']);
+                $('#ot_start_date').val(data['ot_start_date']);
+                $('#over_time_in').val(data['over_time_in']);
+                $('#ot_end_date').val(data['ot_end_date']);
+                $('#over_time_out').val(data['over_time_out']);
+
+                $('#update-time-in-form').on('shown.bs.modal', function(){
+                    $('#start_date').trigger('change');
+                    $('#end_date').trigger('change');
+                    $('#ot_start_date').trigger('change');
+                    $('#ot_end_date').trigger('change');
+                }).trigger('shown.bs.modal');
+            }
+        })
+    });
+    
+    $('#updateEmployeeDTR').submit(function(event){
+        event.preventDefault();
+        var Update_DTR_DATA = $(this).serialize();
+
+        console.log(Update_DTR_DATA);
+        $.ajax({
+            url: 'controller.php?action=updateDTRRecord',
+            type: 'POST',
+            data: Update_DTR_DATA,
+            dataType: 'text',
+            success: (message) => {
+                if(message != 'invalid_account'){
+                    $('#update-time-in-form').modal('hide');
+                    $('#updateEmployeeDTR')[0].reset();
+                    $('#employee-dtr-record-table').DataTable().draw();
+                } else {
+                    alert("Wrong Password");
+                }
+            }
+        })
+    })
+
+    $('#type').change(function(){
+        switch($(this).val()){
+            case 'Time In':
+                $('#time_in').show();
+                $('#i_time_in').attr('disabled', false);
+                $('#time_out').hide();
+                $('#i_time_out').attr('disabled', true);
+                $('#over_time_in').hide();
+                $('#i_over_time_in').attr('disabled', true);
+                $('#over_time_out').hide();
+                $('#i_over_time_out').attr('disabled', true);
+                break;
+            case 'Time Out':
+                $('#time_out').show();
+                
+                $('#i_time_out').attr('disabled', false);
+                $('#time_in').hide();
+                $('#i_time_in').attr('disabled', true);
+                $('#over_time_in').hide();
+                $('#i_over_time_in').attr('disabled', true);
+                $('#over_time_out').hide();
+                $('#i_over_time_out').attr('disabled', true);
+                break;
+            case 'Over Time In':
+                $('#time_in').hide();
+                $('#i_time_in').attr('disabled', true);
+                $('#time_out').hide();
+                $('#i_time_out').attr('disabled', true);
+                $('#over_time_in').show();
+                $('#i_over_time_in').attr('disabled', false);
+                $('#over_time_out').hide();
+                $('#i_over_time_out').attr('disabled', true);
+                break;
+            case 'Over Time Out':
+                $('#time_in').hide();
+                $('#i_time_in').attr('disabled', true);
+                $('#time_out').hide();
+                $('#i_time_out').attr('disabled', true);
+                $('#over_time_in').hide();
+                $('#i_over_time_in').attr('disabled', true);
+                $('#over_time_out').show();
+                $('#i_over_time_out').attr('disabled', false);
+                break;
+        }
+    }).trigger('change');
+
+    $('#employee_id').keyup(function(){
+        var that = this,
+        value = $(this).val();
+        if(value.length >= 1){
+            if(searchRequest != null)
+                searchRequest.abort();
+            
+            searchRequest = $.ajax({
+                url: 'controller.php',
+                type: 'GET',
+                data: {
+                    action: 'get_employee_name',
+                    employee_id: value,
+                },
+                dataType: 'json',
+                success: function(data){
+
+                    if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
+                        $('#employee_name').val(`${data[8]} ${data[9]}`);
+                    } else {
+                        $('#employee_name').val('');
+                    }
+                },
+            });
+        }
+    });
+
+    $('#addDTRRecord').submit(function(event){
+        event.preventDefault();
+        // don't serialize the form because it should be manually listed for necessary functions
+        var DTR_DATA = {
+            employee_id: $('#employee_id').val(),
+            employee_name: $('#employee_name').val(),
+            type: $('#type').val(),
+            date: $('#date').val(),
+            time_in: $('#i_time_in').val(),
+            time_out: $('#i_time_out').val(),
+            over_time_in: $('#i_over_time_in').val(),
+            over_time_out: $('#i_over_time_out').val(),
+        }
+
+        $.ajax({
+            url: 'controller.php?action=addDTRRecord',
+            type: 'POST',
+            data: DTR_DATA,
+            success: function(){
+                $('#addDTRRecord')[0].reset();
+                $('#add-dtr-form').modal('hide');
                 $('#employee-dtr-table').DataTable().draw();
-            },5000);
+            }
+        })
+    });
 
-            $('#employee-dtr-record-table').DataTable({
-                serverSide: true,
-                ajax: {
-                    url: 'controller.php',
-                    type: 'GET',
-                    data: {
-                        action: 'getEmployeeDTRdata'
-                    },
-                    dataType: 'json',
-                    complete: (data) => {
-                        $('#EmployeeName').text(data['responseJSON'].data[0][2])
-                    }
+    $('#payroll-report-table').DataTable({
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 15,
+        drawCallback: function(settings){
+            var api = this.api(), data;
+
+            var floatval = function(i){
+                return typeof(i) === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof(i) === 'number' ? i : 0;
+            }
+
+            var NetPay_total = api.column(3).data().reduce(function(a, b){
+                return floatval(a) + floatval(b);
+            }, 0);
+
+            var GrossPay_total = api.column(4).data().reduce(function(a, b){
+                return floatval(a) + floatval(b);
+            }, 0)
+
+            $(api.column(3).footer()).html('$' + NetPay_total);
+            $(api.column(4).footer()).html('$' + GrossPay_total);
+        }
+    });
+
+    // Data Table for Active employees
+    $("#active-employee-table").DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: "listEmployee",
+                }
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 15,
+        columnDefs: [
+        {
+            targets: 6,
+            width: '20px',
+        },
+        {
+            targets: [6,7],
+            className: "td-actions text-center",
+            width: 100
+        },
+        {
+            targets: [0],
+            className: "text-center",
+        }],
+    });
+    // Data Table for removed employees
+    $("#removed-employee-table").DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: "listRemovedEmployee",
+                }
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 15,
+        columnDefs: [
+            {
+                targets: 5,
+                width: '25px'
+            },
+            {
+                targets: [5,6],
+                className: "td-actions text-center",
+                width: 100
+            },
+            {
+                targets: [0],
+                className: "text-center",
+            },
+        ],
+    });
+    
+    $("#position-table").DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: "listPositions",
+                }
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 15,
+        columnDefs: [
+            {
+                targets: [3],
+                className: "td-actions text-center",
+            },
+            {
+                targets: [1, 2],
+                className: "text-center",
+            },
+        ],
+    });
+
+    $("#over-time-table").DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: "listOverTime",
+                }
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        searching: false,
+        paging: false,
+        ordering: false,
+        bInfo: false,
+        bAutoWidth: false,
+        columnDefs: [
+            {
+                targets: 1,
+                width: "200px",
+            },
+            {
+                targets: 2,
+                width: "50px",
+                className: "td-actions text-center",
+            },
+        ],
+    });
+    // Server Side DataTable {Late Policy}
+    $("#late-policy-table").DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: "listLatePolicy",
+                }
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        searching: false,
+        paging: false,
+        ordering: false,
+        bInfo: false,
+        bAutoWidth: false,
+        columnDefs: [
+            {
+                targets: 2,
+                width: "50px",
+                className: "td-actions text-center",
+            },
+        ],
+    });
+
+    $("#employee-shifting-hours-table").DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: "listShiftingHours",
+                }
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        ordering: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 15,
+        columnDefs: [
+            {
+                targets: [5],
+                className: "td-actions text-left",
+            },
+        ],
+    });
+
+   
+
+    $("#addJobPosition").submit(function (event) {
+        event.preventDefault();
+        var Position_Data = {
+            position_name: $("#position_name").val(),
+            wage_salary: $("#wage_salary").val(),
+            wage_type: $("#wage_type").val(),
+        };
+        $.ajax({
+            type: "POST",
+            url: "controller.php?action=add_position",
+            data: Position_Data,
+            success: function (data) {
+                $("#add-job-position-form").modal("hide");
+                $("#addJobPosition")[0].reset();
+                $("#position-table").DataTable().draw();
+            },
+        });
+    });
+
+    $("#position-table").on("click", ".delete", function () {
+        var posID = $(this).attr("id");
+        if (confirm("Are you sure you want to delete this position?")) {
+            $.ajax({
+                url: "controller.php",
+                method: "GET",
+                data: {
+                    pos_id: posID,
+                    action: "position_delete",
                 },
-                retrieve: true,
-                sDom: 'lrtip',
-                bAutoWidth: false,
-                paging: false,
-                lengthChange: false,
-                ordering: false,
-                searching: true,
-                bFilter: true,
-                bInfo: true,
-                columnDefs: [{
-                    targets: 8,
-                    className: 'td-actions text-center'
-                }]
+                success: function () {
+                    $("#position-table").DataTable().draw();
+                },
             });
+        } else {
+            return false;
+        }
+    });
 
-            $('#search_data').keyup(function(){
-                $('#employee-dtr-record-table').DataTable().search($(this).val()).draw();
-            });
-            $('#search_data').keypress((e) => {
-                if(e.keyCode == 13) return false;
-            });
-            
-            $('#employee-dtr-record-table').on('click', '.update', function(){
-                var DTR_ID= $(this).attr('id');
-                
-                $.ajax({
-                    url: 'controller.php',
-                    type: 'GET',
-                    data: {
-                        action: 'getEmployeeDTRbyID',
-                        dtr_id: DTR_ID
+    $("#position-table").on("click", ".update", function () {
+        var posID = $(this).attr("id");
+        $.ajax({
+            url: "controller.php",
+            method: "GET",
+            data: {
+                pos_id: posID,
+                action: "get_job_position",
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#update-job-position-form").modal(
+                    {
+                        backdrop: "static",
+                        keyboard: false,
                     },
-                    dataType: 'json',
-                    success: (data) => {
-                        $('#update-time-in-form').modal({backdrop: "static", keyboard: false,},"show");
-                        $('#dtr_id').val(DTR_ID);
-                        $('#start_date').val(data['start_date']);
-                        $('#time_in').val(data['time_in']);
-                        $('#end_date').val(data['end_date']);
-                        $('#time_out').val(data['time_out']);
-                        $('#ot_start_date').val(data['ot_start_date']);
-                        $('#over_time_in').val(data['over_time_in']);
-                        $('#ot_end_date').val(data['ot_end_date']);
-                        $('#over_time_out').val(data['over_time_out']);
+                    "show"
+                );
+                $("#update-job-position-form #position_name").val(data['position_name']);
+                $("#update-job-position-form #wage_salary").val(data['wage_salary']);
+                $("#update-job-position-form #wage_type").val(data['wage_type']);
+            },
+        });
+    });
 
-                        $('#update-time-in-form').on('shown.bs.modal', function(){
-                            $('#start_date').trigger('change');
-                            $('#end_date').trigger('change');
-                            $('#ot_start_date').trigger('change');
-                            $('#ot_end_date').trigger('change');
-                        }).trigger('shown.bs.modal');
-                    }
-                })
+    $("#updateJobPosition").submit(function (event) {
+        event.preventDefault();
+        var Position_Data = {
+            position_name: $("#updateJobPosition #position_name").val(),
+            wage_salary: $("#updateJobPosition #wage_salary").val(),
+            wage_type: $("#updateJobPosition #wage_type").val(),
+        };
+        $.ajax({
+            type: "POST",
+            url: "controller.php?action=update_job_position",
+            data: Position_Data,
+            success: function () {
+                $("#update-job-position-form").modal("hide");
+                $("#updateJobPosition")[0].reset();
+                $("#position-table").DataTable().draw();
+            },
+        });
+    });
+
+    $("#addShiftingHours").submit(function (event) {
+        var totalWorkHours =
+            diffTime($("#start_time").val(), $("#end_time").val()) -
+            $("#break_time").val();
+        var ShiftingHours_Data = {
+            shifting_type_name: $("#shifting_type_name").val(),
+            start_time: toAMPM($("#start_time").val()),
+            end_time: toAMPM($("#end_time").val()),
+            break_time: $("#break_time").val(),
+            total_work_hours: totalWorkHours,
+        };
+
+        $.ajax({
+            url: "controller.php?action=add_shifting_type",
+            method: "POST",
+            data: ShiftingHours_Data,
+            success: function () {
+                $("#addShiftingHours")[0].reset();
+                $("#add-custom-shifting-type-form").modal("hide");
+                $("#employee-shifting-hours-table").DataTable().draw();
+            },
+        });
+        event.preventDefault();
+    });
+
+    $("#employee-shifting-hours-table").on("click", ".delete", function () {
+        var shiftID = $(this).attr("id");
+        if (confirm("Are you sure you want to delete this shifiting type?")) {
+            $.ajax({
+                url: "controller.php",
+                method: "GET",
+                data: {
+                    shift_id: shiftID,
+                    action: "shifting_type_delete",
+                },
+                success: function () {
+                    $("#employee-shifting-hours-table").DataTable().draw();
+                },
             });
-            
-            $('#updateEmployeeDTR').submit(function(event){
-                event.preventDefault();
-                var Update_DTR_DATA = $(this).serialize();
+        } else {
+            return false;
+        }
+    });
 
-                console.log(Update_DTR_DATA);
+    $("#employee-shifting-hours-table").on("click", ".update", function () {
+        var shiftID = $(this).attr("id");
+        $.ajax({
+            url: "controller.php",
+            method: "GET",
+            data: {
+                shift_id: shiftID,
+                action: "get_shifting_type",
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#update-custom-shifting-type-form").modal(
+                    {
+                        backdrop: "static",
+                        keyboard: false,
+                    },
+                    "show"
+                );
+                $("#updateShiftingHours #shifting_type_name").val(data['shifting_type_name']);
+                $("#updateShiftingHours #start_time").val(to24(data['start_time']));
+                $("#updateShiftingHours #end_time").val(to24(data['end_time']));
+                $("#updateShiftingHours #break_time").val(data['break_time']);
+            },
+        });
+    });
+
+    $("#late-policy-table").on("click", ".update", function () {
+        var latepolicyID = $(this).attr("id");
+        $.ajax({
+            url: "controller.php",
+            method: "GET",
+            data: {
+                latepolicy_id: latepolicyID,
+                action: "get_late_policy",
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#update-late-policy-form").modal(
+                    {
+                        backdrop: "static",
+                        keyboard: false,
+                    },
+                    "show"
+                );
+
+                var float_time = data[1].split(".");
+
+                var hours = float_time[0],
+                    minutes = float_time[1];
+
+                $("#latepolicy_hours").val(hours);
+                $("#latepolicy_minutes").val(minutes);
+                $("#penalty_amount").val(data[2]);
+            },
+        });
+    });
+
+    $("#updateLatePolicy").submit(function (event) {
+        event.preventDefault();
+
+        var LatePolicyData = {
+            latepolicy_hours: $("#latepolicy_hours").val(),
+            latepolicy_minutes: $("#latepolicy_minutes").val(),
+            penalty_amount: $("#penalty_amount").val(),
+        };
+
+        $.ajax({
+            url: "controller.php?action=update_latepolicy",
+            method: "POST",
+            data: LatePolicyData,
+            success: function () {
+                $("#updateLatePolicy")[0].reset();
+                $("#update-late-policy-form").modal("hide");
+                $("#late-policy-table").DataTable().draw();
+            },
+        });
+    });
+
+    $("#over-time-table").on("click", ".update", function () {
+        var overtimeID = $(this).attr("id");
+
+        $.ajax({
+            url: "controller.php",
+            method: "GET",
+            data: {
+                overtime_id: overtimeID,
+                action: "get_overtime_data",
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#update-over-time-form").modal(
+                    {
+                        backdrop: "static",
+                        keyboard: false,
+                    },
+                    "show"
+                );
+
+                var float_time = data[2].split(".");
+
+                var hours = float_time[0],
+                    minutes = float_time[1];
+
+                $("#overtime_hours").val(hours);
+                $("#overtime_minutes").val(minutes);
+            },
+        });
+    });
+
+    $("#updateOverTime").submit(function (event) {
+        event.preventDefault();
+
+        var OverTimeData = {
+            overtime_hours: $("#overtime_hours").val(),
+            overtime_minutes: $("#overtime_minutes").val(),
+        };
+
+        $.ajax({
+            url: "controller.php?action=update_overtime",
+            method: "POST",
+            data: OverTimeData,
+            success: function () {
+                $("#updateOverTime")[0].reset(),
+                    $("#update-over-time-form").modal("hide");
+                $("#over-time-table").DataTable().draw();
+            },
+        });
+    });
+
+    $("#updateShiftingHours").submit(function (event) {
+        var startTime = $("#updateShiftingHours #start_time").val(),
+            endTime = $("#updateShiftingHours #end_time").val(),
+            breakTime = $("#updateShiftingHours #break_time").val(),
+            timeDifference = diffTime(startTime, endTime),
+            totalWorkHours = timeDifference - breakTime;
+        var ShiftingHours_Data = {
+            shifting_type_name: $(
+                "#updateShiftingHours #shifting_type_name"
+            ).val(),
+            start_time: toAMPM($("#updateShiftingHours #start_time").val()),
+            end_time: toAMPM($("#updateShiftingHours #end_time").val()),
+            break_time: $("#updateShiftingHours #break_time").val(),
+            total_work_hours: totalWorkHours,
+        };
+        $.ajax({
+            url: "controller.php?action=update_shifting_type",
+            method: "POST",
+            data: ShiftingHours_Data,
+            success: function () {
+                $("#updateShiftingHours")[0].reset();
+                $("#update-custom-shifting-type-form").modal("hide");
+                $("#employee-shifting-hours-table").DataTable().draw();
+            },
+        });
+        event.preventDefault();
+    });
+
+    $('#addEmployee #birth_date').on('change', function(){
+        $('#addEmployee #age').val(getAge(this.value));
+    });
+
+    $("#worker_type").on("change", function () {
+        if ($("#worker_type").val() === "Regular" || $("#worker_type").val() === "Contractual") {
+            $("div[data-id='employee-gov'").show();
+            $("div[data-id='employee-gov'] input").attr("disabled", false);
+        } else {
+            $("div[data-id='employee-gov'").hide();
+            $("div[data-id='employee-gov'] input").attr("disabled", true);
+        }
+    });
+
+    $("#u-worker-type").on("change", function () {
+        if (this.value === "Regular" || this.value === "Contractual") {
+            $("div[data-id='employee-gov'").show();
+            $("div[data-id='employee-gov'] input").attr("disabled", false);
+        } else {
+            $("div[data-id='employee-gov'").hide();
+            $("div[data-id='employee-gov'] input").attr("disabled", true);
+        }
+    });
+
+    // trigger change duration date inputs
+    $("#duration_date").on("change", function () {
+        switch ($(this).val()) {
+            case "3 Months":
+                var date = new Date();
+                    date.setMonth(date.getMonth() + 3);
+                $("#end_date").val(moment(date).format("YYYY-MM-DD")).change();
+                break;
+            case "6 Months":
+                var date = new Date();
+                    date.setMonth(date.getMonth() + 6);
+                    $("#end_date").val(moment(date).format("YYYY-MM-DD")).change();
+                break;
+            case "1 Year":
+                var date = new Date();
+                    date.setMonth(date.getMonth() + 12);
+                    $("#end_date").val(moment(date).format("YYYY-MM-DD")).change();
+                break;
+            case "2 Years":
+                var date = new Date();
+                    date.setMonth(date.getMonth() + 24);
+                    $("#end_date").val(moment(date).format("YYYY-MM-DD")).change();
+                break;
+            default:
+                $("#end_date").val("").change();
+                break;
+            }
+    }).trigger("change");
+
+    $("#add-employee-form").one("shown.bs.modal", function () {
+        $.ajax({
+            url: "controller.php",
+            type: "GET",
+            data: {action: "fetchJobPositions"},
+            dataType: "html",
+            success: function (data) {
+                $("#job_position").append(data);
+            },
+        });
+        $.ajax({
+            url: "controller.php",
+            type: "GET",
+            data: {action: "fetchShiftingTypes"},
+            dataType: "html",
+            success: function (data) {
+                $("#shifting_type").append(data);
+            },
+        });
+    });
+
+    $('#check_all').change(function(){
+        $('.checked_remove_employee').prop('checked', $(this).prop('checked'));
+    });
+    $('#check_all_removed').change(function(){
+        $('.checked_delete_employee').prop('checked', $(this).prop('checked'));
+    });
+
+    $("#update-employee-form").one("shown.bs.modal", function () {
+        $.ajax({
+            url: "controller.php",
+            type: "GET",
+            data: {action: "fetchJobPositions"},
+            dataType: "html",
+            success: function (data) {
+                $("#updateEmployee #job_position").append(data);
+            },
+        });
+        $.ajax({
+            url: "controller.php",
+            type: "GET",
+            data: {action: "fetchShiftingTypes"},
+            dataType: "html",
+            success: function (data) {
+                $("#updateEmployee #shifting_type").append(data);
+            },
+        });
+    });
+
+    $("#update-employee-form").on("shown.bs.modal", function () {
+        if ($("#updateEmployee #worker_type").val() === "Regular" || $("#updateEmployee #worker_type").val() === "Contractual") {
+            $("#updateEmployee div[data-id='employee-gov']").show();
+            $("#updateEmployee div[data-id='employee-gov'] input").attr("disabled",false);
+        } else {
+            $("#updateEmployee div[data-id='employee-gov']").hide();
+            $("#updateEmployee div[data-id='employee-gov'] input").attr("disabled",true);
+        }
+    }).trigger("shown.bs.modal");
+
+    $("#updateEmployee #worker_type").on("change", function () {
+        if ($("#updateEmployee #worker_type").val() === "Regular" || $("#updateEmployee #worker_type").val() === "Contractual") {
+            $("#updateEmployee div[data-id='employee-gov'").show();
+            $("#updateEmployee div[data-id='employee-gov'] input").attr("disabled",false);
+        } else {
+            $("#updateEmployee div[data-id='employee-gov'").hide();
+            $("#updateEmployee div[data-id='employee-gov'] input").attr("disabled",true);
+        }
+    }).trigger("change");
+    
+    $("#addEmployee").on("submit", function (event) {
+        event.preventDefault();
+        var newEmployeeData=$("#addEmployee").serialize();
+        $.ajax({
+            url: "controller.php?action=add_employee",
+            method: "POST",
+            data: newEmployeeData,
+            success: function () {
+                $("#addEmployee")[0].reset();
+                $("#add-employee-form").modal("hide");
+                $("#active-employee-table").DataTable().draw();
+            },
+        });
+    });
+
+    $("#active-employee-table").on("click", ".update", function () {
+        var EmployeeID = $(this).attr("id");
+        $.ajax({
+            url: "controller.php",
+            method: "GET",
+            data: {
+                employee_id: EmployeeID,
+                action: "get_employee_data",
+            },
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                $("#update-employee-form").modal(
+                    {
+                        backdrop: "static",
+                        keyboard: false,
+                    },
+                    "show"
+                );
+                $("#updateEmployee #employee_number").val(data['employee_number']);
+                $("#updateEmployee #card_id").val(data['card_id']);
+                $("#updateEmployee #fingerprint_number").val(data['fingerprint_number']);
+                $("#updateEmployee #worker_type").val(data['worker_type']);
+                $("#updateEmployee #job_position").val(data['job_position']);
+                $("#updateEmployee #shifting_type").val(data['shifting_type_name']);
+                $("#updateEmployee #first_name").val(data['first_name']);
+                $("#updateEmployee #last_name").val(data['last_name']);
+                $("#updateEmployee #middle_name").val(data["middle_name"]);
+                $("#updateEmployee #birth_date").val(data['birth_date']);
+                $("#updateEmployee #age").val(data['age']);
+                $("#updateEmployee #gender").val(data['gender']);
+                $("#updateEmployee #civil_status").val(data['civil_status']);
+                $("#updateEmployee #full_address").val(data['full_address']);
+                $("#updateEmployee #email").val(data['email']);
+                $("#updateEmployee #contact_number").val(data['contact_number']);
+                $("#updateEmployee #contact_person").val(data['contact_person']);
+                $("#updateEmployee #contact_person_number").val(data['contact_person_number']);
+                $("#updateEmployee #relationship").val(data['relationship']);
+                $("#updateEmployee #duration_date").val(data['duration_date']);
+                $("#updateEmployee #start_date").val(data['start_date']);
+                $("#updateEmployee #end_date").val(data['end_date']);
+                $("#updateEmployee #sss_number").val(data['sss_number']);
+                $("#updateEmployee #employee_er").val(data['employee_er']);
+                $("#updateEmployee #employee_ee").val(data['employee_ee']);
+                $("#updateEmployee #sss_active_loan").val(data['sss_active_loan']);
+                $("#updateEmployee #philhealth_number").val(data['philhealth_number']);
+                $("#updateEmployee #philhealth_per_month").val(data['philhealth_per_month']);
+                $("#updateEmployee #pag_ibig_number").val(data['pag_ibig_number']);
+                $("#updateEmployee #pag_ibig_per_month").val(data['pag_ibig_per_month']);
+                $("#updateEmployee #pag_ibig_active_loan").val(data['pag_ibig_active_loan']);
+            },
+        });
+    });
+
+    $("#active-employee-table").on("click", ".delete", function () {
+        var EmployeeID = $(this).attr("id");
+        if (confirm("Are you sure you want to remove this Employee?")) {
+            $.ajax({
+                url: "controller.php",
+                method: "GET",
+                data: {
+                    employee_id: EmployeeID,
+                    action: "remove_employee_data",
+                },
+                success: function () {
+                    $("#active-employee-table").DataTable().draw();
+                    $('#removed-employee-table').DataTable().draw();
+                },
+            });
+        } else {
+            return false;
+        }
+    });
+    $("#removed-employee-table").on("click", ".delete", function () {
+        var EmployeeID = $(this).attr("id");
+        if (confirm("Are you sure you want to delete this Employee?")) {
+            $.ajax({
+                url: "controller.php",
+                method: "GET",
+                data: {
+                    employee_id: EmployeeID,
+                    action: "delete_employee_data",
+                },
+                success: function () {
+                    $("#active-employee-table").DataTable().draw();
+                    $('#removed-employee-table').DataTable().draw();
+                },
+            });
+        } else {
+            return false;
+        }
+    });
+
+    $('#remove_active_employee').on('click', function(){
+        var selected_employee=[];
+        $('input:checkbox[class=checked_remove_employee]:checked').each(function(){
+            selected_employee.push($(this).val());
+        });
+        if(selected_employee.length>0){
+            if(confirm("Are you sure want to remove the selected employees?")){
                 $.ajax({
-                    url: 'controller.php?action=updateDTRRecord',
+                    url: 'controller.php?action=remove_selected_employees',
                     type: 'POST',
-                    data: Update_DTR_DATA,
-                    dataType: 'text',
-                    success: (message) => {
-                        if(message != 'invalid_account'){
-                            $('#update-time-in-form').modal('hide');
-                            $('#updateEmployeeDTR')[0].reset();
-                            $('#employee-dtr-record-table').DataTable().draw();
-                        } else {
-                            alert("Wrong Password");
-                        }
+                    data: {
+                        selected_employee: selected_employee
+                    },
+                    success: function(){
+                        $('#active-employee-table').DataTable().draw();
+                        $('#removed-employee-table').DataTable().draw();
                     }
                 })
-            })
+            }
+        }
+    });
 
-            $('#type').change(function(){
-                switch($(this).val()){
-                    case 'Time In':
-                        $('#time_in').show();
-                        $('#i_time_in').attr('disabled', false);
-                        $('#time_out').hide();
-                        $('#i_time_out').attr('disabled', true);
-                        $('#over_time_in').hide();
-                        $('#i_over_time_in').attr('disabled', true);
-                        $('#over_time_out').hide();
-                        $('#i_over_time_out').attr('disabled', true);
-                        break;
-                    case 'Time Out':
-                        $('#time_out').show();
-                        
-                        $('#i_time_out').attr('disabled', false);
-                        $('#time_in').hide();
-                        $('#i_time_in').attr('disabled', true);
-                        $('#over_time_in').hide();
-                        $('#i_over_time_in').attr('disabled', true);
-                        $('#over_time_out').hide();
-                        $('#i_over_time_out').attr('disabled', true);
-                        break;
-                    case 'Over Time In':
-                        $('#time_in').hide();
-                        $('#i_time_in').attr('disabled', true);
-                        $('#time_out').hide();
-                        $('#i_time_out').attr('disabled', true);
-                        $('#over_time_in').show();
-                        $('#i_over_time_in').attr('disabled', false);
-                        $('#over_time_out').hide();
-                        $('#i_over_time_out').attr('disabled', true);
-                        break;
-                    case 'Over Time Out':
-                        $('#time_in').hide();
-                        $('#i_time_in').attr('disabled', true);
-                        $('#time_out').hide();
-                        $('#i_time_out').attr('disabled', true);
-                        $('#over_time_in').hide();
-                        $('#i_over_time_in').attr('disabled', true);
-                        $('#over_time_out').show();
-                        $('#i_over_time_out').attr('disabled', false);
-                        break;
-                }
-            }).trigger('change');
-
-            $('#employee_id').keyup(function(){
-                var that = this,
-                value = $(this).val();
-                if(value.length >= 1){
-                    if(searchRequest != null)
-                        searchRequest.abort();
-                    
-                    searchRequest = $.ajax({
-                        url: 'controller.php',
-                        type: 'GET',
-                        data: {
-                            action: 'get_employee_name',
-                            employee_id: value,
-                        },
-                        dataType: 'json',
-                        success: function(data){
-
-                            if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
-                                $('#employee_name').val(`${data[8]} ${data[9]}`);
-                            } else {
-                                $('#employee_name').val('');
-                            }
-                        },
-                    });
-                }
-            });
-
-            $('#addDTRRecord').submit(function(event){
-                event.preventDefault();
-                // don't serialize the form because it should be manually listed for necessary functions
-                var DTR_DATA = {
-                    employee_id: $('#employee_id').val(),
-                    employee_name: $('#employee_name').val(),
-                    type: $('#type').val(),
-                    date: $('#date').val(),
-                    time_in: $('#i_time_in').val(),
-                    time_out: $('#i_time_out').val(),
-                    over_time_in: $('#i_over_time_in').val(),
-                    over_time_out: $('#i_over_time_out').val(),
-                }
-
+    $('#delete_removed_employee').on('click', function(){
+        var selected_removed_employee=[];
+        $('input:checkbox[class=checked_delete_employee]:checked').each(function(){
+            selected_removed_employee.push($(this).val());
+        });
+        if(selected_removed_employee.length>0){
+            if(confirm("Are you sure want to delete the selected employees?")){
                 $.ajax({
-                    url: 'controller.php?action=addDTRRecord',
+                    url: 'controller.php?action=delete_selected_employees',
                     type: 'POST',
-                    data: DTR_DATA,
+                    data: {
+                        selected_removed_employee: selected_removed_employee
+                    },
                     success: function(){
-                        $('#addDTRRecord')[0].reset();
-                        $('#add-dtr-form').modal('hide');
-                        $('#employee-dtr-table').DataTable().draw();
+                        $('#active-employee-table').DataTable().draw();
+                        $('#removed-employee-table').DataTable().draw();
                     }
                 })
-            });
-            // break;
+            }
+        }
+    });
 
-        // case 'payroll':
-            $('#payroll-report-table').DataTable({
-                dom: "ftipr",
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 15,
-                drawCallback: function(settings){
-                    var api = this.api(), data;
+    $("#updateEmployee").on("submit", function (event) {
+        event.preventDefault();
+        var newEmployeeData = $("#updateEmployee").serialize();
+        $.ajax({
+            url: "controller.php?action=update_employee_data",
+            method: "POST",
+            data: newEmployeeData,
+            success: function () {
+                $("#updateEmployee")[0].reset();
+                $("#update-employee-form").modal("hide");
+                $("#active-employee-table").DataTable().draw();
+            },
+        });
+    });
 
-                    var floatval = function(i){
-                        return typeof(i) === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof(i) === 'number' ? i : 0;
-                    }
+    $("#info-employee-form").one("shown.bs.modal", function () {
+        $.ajax({
+            url: "controller.php",
+            type: "GET",
+            data: {action: "fetchJobPositions"},
+            dataType: "html",
+            success: function (data) {
+                $("#employeeInfo #job_position").append(data);
+            },
+        });
+        $.ajax({
+            url: "controller.php",
+            type: "GET",
+            data: {action: "fetchShiftingTypes"},
+            dataType: "html",
+            success: function (data) {
+                $("#employeeInfo #shifting_type").append(data);
+            },
+        });
+    })
 
-                    var NetPay_total = api.column(3).data().reduce(function(a, b){
-                        return floatval(a) + floatval(b);
-                    }, 0);
+    $("#info-employee-form").on("shown.bs.modal", function () {
+        if ($("#employeeInfo #worker_type").val() === "Regular" || $("#employeeInfo #worker_type").val() === "Contractual") {
+            $("#employeeInfo div[data-id='employee-gov']").show();
+                $("#employeeInfo div[data-id='employee-gov'] input").attr("disabled", false);
+        } else {
+            $("#employeeInfo div[data-id='employee-gov']").hide();
+            $("#employeeInfo div[data-id='employee-gov'] input").attr("disabled", true);
+        }
+    }).trigger("shown.bs.modal");
 
-                    var GrossPay_total = api.column(4).data().reduce(function(a, b){
-                        return floatval(a) + floatval(b);
-                    }, 0)
+    $("#active-employee-table").on("click", ".info", function () {
+        $("#employeeInfo input").prop("readonly", true);
+        $("#employeeInfo select").css("pointer-events", "none");
+        var EmployeeID = $(this).attr("id");
+        $.ajax({
+            url: "controller.php",
+            method: "GET",
+            data: {
+                employee_id: EmployeeID,
+                action: "get_employee_data",
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#info-employee-form").modal(
+                    {
+                        backdrop: "static",
+                        keyboard: false,
+                    },
+                    "show"
+                );
+                $("#employeeInfo #employee_number").val(data['employee_number']);
+                $("#employeeInfo #card_id").val(data['card_id']);
+                $("#employeeInfo #fingerprint_number").val(data['fingerprint_number']);
+                $("#employeeInfo #worker_type").val(data['worker_type']);
+                $("#employeeInfo #job_position").val(data['job_position']);
+                $("#employeeInfo #shifting_type").val(data['shifting_type_name']);
+                $("#employeeInfo #first_name").val(data['first_name']);
+                $("#employeeInfo #last_name").val(data['last_name']);
+                $("#employeeInfo #middle_name").val(data["middle_name"]);
+                $("#employeeInfo #birth_date").val(data['birth_date']);
+                $("#employeeInfo #age").val(data['age']);
+                $("#employeeInfo #gender").val(data['gender']);
+                $("#employeeInfo #civil_status").val(data['civil_status']);
+                $("#employeeInfo #full_address").val(data['full_address']);
+                $("#employeeInfo #email").val(data['email']);
+                $("#employeeInfo #contact_number").val(data['contact_number']);
+                $("#employeeInfo #contact_person").val(data['contact_person']);
+                $("#employeeInfo #contact_person_number").val(data['contact_person_number']);
+                $("#employeeInfo #relationship").val(data['relationship']);
+                $("#employeeInfo #duration_date").val(data['duration_date']);
+                $("#employeeInfo #start_date").val(data['start_date']);
+                $("#employeeInfo #end_date").val(data['end_date']);
+                $("#employeeInfo #sss_number").val(data['sss_number']);
+                $("#employeeInfo #employee_er").val(data['employee_er']);
+                $("#employeeInfo #employee_ee").val(data['employee_ee']);
+                $("#employeeInfo #sss_active_loan").val(data['sss_active_loan']);
+                $("#employeeInfo #philhealth_number").val(data['philhealth_number']);
+                $("#employeeInfo #philhealth_per_month").val(data['philhealth_per_month']);
+                $("#employeeInfo #pag_ibig_number").val(data['pag_ibig_number']);
+                $("#employeeInfo #pag_ibig_per_month").val(data['pag_ibig_per_month']);
+                $("#employeeInfo #pag_ibig_active_loan").val(data['pag_ibig_active_loan']);
+            },
+        });
+    });
+    
+    // break;
 
-                    $(api.column(3).footer()).html('$' + NetPay_total);
-                    $(api.column(4).footer()).html('$' + GrossPay_total);
+// case 'EmployeeCredits':
+    $('#staff-ca-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: "listStaffCA",
                 }
-            });
-            // break;
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [5],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
 
-        // case 'employee':
-            // Data Table for Active employees
-            $("#active-employee-table").DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listEmployee",
-                    },
-                    dataType: "json",
-                },
-                retrieve: true,
-                dom: "ftipr",
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 15,
-                columnDefs: [
-                {
-                    targets: 6,
-                    width: '20px',
-                },
-                {
-                    targets: [6,7],
-                    className: "td-actions text-center",
-                    width: 100
-                },
-                {
-                    targets: [0],
-                    className: "text-center",
-                }],
-            });
-            // Data Table for removed employees
-            $("#removed-employee-table").DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listRemovedEmployee",
-                    },
-                    dataType: "json",
-                },
-                retrieve: true,
-                dom: "ftipr",
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 15,
-                columnDefs: [
-                    {
-                        targets: 5,
-                        width: '25px'
-                    },
-                    {
-                        targets: [5,6],
-                        className: "td-actions text-center",
-                        width: 100
-                    },
-                    {
-                        targets: [0],
-                        className: "text-center",
-                    },
-                ],
-            });
+    $('#paid-staff-ca-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: "listPaidStaffCA",
+                }
+            },
+            dataType: "json",
+            liveAjax: true,
+            interval: 1000,
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [5],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+    $('#staff-loan-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: "listStaffLoan",
+                }
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [7],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+
+    $('#paid-staff-loan-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: "listPaidStaffLoan",
+                }
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [7],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+
+    $('#employee-misc-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: 'controller.php',
+            type: 'GET',
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: 'listEmployeeMisc',
+                }
+            },
+            dataType: 'json',
+        },
+        retrieve: true,
+        dom: 'ftipr',
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [5],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+
+    $('#paid-employee-misc-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: 'controller.php',
+            type: 'GET',
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: 'listPaidEmployeeMisc',
+                }
+            },
+            dataType: 'json',
+        },
+        retrieve: true,
+        dom: 'ftipr',
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [5],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+    $('#staff-damages-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: "listStaffDamages",
+                }
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [6],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+
+    $('#paid-staff-damages-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: "listPaidStaffDamages",
+                }
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 10,
+        columnDefs: [
+            {
+                targets: [6],
+                className: 'td-actions text-center'
+            }
+        ]
+    });
+    var searchRequest = null;
+
+    $('#employee_number').keyup(function(){
+        var that = this,
+        value = $(this).val();
+        if(value.length >= 1){
+            if(searchRequest != null)
+                searchRequest.abort();
             
-            $("#position-table").DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listPositions",
-                    },
-                    dataType: "json",
+            searchRequest = $.ajax({
+                url: 'controller.php',
+                type: 'GET',
+                data: {
+                    action: 'get_employee_name',
+                    employee_id: value,
                 },
-                retrieve: true,
-                dom: "ftipr",
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 15,
-                columnDefs: [
-                    {
-                        targets: [3],
-                        className: "td-actions text-center",
-                    },
-                    {
-                        targets: [1, 2],
-                        className: "text-center",
-                    },
-                ],
-            });
+                dataType: 'json',
+                success: function(data){
 
-            $("#employee-shifting-hours-table").DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listShiftingHours",
-                    },
-                    dataType: "json",
-                },
-                retrieve: true,
-                dom: "ftipr",
-                bAutoWidth: false,
-                ordering: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 15,
-                columnDefs: [
-                    {
-                        targets: [5],
-                        className: "td-actions text-left",
-                    },
-                ],
-            });
-
-            $("#over-time-table").DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listOverTime",
-                    },
-                    dataType: "json",
-                },
-                retrieve: true,
-                searching: false,
-                paging: false,
-                ordering: false,
-                bInfo: false,
-                bAutoWidth: false,
-                columnDefs: [
-                    {
-                        targets: 1,
-                        width: "200px",
-                    },
-                    {
-                        targets: 2,
-                        width: "50px",
-                        className: "td-actions text-center",
-                    },
-                ],
-            });
-            // Server Side DataTable {Late Policy}
-            $("#late-policy-table").DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listLatePolicy",
-                    },
-                    dataType: "json",
-                },
-                retrieve: true,
-                searching: false,
-                paging: false,
-                ordering: false,
-                bInfo: false,
-                bAutoWidth: false,
-                columnDefs: [
-                    {
-                        targets: 2,
-                        width: "50px",
-                        className: "td-actions text-center",
-                    },
-                ],
-            });
-
-            $("#addJobPosition").submit(function (event) {
-                event.preventDefault();
-                var Position_Data = {
-                    position_name: $("#position_name").val(),
-                    wage_salary: $("#wage_salary").val(),
-                    wage_type: $("#wage_type").val(),
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "controller.php?action=add_position",
-                    data: Position_Data,
-                    success: function (data) {
-                        $("#add-job-position-form").modal("hide");
-                        $("#addJobPosition")[0].reset();
-                        $("#position-table").DataTable().draw();
-                    },
-                });
-            });
-        
-            $("#position-table").on("click", ".delete", function () {
-                var posID = $(this).attr("id");
-                if (confirm("Are you sure you want to delete this position?")) {
-                    $.ajax({
-                        url: "controller.php",
-                        method: "GET",
-                        data: {
-                            pos_id: posID,
-                            action: "position_delete",
-                        },
-                        success: function () {
-                            $("#position-table").DataTable().draw();
-                        },
-                    });
-                } else {
-                    return false;
-                }
-            });
-        
-            $("#position-table").on("click", ".update", function () {
-                var posID = $(this).attr("id");
-                $.ajax({
-                    url: "controller.php",
-                    method: "GET",
-                    data: {
-                        pos_id: posID,
-                        action: "get_job_position",
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        $("#update-job-position-form").modal(
-                            {
-                                backdrop: "static",
-                                keyboard: false,
-                            },
-                            "show"
-                        );
-                        $("#update-job-position-form #position_name").val(data[1]);
-                        $("#update-job-position-form #wage_salary").val(data[2]);
-                        $("#update-job-position-form #wage_type").val(data[3]);
-                    },
-                });
-            });
-        
-            $("#updateJobPosition").submit(function (event) {
-                event.preventDefault();
-                var Position_Data = {
-                    position_name: $("#updateJobPosition #position_name").val(),
-                    wage_salary: $("#updateJobPosition #wage_salary").val(),
-                    wage_type: $("#updateJobPosition #wage_type").val(),
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "controller.php?action=update_job_position",
-                    data: Position_Data,
-                    success: function (data) {
-                        $("#update-job-position-form").modal("hide");
-                        $("#updateJobPosition")[0].reset();
-                        $("#position-table").DataTable().draw();
-                    },
-                });
-            });
-
-            $("#addShiftingHours").submit(function (event) {
-                var totalWorkHours =
-                    diffTime($("#start_time").val(), $("#end_time").val()) -
-                    $("#break_time").val();
-                var ShiftingHours_Data = {
-                    shifting_type_name: $("#shifting_type_name").val(),
-                    start_time: toAMPM($("#start_time").val()),
-                    end_time: toAMPM($("#end_time").val()),
-                    break_time: $("#break_time").val(),
-                    total_work_hours: totalWorkHours,
-                };
-        
-                $.ajax({
-                    url: "controller.php?action=add_shifting_type",
-                    method: "POST",
-                    data: ShiftingHours_Data,
-                    success: function () {
-                        $("#addShiftingHours")[0].reset();
-                        $("#add-custom-shifting-type-form").modal("hide");
-                        $("#employee-shifting-hours-table").DataTable().draw();
-                    },
-                });
-                event.preventDefault();
-            });
-        
-            $("#employee-shifting-hours-table").on("click", ".delete", function () {
-                var shiftID = $(this).attr("id");
-                if (confirm("Are you sure you want to delete this shifiting type?")) {
-                    $.ajax({
-                        url: "controller.php",
-                        method: "GET",
-                        data: {
-                            shift_id: shiftID,
-                            action: "shifting_type_delete",
-                        },
-                        success: function () {
-                            $("#employee-shifting-hours-table").DataTable().draw();
-                        },
-                    });
-                } else {
-                    return false;
-                }
-            });
-        
-            $("#employee-shifting-hours-table").on("click", ".update", function () {
-                var shiftID = $(this).attr("id");
-                $.ajax({
-                    url: "controller.php",
-                    method: "GET",
-                    data: {
-                        shift_id: shiftID,
-                        action: "get_shifting_type",
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        $("#update-custom-shifting-type-form").modal(
-                            {
-                                backdrop: "static",
-                                keyboard: false,
-                            },
-                            "show"
-                        );
-                        $("#updateShiftingHours #shifting_type_name").val(data[1]);
-                        $("#updateShiftingHours #start_time").val(to24(data[2]));
-                        $("#updateShiftingHours #end_time").val(to24(data[3]));
-                        $("#updateShiftingHours #break_time").val(data[4]);
-                    },
-                });
-            });
-        
-            $("#late-policy-table").on("click", ".update", function () {
-                var latepolicyID = $(this).attr("id");
-                $.ajax({
-                    url: "controller.php",
-                    method: "GET",
-                    data: {
-                        latepolicy_id: latepolicyID,
-                        action: "get_late_policy",
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        $("#update-late-policy-form").modal(
-                            {
-                                backdrop: "static",
-                                keyboard: false,
-                            },
-                            "show"
-                        );
-        
-                        var float_time = data[1].split(".");
-        
-                        var hours = float_time[0],
-                            minutes = float_time[1];
-        
-                        $("#latepolicy_hours").val(hours);
-                        $("#latepolicy_minutes").val(minutes);
-                        $("#penalty_amount").val(data[2]);
-                    },
-                });
-            });
-        
-            $("#updateLatePolicy").submit(function (event) {
-                event.preventDefault();
-        
-                var LatePolicyData = {
-                    latepolicy_hours: $("#latepolicy_hours").val(),
-                    latepolicy_minutes: $("#latepolicy_minutes").val(),
-                    penalty_amount: $("#penalty_amount").val(),
-                };
-        
-                $.ajax({
-                    url: "controller.php?action=update_latepolicy",
-                    method: "POST",
-                    data: LatePolicyData,
-                    success: function () {
-                        $("#updateLatePolicy")[0].reset();
-                        $("#update-late-policy-form").modal("hide");
-                        $("#late-policy-table").DataTable().draw();
-                    },
-                });
-            });
-        
-            $("#over-time-table").on("click", ".update", function () {
-                var overtimeID = $(this).attr("id");
-        
-                $.ajax({
-                    url: "controller.php",
-                    method: "GET",
-                    data: {
-                        overtime_id: overtimeID,
-                        action: "get_overtime_data",
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        $("#update-over-time-form").modal(
-                            {
-                                backdrop: "static",
-                                keyboard: false,
-                            },
-                            "show"
-                        );
-        
-                        var float_time = data[2].split(".");
-        
-                        var hours = float_time[0],
-                            minutes = float_time[1];
-        
-                        $("#overtime_hours").val(hours);
-                        $("#overtime_minutes").val(minutes);
-                    },
-                });
-            });
-        
-            $("#updateOverTime").submit(function (event) {
-                event.preventDefault();
-        
-                var OverTimeData = {
-                    overtime_hours: $("#overtime_hours").val(),
-                    overtime_minutes: $("#overtime_minutes").val(),
-                };
-        
-                $.ajax({
-                    url: "controller.php?action=update_overtime",
-                    method: "POST",
-                    data: OverTimeData,
-                    success: function () {
-                        $("#updateOverTime")[0].reset(),
-                            $("#update-over-time-form").modal("hide");
-                        $("#over-time-table").DataTable().draw();
-                    },
-                });
-            });
-        
-            $("#updateShiftingHours").submit(function (event) {
-                var startTime = $("#updateShiftingHours #start_time").val(),
-                    endTime = $("#updateShiftingHours #end_time").val(),
-                    breakTime = $("#updateShiftingHours #break_time").val(),
-                    timeDifference = diffTime(startTime, endTime),
-                    totalWorkHours = timeDifference - breakTime;
-                var ShiftingHours_Data = {
-                    shifting_type_name: $(
-                        "#updateShiftingHours #shifting_type_name"
-                    ).val(),
-                    start_time: toAMPM($("#updateShiftingHours #start_time").val()),
-                    end_time: toAMPM($("#updateShiftingHours #end_time").val()),
-                    break_time: $("#updateShiftingHours #break_time").val(),
-                    total_work_hours: totalWorkHours,
-                };
-                $.ajax({
-                    url: "controller.php?action=update_shifting_type",
-                    method: "POST",
-                    data: ShiftingHours_Data,
-                    success: function () {
-                        $("#updateShiftingHours")[0].reset();
-                        $("#update-custom-shifting-type-form").modal("hide");
-                        $("#employee-shifting-hours-table").DataTable().draw();
-                    },
-                });
-                event.preventDefault();
-            });
-
-            $('#addEmployee #birth_date').on('change', function(){
-                $('#addEmployee #age').val(getAge(this.value));
-            });
-
-            $("#worker_type").on("change", function () {
-                if ($("#worker_type").val() === "Regular" || $("#worker_type").val() === "Contractual") {
-                    $("div[data-id='employee-gov'").show();
-                    $("div[data-id='employee-gov'] input").attr("disabled", false);
-                } else {
-                    $("div[data-id='employee-gov'").hide();
-                    $("div[data-id='employee-gov'] input").attr("disabled", true);
-                }
-            });
-        
-            $("#u-worker-type").on("change", function () {
-                if (this.value === "Regular" || this.value === "Contractual") {
-                    $("div[data-id='employee-gov'").show();
-                    $("div[data-id='employee-gov'] input").attr("disabled", false);
-                } else {
-                    $("div[data-id='employee-gov'").hide();
-                    $("div[data-id='employee-gov'] input").attr("disabled", true);
-                }
-            });
-        
-            // trigger change duration date inputs
-            $("#duration_date").on("change", function () {
-                switch ($(this).val()) {
-                    case "3 Months":
-                        var date = new Date();
-                            date.setMonth(date.getMonth() + 3);
-                        $("#end_date").val(moment(date).format("YYYY-MM-DD")).change();
-                        break;
-                    case "6 Months":
-                        var date = new Date();
-                            date.setMonth(date.getMonth() + 6);
-                            $("#end_date").val(moment(date).format("YYYY-MM-DD")).change();
-                        break;
-                    case "1 Year":
-                        var date = new Date();
-                            date.setMonth(date.getMonth() + 12);
-                            $("#end_date").val(moment(date).format("YYYY-MM-DD")).change();
-                        break;
-                    case "2 Years":
-                        var date = new Date();
-                            date.setMonth(date.getMonth() + 24);
-                            $("#end_date").val(moment(date).format("YYYY-MM-DD")).change();
-                        break;
-                    default:
-                        $("#end_date").val("").change();
-                        break;
+                    if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
+                        $('#employee_name').val(`${data[8]} ${data[9]}`);
+                    } else {
+                        $('#employee_name').val('');
                     }
-            }).trigger("change");
+                },
+            });
+        }
+    });
+    
+    $('#addStaffCA').on('submit', function(event){
+        event.preventDefault();
+        var CashDATA = $('#addStaffCA').serialize();
+        $.ajax({
+            url: 'controller.php?action=add_staff_ca',
+            method: 'POST',
+            data: CashDATA,
+            success: function(){
+                $('#addStaffCA')[0].reset();
+                $('#new-ca-form').modal('hide');
+                $('#staff-ca-table').DataTable().draw();
+                $('#paid-staff-ca-table').DataTable().draw();
+            }
+        })
+    });
 
-            $("#add-employee-form").one("shown.bs.modal", function () {
-                $.ajax({
-                    url: "controller.php",
-                    type: "GET",
-                    data: {action: "fetchJobPositions"},
-                    dataType: "html",
-                    success: function (data) {
-                        $("#job_position").append(data);
-                    },
-                });
-                $.ajax({
-                    url: "controller.php",
-                    type: "GET",
-                    data: {action: "fetchShiftingTypes"},
-                    dataType: "html",
-                    success: function (data) {
-                        $("#shifting_type").append(data);
-                    },
-                });
-            });
+    $('#staff-ca-table').on('click', '.update', function(){
+        var CA_ID = $(this).attr('id');
+        $.ajax({
+            url: 'controller.php',
+            type: 'GET',
+            data: {
+                action: 'get_staff_ca',
+                ca_id: CA_ID
+            },
+            dataType: 'json',
+            success: function(data){
+                $('#update-ca-form').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                }, 'show');
+
+                $('#updateStaffCA #employee_number').val(data[1]);
+                $('#updateStaffCA #employee_name').val(data[2]);
+                $('#updateStaffCA #ca_date').val(data[3]);
+                $('#updateStaffCA #ca_amount').val(data[5]);
+                $('#updateStaffCA #ca_remarks').val(data[6]);
+            }
+        });
+    });
+
+    $('#updateStaffCA').on('submit', function(event){
+        event.preventDefault();
+        var CashDATA = $('#updateStaffCA').serialize();
+        $.ajax({
+            url: 'controller.php?action=update_staff_ca',
+            method: 'POST',
+            data: CashDATA,
+            success: function(){
+                $('#updateStaffCA')[0].reset();
+                $('#update-ca-form').modal('hide');
+                $('#staff-ca-table').DataTable().draw();
+                $('#paid-staff-ca-table').DataTable().draw();
+            }
+        });
+    })
+
+
+
+    $('#addStaffLoan #employee_id').keyup(function(){
+        var that = this,
+        value = $(this).val();
         
-            $('#check_all').change(function(){
-                $('.checked_remove_employee').prop('checked', $(this).prop('checked'));
-            });
-            $('#check_all_removed').change(function(){
-                $('.checked_delete_employee').prop('checked', $(this).prop('checked'));
-            });
-        
-            $("#update-employee-form").one("shown.bs.modal", function () {
-                $.ajax({
-                    url: "controller.php",
-                    type: "GET",
-                    data: {action: "fetchJobPositions"},
-                    dataType: "html",
-                    success: function (data) {
-                        $("#updateEmployee #job_position").append(data);
-                    },
-                });
-                $.ajax({
-                    url: "controller.php",
-                    type: "GET",
-                    data: {action: "fetchShiftingTypes"},
-                    dataType: "html",
-                    success: function (data) {
-                        $("#updateEmployee #shifting_type").append(data);
-                    },
-                });
-            }).trigger("shown.bs.modal");
-        
-            $("#update-employee-form").on("shown.bs.modal", function () {
-                if ($("#updateEmployee #worker_type").val() === "Regular" || $("#updateEmployee #worker_type").val() === "Contractual") {
-                    $("#updateEmployee div[data-id='employee-gov']").show();
-                    $("#updateEmployee div[data-id='employee-gov'] input").attr("disabled",false);
-                } else {
-                    $("#updateEmployee div[data-id='employee-gov']").hide();
-                    $("#updateEmployee div[data-id='employee-gov'] input").attr("disabled",true);
-                }
-            }).trigger("shown.bs.modal");
-        
-            $("#updateEmployee #worker_type").on("change", function () {
-                if ($("#updateEmployee #worker_type").val() === "Regular" || $("#updateEmployee #worker_type").val() === "Contractual") {
-                    $("#updateEmployee div[data-id='employee-gov'").show();
-                    $("#updateEmployee div[data-id='employee-gov'] input").attr("disabled",false);
-                } else {
-                    $("#updateEmployee div[data-id='employee-gov'").hide();
-                    $("#updateEmployee div[data-id='employee-gov'] input").attr("disabled",true);
-                }
-            }).trigger("change");
+        if(value.length >= 1){
+            if(searchRequest != null)
+                searchRequest.abort();
             
-            $("#addEmployee").on("submit", function (event) {
-                event.preventDefault();
-                var newEmployeeData=$("#addEmployee").serialize();
-                $.ajax({
-                    url: "controller.php?action=add_employee",
-                    method: "POST",
-                    data: newEmployeeData,
-                    success: function () {
-                        $("#addEmployee")[0].reset();
-                        $("#add-employee-form").modal("hide");
-                        $("#active-employee-table").DataTable().draw();
-                    },
-                });
-            });
-        
-            $("#active-employee-table").on("click", ".update", function () {
-                var EmployeeID = $(this).attr("id");
-                $.ajax({
-                    url: "controller.php",
-                    method: "GET",
-                    data: {
-                        employee_id: EmployeeID,
-                        action: "get_employee_data",
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        $("#update-employee-form").modal(
-                            {
-                                backdrop: "static",
-                                keyboard: false,
-                            },
-                            "show"
-                        );
-                        $("#updateEmployee #employee_number").val(data[2]);
-                        $("#updateEmployee #card_id").val(data[3]);
-                        $("#updateEmployee #fingerprint_number").val(data[4]);
-                        $("#updateEmployee #worker_type").val(data[5]);
-                        $("#updateEmployee #job_position").val(data[6]);
-                        $("#updateEmployee #shifting_type").val(data[7]);
-                        $("#updateEmployee #first_name").val(data[8]);
-                        $("#updateEmployee #last_name").val(data[9]);
-                        $("#updateEmployee #middle_name").val(data[10]);
-                        $("#updateEmployee #birth_date").val(data[11]);
-                        $("#updateEmployee #age").val(data[12]);
-                        $("#updateEmployee #gender").val(data[13]);
-                        $("#updateEmployee #civil_status").val(data[14]);
-                        $("#updateEmployee #full_address").val(data[15]);
-                        $("#updateEmployee #email").val(data[16]);
-                        $("#updateEmployee #contact_number").val(data[17]);
-                        $("#updateEmployee #contact_person").val(data[18]);
-                        $("#updateEmployee #contact_person_number").val(data[19]);
-                        $("#updateEmployee #relationship").val(data[20]);
-                        $("#updateEmployee #duration_date").val(data[21]);
-                        $("#updateEmployee #start_date").val(data[22]);
-                        $("#updateEmployee #end_date").val(data[23]);
-                        $("#updateEmployee #sss_number").val(data[24]);
-                        $("#updateEmployee #employee_er").val(data[25]);
-                        $("#updateEmployee #employee_ee").val(data[26]);
-                        $("#updateEmployee #sss_active_loan").val(data[27]);
-                        $("#updateEmployee #philhealth_number").val(data[28]);
-                        $("#updateEmployee #philhealth_per_month").val(data[29]);
-                        $("#updateEmployee #pag_ibig_number").val(data[30]);
-                        $("#updateEmployee #pag_ibig_per_month").val(data[31]);
-                        $("#updateEmployee #pag_ibig_active_loan").val(data[32]);
-                    },
-                });
-            });
-        
-            $("#active-employee-table").on("click", ".delete", function () {
-                var EmployeeID = $(this).attr("id");
-                if (confirm("Are you sure you want to remove this Employee?")) {
-                    $.ajax({
-                        url: "controller.php",
-                        method: "GET",
-                        data: {
-                            employee_id: EmployeeID,
-                            action: "remove_employee_data",
-                        },
-                        success: function () {
-                            $("#active-employee-table").DataTable().draw();
-                            $('#removed-employee-table').DataTable().draw();
-                        },
-                    });
-                } else {
-                    return false;
-                }
-            });
-            $("#removed-employee-table").on("click", ".delete", function () {
-                var EmployeeID = $(this).attr("id");
-                if (confirm("Are you sure you want to delete this Employee?")) {
-                    $.ajax({
-                        url: "controller.php",
-                        method: "GET",
-                        data: {
-                            employee_id: EmployeeID,
-                            action: "delete_employee_data",
-                        },
-                        success: function () {
-                            $("#active-employee-table").DataTable().draw();
-                            $('#removed-employee-table').DataTable().draw();
-                        },
-                    });
-                } else {
-                    return false;
-                }
-            });
-        
-            $('#remove_active_employee').on('click', function(){
-                var selected_employee=[];
-                $('input:checkbox[class=checked_remove_employee]:checked').each(function(){
-                    selected_employee.push($(this).val());
-                });
-                if(selected_employee.length>0){
-                    if(confirm("Are you sure want to remove the selected employees?")){
-                        $.ajax({
-                            url: 'controller.php?action=remove_selected_employees',
-                            type: 'POST',
-                            data: {
-                                selected_employee: selected_employee
-                            },
-                            success: function(){
-                                $('#active-employee-table').DataTable().draw();
-                                $('#removed-employee-table').DataTable().draw();
-                            }
-                        })
-                    }
-                }
-            });
-        
-            $('#delete_removed_employee').on('click', function(){
-                var selected_removed_employee=[];
-                $('input:checkbox[class=checked_delete_employee]:checked').each(function(){
-                    selected_removed_employee.push($(this).val());
-                });
-                if(selected_removed_employee.length>0){
-                    if(confirm("Are you sure want to delete the selected employees?")){
-                        $.ajax({
-                            url: 'controller.php?action=delete_selected_employees',
-                            type: 'POST',
-                            data: {
-                                selected_removed_employee: selected_removed_employee
-                            },
-                            success: function(){
-                                $('#active-employee-table').DataTable().draw();
-                                $('#removed-employee-table').DataTable().draw();
-                            }
-                        })
-                    }
-                }
-            });
-        
-            $("#updateEmployee").on("submit", function (event) {
-                event.preventDefault();
-                var newEmployeeData = $("#updateEmployee").serialize();
-                $.ajax({
-                    url: "controller.php?action=update_employee_data",
-                    method: "POST",
-                    data: newEmployeeData,
-                    success: function () {
-                        $("#updateEmployee")[0].reset();
-                        $("#update-employee-form").modal("hide");
-                        $("#active-employee-table").DataTable().draw();
-                    },
-                });
-            });
-        
-            $("#info-employee-form").one("shown.bs.modal", function () {
-                $.ajax({
-                    url: "controller.php",
-                    type: "GET",
-                    data: {action: "fetchJobPositions"},
-                    dataType: "html",
-                    success: function (data) {
-                        $("#employeeInfo #job_position").append(data);
-                    },
-                });
-                $.ajax({
-                    url: "controller.php",
-                    type: "GET",
-                    data: {action: "fetchShiftingTypes"},
-                    dataType: "html",
-                    success: function (data) {
-                        $("#employeeInfo #shifting_type").append(data);
-                    },
-                });
-            }).trigger("shown.bs.modal");
-        
-            $("#info-employee-form").on("shown.bs.modal", function () {
-                if ($("#employeeInfo #worker_type").val() === "Regular" || $("#employeeInfo #worker_type").val() === "Contractual") {
-                    $("#employeeInfo div[data-id='employee-gov']").show();
-                        $("#employeeInfo div[data-id='employee-gov'] input").attr("disabled", false);
-                } else {
-                    $("#employeeInfo div[data-id='employee-gov']").hide();
-                    $("#employeeInfo div[data-id='employee-gov'] input").attr("disabled", true);
-                }
-            }).trigger("shown.bs.modal");
-        
-            $("#active-employee-table").on("click", ".info", function () {
-                $("#employeeInfo input").prop("readonly", true);
-                $("#employeeInfo select").css("pointer-events", "none");
-                var EmployeeID = $(this).attr("id");
-                $.ajax({
-                    url: "controller.php",
-                    method: "GET",
-                    data: {
-                        employee_id: EmployeeID,
-                        action: "get_employee_data",
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        $("#info-employee-form").modal(
-                            {
-                                backdrop: "static",
-                                keyboard: false,
-                            },
-                            "show"
-                        );
-                        $("#employeeInfo #employee_number").val(data[2]);
-                        $("#employeeInfo #card_id").val(data[3]);
-                        $("#employeeInfo #fingerprint_number").val(data[4]);
-                        $("#employeeInfo #worker_type").val(data[5]);
-                        $("#employeeInfo #job_position").val(data[6]);
-                        $("#employeeInfo #shifting_type").val(data[7]);
-                        $("#employeeInfo #first_name").val(data[8]);
-                        $("#employeeInfo #last_name").val(data[9]);
-                        $("#employeeInfo #middle_name").val(data[10]);
-                        $("#employeeInfo #birth_date").val(data[11]);
-                        $("#employeeInfo #age").val(data[12]);
-                        $("#employeeInfo #gender").val(data[13]);
-                        $("#employeeInfo #civil_status").val(data[14]);
-                        $("#employeeInfo #full_address").val(data[15]);
-                        $("#employeeInfo #email").val(data[16]);
-                        $("#employeeInfo #contact_number").val(data[17]);
-                        $("#employeeInfo #contact_person").val(data[18]);
-                        $("#employeeInfo #contact_person_number").val(data[19]);
-                        $("#employeeInfo #relationship").val(data[20]);
-                        $("#employeeInfo #duration_date").val(data[21]);
-                        $("#employeeInfo #start_date").val(data[22]);
-                        $("#employeeInfo #end_date").val(data[23]);
-                        $("#employeeInfo #sss_number").val(data[24]);
-                        $("#employeeInfo #employee_er").val(data[25]);
-                        $("#employeeInfo #employee_ee").val(data[26]);
-                        $("#employeeInfo #sss_active_loan").val(data[27]);
-                        $("#employeeInfo #philhealth_number").val(data[28]);
-                        $("#employeeInfo #philhealth_per_month").val(data[29]);
-                        $("#employeeInfo #pag_ibig_number").val(data[30]);
-                        $("#employeeInfo #pag_ibig_per_month").val(data[31]);
-                        $("#employeeInfo #pag_ibig_active_loan").val(data[32]);
-                    },
-                });
-            });
-            
-            // break;
-
-        // case 'EmployeeCredits':
-            $('#staff-ca-table').DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listStaffCA",
-                    },
-                    dataType: "json",
+            searchRequest = $.ajax({
+                url: 'controller.php',
+                type: 'GET',
+                data: {
+                    action: 'get_employee_name',
+                    employee_id: value,
                 },
-                retrieve: true,
-                dom: "ftipr",
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 10,
-                columnDefs: [
-                    {
-                        targets: [5],
-                        className: 'td-actions text-center'
+                dataType: 'json',
+                success: function(data){
+                    if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
+                        $('#addStaffLoan #employee_name').val(`${data[8]} ${data[9]}`);
+                    } else {
+                        $('#addStaffLoan #employee_name').val('');
                     }
-                ]
-            });
-        
-            $('#paid-staff-ca-table').DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listPaidStaffCA",
-                    },
-                    dataType: "json",
-                    liveAjax: true,
-                    interval: 1000,
                 },
-                retrieve: true,
-                dom: "ftipr",
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 10,
-                columnDefs: [
-                    {
-                        targets: [5],
-                        className: 'td-actions text-center'
-                    }
-                ]
             });
-            $('#staff-loan-table').DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listStaffLoan",
-                    },
-                    dataType: "json",
-                },
-                retrieve: true,
-                dom: "ftipr",
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 10,
-                columnDefs: [
-                    {
-                        targets: [7],
-                        className: 'td-actions text-center'
-                    }
-                ]
-            });
+        }
+    });
+
+    $('#addStaffLoan #loan_amount').keyup(function(){
+        var loan_amount=parseFloat($(this).val()),
+            loan_interest=parseFloat($('#addStaffLoan #loan_interest').val());
+        if (isNaN(loan_amount) || isNaN(loan_interest)){
+            loan_amount=0;
+            loan_interest=0;
+        }
+        var sub_total=parseFloat(loan_amount*loan_interest)/100,
+            total_balance=parseFloat(sub_total)+parseFloat(loan_amount);
+        $('#loan_balance').val(parseFloat(total_balance));
+    });
+
+    $('#addStaffLoan #loan_interest').keyup(function(){
+        var loan_interest=parseFloat($(this).val()),
+            loan_amount=parseFloat($('#addStaffLoan #loan_amount').val());
+        if (isNaN(loan_amount) || isNaN(loan_interest)){
+            loan_amount=0;
+            loan_interest=0;
+        }
+        var sub_total=parseFloat(loan_amount*loan_interest)/100,
+            total_balance=parseFloat(sub_total)+parseFloat(loan_amount);
+        $('#loan_balance').val(parseFloat(total_balance));
+    });
+
+    $('#addStaffLoan').on('submit',function(event){
+        event.preventDefault();
+        var LoanData=$(this).serialize();
+        $.ajax({
+            url: 'controller.php?action=add_staff_loan',
+            method: 'POST',
+            data: LoanData,
+            success: function(){
+                $('#addStaffLoan')[0].reset();
+                $('#new-loan-form').modal('hide');
+                $('#staff-loan-table').DataTable().draw();
+                $('#paid-staff-loan-table').DataTable().draw();
+            }
+        })
+    });
+
+    $('#staff-loan-table').on('click', '.update', function(){
+        var Loan_ID=$(this).attr('id');
         
-            $('#paid-staff-loan-table').DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listPaidStaffLoan",
-                    },
-                    dataType: "json",
-                },
-                retrieve: true,
-                dom: "ftipr",
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 10,
-                columnDefs: [
-                    {
-                        targets: [7],
-                        className: 'td-actions text-center'
-                    }
-                ]
-            });
+        $.ajax({
+            url: 'controller.php',
+            type: 'GET', 
+            data: {
+                action: 'get_staff_loan',
+                loan_id: Loan_ID
+            },
+            dataType: 'json',
+            success: function(data){
+                $('#update-loan-form').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                }, 'show');
 
-            $('#employee-misc-table').DataTable({
-                serverSide: true,
-                ajax: {
-                    url: 'controller.php',
-                    type: 'GET',
-                    data: {
-                        action: 'listEmployeeMisc',
-                    },
-                    dataType: 'json',
-                },
-                retrieve: true,
-                dom: 'ftipr',
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 10,
-                columnDefs: [
-                    {
-                        targets: [5],
-                        className: 'td-actions text-center'
-                    }
-                ]
-            });
-        
-            $('#paid-employee-misc-table').DataTable({
-                serverSide: true,
-                ajax: {
-                    url: 'controller.php',
-                    type: 'GET',
-                    data: {
-                        action: 'listPaidEmployeeMisc',
-                    },
-                    dataType: 'json',
-                },
-                retrieve: true,
-                dom: 'ftipr',
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 10,
-                columnDefs: [
-                    {
-                        targets: [5],
-                        className: 'td-actions text-center'
-                    }
-                ]
-            });
-            $('#staff-damages-table').DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listStaffDamages",
-                    },
-                    dataType: "json",
-                },
-                retrieve: true,
-                dom: "ftipr",
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 10,
-                columnDefs: [
-                    {
-                        targets: [6],
-                        className: 'td-actions text-center'
-                    }
-                ]
-            });
-        
-            $('#paid-staff-damages-table').DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listPaidStaffDamages",
-                    },
-                    dataType: "json",
-                },
-                retrieve: true,
-                dom: "ftipr",
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 10,
-                columnDefs: [
-                    {
-                        targets: [6],
-                        className: 'td-actions text-center'
-                    }
-                ]
-            });
-            var searchRequest = null;
+                $('#updateStaffLoan #employee_id').val(data[1]);
+                $('#updateStaffLoan #employee_name').val(data[2]);
+                $('#updateStaffLoan #date_of_loan').val(data[3]);
+                $('#updateStaffLoan #due_date').val(data[4]);
+                $('#updateStaffLoan #loan_amount').val(data[5]);
+                $('#updateStaffLoan #loan_interest').val(data[6]);
+                $('#updateStaffLoan #loan_balance').val(data[7]);
+                $('#updateStaffLoan #loan_remarks').val(data[8]);
+            }
+        });
+    });
 
-            $('#employee_number').keyup(function(){
-                var that = this,
-                value = $(this).val();
-                if(value.length >= 1){
-                    if(searchRequest != null)
-                        searchRequest.abort();
-                    
-                    searchRequest = $.ajax({
-                        url: 'controller.php',
-                        type: 'GET',
-                        data: {
-                            action: 'get_employee_name',
-                            employee_id: value,
-                        },
-                        dataType: 'json',
-                        success: function(data){
+    $('#updateStaffLoan').on('submit', function(event){
+        event.preventDefault();
+        var LoanData=$(this).serialize();
 
-                            if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
-                                $('#employee_name').val(`${data[8]} ${data[9]}`);
-                            } else {
-                                $('#employee_name').val('');
-                            }
-                        },
-                    });
-                }
-            });
-            
-            $('#addStaffCA').on('submit', function(event){
-                event.preventDefault();
-                var CashDATA = $('#addStaffCA').serialize();
-                $.ajax({
-                    url: 'controller.php?action=add_staff_ca',
-                    method: 'POST',
-                    data: CashDATA,
-                    success: function(){
-                        $('#addStaffCA')[0].reset();
-                        $('#new-ca-form').modal('hide');
-                        $('#staff-ca-table').DataTable().draw();
-                        $('#paid-staff-ca-table').DataTable().draw();
-                    }
-                })
-            });
-
-            $('#staff-ca-table').on('click', '.update', function(){
-                var CA_ID = $(this).attr('id');
-                $.ajax({
-                    url: 'controller.php',
-                    type: 'GET',
-                    data: {
-                        action: 'get_staff_ca',
-                        ca_id: CA_ID
-                    },
-                    dataType: 'json',
-                    success: function(data){
-                        $('#update-ca-form').modal({
-                            backdrop: 'static',
-                            keyboard: false,
-                        }, 'show');
-
-                        $('#updateStaffCA #employee_number').val(data[1]);
-                        $('#updateStaffCA #employee_name').val(data[2]);
-                        $('#updateStaffCA #ca_date').val(data[3]);
-                        $('#updateStaffCA #ca_amount').val(data[5]);
-                        $('#updateStaffCA #ca_remarks').val(data[6]);
-                    }
-                });
-            });
-
-            $('#updateStaffCA').on('submit', function(event){
-                event.preventDefault();
-                var CashDATA = $('#updateStaffCA').serialize();
-                $.ajax({
-                    url: 'controller.php?action=update_staff_ca',
-                    method: 'POST',
-                    data: CashDATA,
-                    success: function(){
-                        $('#updateStaffCA')[0].reset();
-                        $('#update-ca-form').modal('hide');
-                        $('#staff-ca-table').DataTable().draw();
-                        $('#paid-staff-ca-table').DataTable().draw();
-                    }
-                });
-            })
-        
-        
-
-            $('#addStaffLoan #employee_id').keyup(function(){
-                var that = this,
-                value = $(this).val();
-                
-                if(value.length >= 1){
-                    if(searchRequest != null)
-                        searchRequest.abort();
-                    
-                    searchRequest = $.ajax({
-                        url: 'controller.php',
-                        type: 'GET',
-                        data: {
-                            action: 'get_employee_name',
-                            employee_id: value,
-                        },
-                        dataType: 'json',
-                        success: function(data){
-                            if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
-                                $('#addStaffLoan #employee_name').val(`${data[8]} ${data[9]}`);
-                            } else {
-                                $('#addStaffLoan #employee_name').val('');
-                            }
-                        },
-                    });
-                }
-            });
-
-            $('#addStaffLoan #loan_amount').keyup(function(){
-                var loan_amount=parseFloat($(this).val()),
-                    loan_interest=parseFloat($('#addStaffLoan #loan_interest').val());
-                if (isNaN(loan_amount) || isNaN(loan_interest)){
-                    loan_amount=0;
-                    loan_interest=0;
-                }
-                var sub_total=parseFloat(loan_amount*loan_interest)/100,
-                    total_balance=parseFloat(sub_total)+parseFloat(loan_amount);
-                $('#loan_balance').val(parseFloat(total_balance));
-            });
-
-            $('#addStaffLoan #loan_interest').keyup(function(){
-                var loan_interest=parseFloat($(this).val()),
-                    loan_amount=parseFloat($('#addStaffLoan #loan_amount').val());
-                if (isNaN(loan_amount) || isNaN(loan_interest)){
-                    loan_amount=0;
-                    loan_interest=0;
-                }
-                var sub_total=parseFloat(loan_amount*loan_interest)/100,
-                    total_balance=parseFloat(sub_total)+parseFloat(loan_amount);
-                $('#loan_balance').val(parseFloat(total_balance));
-            });
-
-            $('#addStaffLoan').on('submit',function(event){
-                event.preventDefault();
-                var LoanData=$(this).serialize();
-                $.ajax({
-                    url: 'controller.php?action=add_staff_loan',
-                    method: 'POST',
-                    data: LoanData,
-                    success: function(){
-                        $('#addStaffLoan')[0].reset();
-                        $('#new-loan-form').modal('hide');
-                        $('#staff-loan-table').DataTable().draw();
-                        $('#paid-staff-loan-table').DataTable().draw();
-                    }
-                })
-            });
-
-            $('#staff-loan-table').on('click', '.update', function(){
-                var Loan_ID=$(this).attr('id');
-                
-                $.ajax({
-                    url: 'controller.php',
-                    type: 'GET', 
-                    data: {
-                        action: 'get_staff_loan',
-                        loan_id: Loan_ID
-                    },
-                    dataType: 'json',
-                    success: function(data){
-                        $('#update-loan-form').modal({
-                            backdrop: 'static',
-                            keyboard: false,
-                        }, 'show');
-
-                        $('#updateStaffLoan #employee_id').val(data[1]);
-                        $('#updateStaffLoan #employee_name').val(data[2]);
-                        $('#updateStaffLoan #date_of_loan').val(data[3]);
-                        $('#updateStaffLoan #due_date').val(data[4]);
-                        $('#updateStaffLoan #loan_amount').val(data[5]);
-                        $('#updateStaffLoan #loan_interest').val(data[6]);
-                        $('#updateStaffLoan #loan_balance').val(data[7]);
-                        $('#updateStaffLoan #loan_remarks').val(data[8]);
-                    }
-                });
-            });
-
-            $('#updateStaffLoan').on('submit', function(event){
-                event.preventDefault();
-                var LoanData=$(this).serialize();
-
-                $.ajax({
-                    url: 'controller.php?action=update_staff_loan',
-                    method: 'POST',
-                    data: LoanData,
-                    success: function(){
-                        $('#updateStaffLoan')[0].reset();
-                        $('#update-loan-form').modal('hide');
-                        $('#staff-loan-table').DataTable().draw();
-                        $('#paid-staff-loan-table').DataTable().draw();
-                    }
-                })
-            })
-            
-            
-
-            $('#addStaffDamages #employee_number').keyup(function(){
-                var that = this,
-                value = $(this).val();
-                if(value.length >= 1){
-                    if(searchRequest != null)
-                        searchRequest.abort();
-            
-                    searchRequest = $.ajax({
-                        url: 'controller.php',
-                        type: 'GET',
-                        data: {
-                            action: 'get_employee_name',
-                            employee_id: value,
-                        },
-                        dataType: 'json',
-                        success: function(data){
-                            if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
-                                $('#addStaffDamages #employee_name').val(`${data[8]} ${data[9]}`);
-                            } else {
-                                $('#addStaffDamages #employee_name').val('');
-                            }
-                        },
-                    });
-                }
-            });
-
-            $('#addStaffDamages').on('submit', function(event){
-                event.preventDefault();
-                var Damage_Data = $(this).serialize();
-                $.ajax({
-                    url: 'controller.php?action=add_staff_damages',
-                    type: 'POST',
-                    data: Damage_Data,
-                    success: function(){
-                        $('#addStaffDamages')[0].reset();
-                        $('#new-damages-form').modal('hide');
-                        $('#staff-damages-table').DataTable().draw();
-                    }
-                })
-            })
-
-            $('#staff-damages-table').on('click', '.update', function(){
-                var Damage_ID=$(this).attr('id');
-                $.ajax({
-                    url: 'controller.php',
-                    type: 'GET', 
-                    data: {
-                        action: 'get_staff_damages',
-                        damage_id: Damage_ID
-                    },
-                    dataType: 'json',
-                    success: function(data){
-                        $('#update-damages-form').modal({
-                            backdrop: 'static',
-                            keyboard: false,
-                        }, 'show');
-                        $('#updateStaffDamages #employee_number').val(data[1]);
-                        $('#updateStaffDamages #employee_name').val(data[2]);
-                        $('#updateStaffDamages #date_issue').val(data[3]);
-                        $('#updateStaffDamages #damage_amount').val(data[4]);
-                        $('#updateStaffDamages #damage_amount_balance').val(data[5]);
-                        $('#updateStaffDamages #issue_name').val(data[6]);
-                    }
-                });
-            });
-
-            $('#updateStaffDamages').on('submit', function(event){
-                event.preventDefault();
-                var Pay_Data = $(this).serialize();
-                $.ajax({
-                    url: 'controller.php?action=update_staff_damages',
-                    type: 'POST',
-                    data: Pay_Data,
-                    success: function(){
-                        $('#updateStaffDamages')[0].reset();
-                        $('#update-damages-form').modal('hide');
-                        $('#staff-damages-table').DataTable().draw();
-                        $('#paid-staff-damages-table').DataTable().draw();
-                    }
-                })
-            });
-            // break;
-
-        // case 'holiday-pay':
-            $("#holiday-pay-table").DataTable({
-                serverSide: true,
-                ajax: {
-                    url: "controller.php",
-                    type: "GET",
-                    data: {
-                        action: "listHolidayPay",
-                    },
-                    dataType: "json",
-                },
-                retrieve: true,
-                dom: "ftipr",
-                bAutoWidth: false,
-                paging: true,
-                lengthChange: false,
-                ordering: false,
-                bInfo: false,
-                searching: true,
-                bFilter: true,
-                pageLength: 15,
-                columnDefs: [
-                    {
-                        targets: [3],
-                        className: "td-actions text-center",
-                    },
-                ],
-            });
-
-            Date.prototype.toDateInputValue = function () {
-                var local = new Date(this);
-                local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-                return local.toJSON().slice(0, 10);
-            };
-        
-            // set input date value with current date
-            $("#holiday_date").val(new Date().toDateInputValue());
-        
-            $("#addHolidayPay").submit(function (event) {
-                event.preventDefault();
-                var holidayData = {
-                    holiday_name: $("#holiday_name").val(),
-                    holiday_date: $("#holiday_date").val(),
-                    holiday_pay_percent: $("#holiday_pay_percent").val(),
-                };
-        
-                $.ajax({
-                    url: "controller.php?action=add_holiday_pay",
-                    type: "POST",
-                    data: holidayData,
-                    success: function (data) {
-                        $("#add-holiday-pay-form").modal("hide");
-                        $("#addHolidayPay")[0].reset();
-                        $("#holiday-pay-table").DataTable().draw();
-                    },
-                });
-            });
-        
-            $("#holiday-pay-table").on("click", ".delete", function () {
-                var holidayID = $(this).attr("id");
-                if (confirm("Are you sure you want to delete this Holiday Pay?")) {
-                    $.ajax({
-                        url: "controller.php",
-                        method: "GET",
-                        data: {
-                            holiday_id: holidayID,
-                            action: "delete_holiday_pay",
-                        },
-                        success: function () {
-                            $("#holiday-pay-table").DataTable().draw();
-                        },
-                    });
-                } else {
-                    return false;
-                }
-            });
-        
-            $("#holiday-pay-table").on("click", ".update", function () {
-                var holidayID = $(this).attr("id");
-        
-                $.ajax({
-                    url: "controller.php",
-                    method: "GET",
-                    data: {
-                        holiday_id: holidayID,
-                        action: "get_holiday_pay",
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        $("#update-holiday-pay-form").modal(
-                            {
-                                backdrop: "static",
-                                keyboard: false,
-                            },
-                            "show"
-                        );
-                        $("#update-holiday-pay-form #holiday_name").val(data[1]);
-                        $("#update-holiday-pay-form #holiday_date").val(data[2]);
-                        $("#update-holiday-pay-form #holiday_pay_percent").val(data[3]);
-                    },
-                });
-            });
-        
-            $("#updateHolidayPay").submit(function (event) {
-                event.preventDefault();
-                var Holiday_Data = {
-                    holiday_name: $("#updateHolidayPay #holiday_name").val(),
-                    holiday_date: $("#updateHolidayPay #holiday_date").val(),
-                    holiday_pay_percent: $(
-                        "#updateHolidayPay #holiday_pay_percent"
-                    ).val(),
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "controller.php?action=update_holiday_pay",
-                    data: Holiday_Data,
-                    success: function (data) {
-                        $("#update-holiday-pay-form").modal("hide");
-                        $("#updateHolidayPay")[0].reset();
-                        $("#holiday-pay-table").DataTable().draw();
-                    },
-                });
-            });
-            // break;
-            
-        // default: 
-            var dashboard = {
-                initDashboardPageCharts: function () {
-                    dataDailySalesChart = {
-                        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-                        series: [
-                            [12252, 100007, 752003, 152227, 211553, 105002, 210200],
-                            [212252, 620007, 700003, 202227, 201553, 405002, 310200],
-                        ],
-                    };
-        
-                    optionsDailySalesChart = {
-                        lineSmooth: Chartist.Interpolation.cardinal({
-                            tension: 5,
-                        }),
-                        fullWidth: true,
-                        low: 0,
-                        showArea: true,
-                        chartPadding: {
-                            top: 20,
-                            right: 25,
-                            bottom: 0,
-                            left: 25,
-                        },
-                    };
-        
-                    var DailyNetGrossPay = new Chartist.Line(
-                        "#dailySalesChart",
-                        dataDailySalesChart,
-                        optionsDailySalesChart
-                    );
-        
-                    dashboard.startAnimationForLineChart(DailyNetGrossPay);
-        
-                    var dataWebsiteViewsChart = {
-                        labels: [
-                            "Jan",
-                            "Feb",
-                            "Mar",
-                            "Apr",
-                            "May",
-                            "Jun",
-                            "Jul",
-                            "Aug",
-                            "Sep",
-                            "Oct",
-                            "Nov",
-                            "Dec",
-                        ],
-                        series: [
-                            [50, 20, 32, 56, 67, 3, 22, 11, 15, 9, 10, 30],
-                            [50, 20, 32, 56, 67, 3, 22, 11, 15, 9, 10, 30],
-                            [50, 20, 32, 56, 67, 3, 22, 11, 15, 9, 10, 30],
-                        ],
-                    };
-                    var optionsWebsiteViewsChart = {
-                        stackBars: true,
-                        axisX: {
-                            showGrid: false,
-                        },
-                        chartPadding: {
-                            top: 20,
-                            right: 0,
-                            bottom: 0,
-                            left: -5,
-                        },
-                    };
-                    var responsiveOptions = [
-                        [
-                            "screen and (max-width: 640px)",
-                            {
-                                seriesBarDistance: 5,
-                                axisX: {
-                                    labelInterpolationFnc: function (value) {
-                                        return value[0];
-                                    },
-                                },
-                            },
-                        ],
-                    ];
-                    var AttendaceViewChart = Chartist.Bar(
-                        "#websiteViewsChart",
-                        dataWebsiteViewsChart,
-                        optionsWebsiteViewsChart,
-                        responsiveOptions
-                    ).on("draw", function (data) {
-                        if (data.type === "bar") {
-                            data.element.attr({
-                                style: "stroke-width: 20px",
-                            });
-                        }
-                    });
-        
-                    //start animation for the Emails Subscription Chart
-                    dashboard.startAnimationForBarChart(AttendaceViewChart);
-                },
-        
-                startAnimationForLineChart: function (chart) {
-                    chart.on("draw", function (data) {
-                        if (data.type === "line" || data.type === "area") {
-                            data.element.animate({
-                                d: {
-                                    begin: 600,
-                                    dur: 700,
-                                    from: data.path
-                                        .clone()
-                                        .scale(1, 0)
-                                        .translate(0, data.chartRect.height())
-                                        .stringify(),
-                                    to: data.path.clone().stringify(),
-                                    easing: Chartist.Svg.Easing.easeOutQuint,
-                                },
-                            });
-                        } else if (data.type === "point") {
-                            seq++;
-                            data.element.animate({
-                                opacity: {
-                                    begin: seq * delays,
-                                    dur: durations,
-                                    from: 0,
-                                    to: 1,
-                                    easing: "ease",
-                                },
-                            });
-                        }
-                    });
-                    seq = 0;
-                },
-        
-                startAnimationForBarChart: function (chart) {
-                    chart.on("draw", function (data) {
-                        if (data.type === "bar") {
-                            seq2++;
-                            data.element.animate({
-                                opacity: {
-                                    begin: seq2*delays2,
-                                    dur: durations2,
-                                    from: 0,
-                                    to: 1,
-                                    easing: "ease",
-                                },
-                            });
-                        }
-                    });
-                    seq2 = 0;
-                },
-            };
-            dashboard.initDashboardPageCharts();
-        
-            $(window).resize(function () {
-                dashboard.initSidebarsCheck();
-                // reset the seq for charts drawing animations
-                seq = seq2 = 0;
-                setTimeout(function () {
-                    dashboard.initDashboardPageCharts();
-                }, 500);
-            });
-            // break;
-    // }
-
+        $.ajax({
+            url: 'controller.php?action=update_staff_loan',
+            method: 'POST',
+            data: LoanData,
+            success: function(){
+                $('#updateStaffLoan')[0].reset();
+                $('#update-loan-form').modal('hide');
+                $('#staff-loan-table').DataTable().draw();
+                $('#paid-staff-loan-table').DataTable().draw();
+            }
+        })
+    })
+    
     
 
+    $('#addStaffDamages #employee_number').keyup(function(){
+        var that = this,
+        value = $(this).val();
+        if(value.length >= 1){
+            if(searchRequest != null)
+                searchRequest.abort();
+    
+            searchRequest = $.ajax({
+                url: 'controller.php',
+                type: 'GET',
+                data: {
+                    action: 'get_employee_name',
+                    employee_id: value,
+                },
+                dataType: 'json',
+                success: function(data){
+                    if(value == $(that).val() && typeof(data[7]) != 'undefined' || typeof(data[8]) != 'undefined'){
+                        $('#addStaffDamages #employee_name').val(`${data[8]} ${data[9]}`);
+                    } else {
+                        $('#addStaffDamages #employee_name').val('');
+                    }
+                },
+            });
+        }
+    });
+
+    $('#addStaffDamages').on('submit', function(event){
+        event.preventDefault();
+        var Damage_Data = $(this).serialize();
+        $.ajax({
+            url: 'controller.php?action=add_staff_damages',
+            type: 'POST',
+            data: Damage_Data,
+            success: function(){
+                $('#addStaffDamages')[0].reset();
+                $('#new-damages-form').modal('hide');
+                $('#staff-damages-table').DataTable().draw();
+            }
+        })
+    })
+
+    $('#staff-damages-table').on('click', '.update', function(){
+        var Damage_ID=$(this).attr('id');
+        $.ajax({
+            url: 'controller.php',
+            type: 'GET', 
+            data: {
+                action: 'get_staff_damages',
+                damage_id: Damage_ID
+            },
+            dataType: 'json',
+            success: function(data){
+                $('#update-damages-form').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                }, 'show');
+                $('#updateStaffDamages #employee_number').val(data[1]);
+                $('#updateStaffDamages #employee_name').val(data[2]);
+                $('#updateStaffDamages #date_issue').val(data[3]);
+                $('#updateStaffDamages #damage_amount').val(data[4]);
+                $('#updateStaffDamages #damage_amount_balance').val(data[5]);
+                $('#updateStaffDamages #issue_name').val(data[6]);
+            }
+        });
+    });
+
+    $('#updateStaffDamages').on('submit', function(event){
+        event.preventDefault();
+        var Pay_Data = $(this).serialize();
+        $.ajax({
+            url: 'controller.php?action=update_staff_damages',
+            type: 'POST',
+            data: Pay_Data,
+            success: function(){
+                $('#updateStaffDamages')[0].reset();
+                $('#update-damages-form').modal('hide');
+                $('#staff-damages-table').DataTable().draw();
+                $('#paid-staff-damages-table').DataTable().draw();
+            }
+        })
+    });
+    
+    $("#holiday-pay-table").DataTable({
+        serverSide: true,
+        ajax: {
+            url: "controller.php",
+            type: "GET",
+            data: {
+                action: "listHolidayPay",
+            },
+            dataType: "json",
+        },
+        retrieve: true,
+        dom: "ftipr",
+        bAutoWidth: false,
+        paging: true,
+        lengthChange: false,
+        ordering: false,
+        bInfo: false,
+        searching: true,
+        bFilter: true,
+        pageLength: 15,
+        columnDefs: [
+            {
+                targets: [3],
+                className: "td-actions text-center",
+            },
+        ],
+    });
+
+    Date.prototype.toDateInputValue = function () {
+        var local = new Date(this);
+        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        return local.toJSON().slice(0, 10);
+    };
+
+    // set input date value with current date
+    $("#holiday_date").val(new Date().toDateInputValue());
+
+    $("#addHolidayPay").submit(function (event) {
+        event.preventDefault();
+        var holidayData = {
+            holiday_name: $("#holiday_name").val(),
+            holiday_date: $("#holiday_date").val(),
+            holiday_pay_percent: $("#holiday_pay_percent").val(),
+        };
+
+        $.ajax({
+            url: "controller.php?action=add_holiday_pay",
+            type: "POST",
+            data: holidayData,
+            success: function (data) {
+                $("#add-holiday-pay-form").modal("hide");
+                $("#addHolidayPay")[0].reset();
+                $("#holiday-pay-table").DataTable().draw();
+            },
+        });
+    });
+
+    $("#holiday-pay-table").on("click", ".delete", function () {
+        var holidayID = $(this).attr("id");
+        if (confirm("Are you sure you want to delete this Holiday Pay?")) {
+            $.ajax({
+                url: "controller.php",
+                method: "GET",
+                data: {
+                    holiday_id: holidayID,
+                    action: "delete_holiday_pay",
+                },
+                success: function () {
+                    $("#holiday-pay-table").DataTable().draw();
+                },
+            });
+        } else {
+            return false;
+        }
+    });
+
+    $("#holiday-pay-table").on("click", ".update", function () {
+        var holidayID = $(this).attr("id");
+
+        $.ajax({
+            url: "controller.php",
+            method: "GET",
+            data: {
+                holiday_id: holidayID,
+                action: "get_holiday_pay",
+            },
+            dataType: "json",
+            success: function (data) {
+                $("#update-holiday-pay-form").modal(
+                    {
+                        backdrop: "static",
+                        keyboard: false,
+                    },
+                    "show"
+                );
+                $("#update-holiday-pay-form #holiday_name").val(data[1]);
+                $("#update-holiday-pay-form #holiday_date").val(data[2]);
+                $("#update-holiday-pay-form #holiday_pay_percent").val(data[3]);
+            },
+        });
+    });
+
+    $("#updateHolidayPay").submit(function (event) {
+        event.preventDefault();
+        var Holiday_Data = {
+            holiday_name: $("#updateHolidayPay #holiday_name").val(),
+            holiday_date: $("#updateHolidayPay #holiday_date").val(),
+            holiday_pay_percent: $(
+                "#updateHolidayPay #holiday_pay_percent"
+            ).val(),
+        };
+        $.ajax({
+            type: "POST",
+            url: "controller.php?action=update_holiday_pay",
+            data: Holiday_Data,
+            success: function (data) {
+                $("#update-holiday-pay-form").modal("hide");
+                $("#updateHolidayPay")[0].reset();
+                $("#holiday-pay-table").DataTable().draw();
+            },
+        });
+    });
+
+    var dashboard = {
+        initDashboardPageCharts: function () {
+            dataDailySalesChart = {
+                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                series: [
+                    [12252, 100007, 752003, 152227, 211553, 105002, 210200],
+                    [212252, 620007, 700003, 202227, 201553, 405002, 310200],
+                ],
+            };
+
+            optionsDailySalesChart = {
+                lineSmooth: Chartist.Interpolation.cardinal({
+                    tension: 5,
+                }),
+                fullWidth: true,
+                low: 0,
+                showArea: true,
+                chartPadding: {
+                    top: 20,
+                    right: 25,
+                    bottom: 0,
+                    left: 25,
+                },
+            };
+
+            var DailyNetGrossPay = new Chartist.Line(
+                "#dailySalesChart",
+                dataDailySalesChart,
+                optionsDailySalesChart
+            );
+
+            dashboard.startAnimationForLineChart(DailyNetGrossPay);
+
+            var dataWebsiteViewsChart = {
+                labels: [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec",
+                ],
+                series: [
+                    [50, 20, 32, 56, 67, 3, 22, 11, 15, 9, 10, 30],
+                    [50, 20, 32, 56, 67, 3, 22, 11, 15, 9, 10, 30],
+                    [50, 20, 32, 56, 67, 3, 22, 11, 15, 9, 10, 30],
+                ],
+            };
+            var optionsWebsiteViewsChart = {
+                stackBars: true,
+                axisX: {
+                    showGrid: false,
+                },
+                chartPadding: {
+                    top: 20,
+                    right: 0,
+                    bottom: 0,
+                    left: -5,
+                },
+            };
+            var responsiveOptions = [
+                [
+                    "screen and (max-width: 640px)",
+                    {
+                        seriesBarDistance: 5,
+                        axisX: {
+                            labelInterpolationFnc: function (value) {
+                                return value[0];
+                            },
+                        },
+                    },
+                ],
+            ];
+            var AttendaceViewChart = Chartist.Bar(
+                "#websiteViewsChart",
+                dataWebsiteViewsChart,
+                optionsWebsiteViewsChart,
+                responsiveOptions
+            ).on("draw", function (data) {
+                if (data.type === "bar") {
+                    data.element.attr({
+                        style: "stroke-width: 20px",
+                    });
+                }
+            });
+
+            //start animation for the Emails Subscription Chart
+            dashboard.startAnimationForBarChart(AttendaceViewChart);
+        },
+
+        startAnimationForLineChart: function (chart) {
+            chart.on("draw", function (data) {
+                if (data.type === "line" || data.type === "area") {
+                    data.element.animate({
+                        d: {
+                            begin: 600,
+                            dur: 700,
+                            from: data.path
+                                .clone()
+                                .scale(1, 0)
+                                .translate(0, data.chartRect.height())
+                                .stringify(),
+                            to: data.path.clone().stringify(),
+                            easing: Chartist.Svg.Easing.easeOutQuint,
+                        },
+                    });
+                } else if (data.type === "point") {
+                    seq++;
+                    data.element.animate({
+                        opacity: {
+                            begin: seq * delays,
+                            dur: durations,
+                            from: 0,
+                            to: 1,
+                            easing: "ease",
+                        },
+                    });
+                }
+            });
+            seq = 0;
+        },
+
+        startAnimationForBarChart: function (chart) {
+            chart.on("draw", function (data) {
+                if (data.type === "bar") {
+                    seq2++;
+                    data.element.animate({
+                        opacity: {
+                            begin: seq2*delays2,
+                            dur: durations2,
+                            from: 0,
+                            to: 1,
+                            easing: "ease",
+                        },
+                    });
+                }
+            });
+            seq2 = 0;
+        },
+    };
+    dashboard.initDashboardPageCharts();
+
+    $(window).resize(function () {
+        dashboard.initSidebarsCheck();
+        // reset the seq for charts drawing animations
+        seq = seq2 = 0;
+        setTimeout(function () {
+            dashboard.initDashboardPageCharts();
+        }, 500);
+    });
 
     $("#remove-employees").on("click", function () {
         $("#display-employee").toggle();
