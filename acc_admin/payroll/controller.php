@@ -15,6 +15,24 @@ switch($action){
         Page::redir("../index.php");
         break;
 
+    case 'automaticAdd':
+        autoAddPayroll();
+        break;
+
+    case 'autoUpdate':
+        autoUpdatePayroll();
+        break;
+
+}
+
+function autoAddPayroll(){
+    Payroll::autoAdd();
+    return;
+}
+
+function autoUpdatePayroll(){
+    Payroll::autoUpdate();
+    return;
 }
 
 ?>

@@ -6,7 +6,7 @@ switch ($view) {
   
   	default :
 	    $page_title = "Payroll";
-		$page_content    = 'payrollreport.php';
+		$page_content    = 'payroll.php';
 
 	}
 

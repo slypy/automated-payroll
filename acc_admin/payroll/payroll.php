@@ -1,12 +1,23 @@
+<div class="row" style="margin-top: -40px">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body"></div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
 
+        </div>
+    </div>
+</div>
 
-<div class="row" style="margin-top: -40px;">
+<div class="row" style="margin-top: 40px;">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
                 <div class="header-title">
                     <h3>
-                        PayRoll Summary
+                        PayRoll
                     </h3>
                     <h4>Week 1</h4>
                 </div>

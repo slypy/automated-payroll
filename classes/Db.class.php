@@ -387,7 +387,7 @@ class Db extends mysqli implements Config{
 	public static function num($query){
 		return $query->fetch(PDO::FETCH_NUM);
 	}
-
+	
 	public static function getCount($table, $where, $whereValue, $order, $limit){
 		return self::fetchAll($table, $where, $whereValue, $order, $limit)->rowCount();
 	}

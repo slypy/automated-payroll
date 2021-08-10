@@ -3,6 +3,7 @@
         <span class="hms"></span>
         <span class="ampm"></span>
         <br>
+        <br>
         <span class="date"></span>
     </div>
     <div style="margin-bottom: -70px; display:flex; flex-direction: column;">
@@ -14,19 +15,20 @@
         var dateInfo = new Date();
         dateInfo.toLocaleString('en-US', {timeZone: 'Asia/Manila'});
         /* time */
-        var hr,
+        var hrs,
             _min = (dateInfo.getMinutes() < 10) ? "0" + dateInfo.getMinutes() : dateInfo.getMinutes(),
             sec = (dateInfo.getSeconds() < 10) ? "0" + dateInfo.getSeconds() : dateInfo.getSeconds(),
             ampm = (dateInfo.getHours() >= 12) ? "PM" : "AM";
         // replace 0 with 12 at midnight, subtract 12 from hour if 13–23
         if (dateInfo.getHours() == 0) {
-            hr = 12;
+            hrs = 12;
         } else if (dateInfo.getHours() > 12) {
-            hr = dateInfo.getHours() - 12;
+            converted_hrs = dateInfo.getHours() - 12;
+            hrs = (converted_hrs < 10) ? "0" + converted_hrs : dateInfo.getHours() - 12;
         } else {
-            hr = dateInfo.getHours();
+            hrs = (dateInfo.getHours() < 10) ? "0" + dateInfo.getHours() : dateInfo.getHours();
         }
-        var currentTime = hr + ":" + _min + ":" + sec;
+        var currentTime = hrs + ":" + _min + ":" + sec;
         // print time
         document.getElementsByClassName("hms")[0].innerHTML = currentTime;
         document.getElementsByClassName("ampm")[0].innerHTML = ampm;
