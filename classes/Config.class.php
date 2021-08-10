@@ -23,6 +23,5 @@ interface Config{
 	const MySQLUser = "root";
 	const MySQLPass = "SlyTheGreat";
     const MySQLPort = 3306;
-	
 }
 ?>
