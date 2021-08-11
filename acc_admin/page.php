@@ -107,6 +107,7 @@
                             $employee_url = $web_root . 'acc_admin/employee/';
                             $employee_dtr_url = $web_root.'acc_admin/dtr/';
                             $staffcash_advance_url = $web_root.'acc_admin/EmployeeCredits/';
+                            $payroll_url = $web_root.'acc_admin/payroll/';
                         
                             if (strval($url) == strval($employee_url)) {
                                 echo '
@@ -137,6 +138,17 @@
                                 </li>
                                 <li class="nav-item" style="margin-left: 20px;">
                                     <a href="' . $web_root . 'acc_admin/dtr/index.php?page=employee-dtr" class="btn btn-warning btn-sm"> <i class="material-icons">update</i> Search or Update employee\'s dtr</a>
+                                </li>';
+                            } else if (strval($url == strval($payroll_url))){
+                                echo '
+                                <li class="nav-item" style="margin-left: 20px;">
+                                    <button data-target="#add-dtr-form" data-toggle="modal" data-backdrop="static" class="btn btn-warning btn-sm"> <i class="material-icons">print</i> Auto Print</a>
+                                </li>
+                                <li class="nav-item" style="margin-left: 20px;">
+                                    <button data-target="#add-dtr-form" data-toggle="modal" data-backdrop="static" class="btn btn-warning btn-sm"> <i class="material-icons">money</i> Payslip</a>
+                                </li>
+                                <li class="nav-item" style="margin-left: 20px;">
+                                    <a href="' . $web_root . 'acc_admin/dtr/index.php?page=employee-dtr" class="btn btn-warning btn-sm"> <i class="material-icons">timeline</i> Payroll Summary</a>
                                 </li>';
                             } else {
                                 # do nothing

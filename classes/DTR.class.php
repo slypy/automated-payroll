@@ -299,16 +299,16 @@ class DTR{
         $list_data = array();
         while($tbl_DTR = Db::assoc($query)){
             $shifting_query = Db::fetch('tbl_shifting_hours s JOIN tbl_employees e ON s.shifting_type_name = e.shifting_type_name', '', 'employee_number = ?', $tbl_DTR['employee_id'], '', '', '');
-            $result = Db::num($shifting_query);
+            $result = Db::assoc($shifting_query);
 
             $dataRow = array();
             $dataRow[] = date('M d, Y', strtotime(date($tbl_DTR['start_date'])));
             $dataRow[] = $tbl_DTR['employee_id'];
             $dataRow[] = $tbl_DTR['employee_name'];
-            $dataRow[] = explode(' ', $result[1])[0];
+            $dataRow[] = explode(' ', $result['shifting_type_name'])[0];
             $dataRow[] = (!empty($tbl_DTR['time_in'])) ? date('h:i a', strtotime($tbl_DTR['time_in'])) : '';
             $dataRow[] = (!empty($tbl_DTR['time_out'])) ? date('h:i a', strtotime($tbl_DTR['time_out'])) : '';
-            $dataRow[] = $result[5];
+            $dataRow[] = $result['total_work_hours'];
             $dataRow[] = (!empty($tbl_DTR['over_time_in'])) ? date('h:i a', strtotime($tbl_DTR['over_time_in'])) : '';
             $dataRow[] = (!empty($tbl_DTR['over_time_out'])) ? date('h:i a', strtotime($tbl_DTR['over_time_out'])) : '';
             $dataRow[] = $tbl_DTR['total_work_hours'];

@@ -1,17 +1,14 @@
 <div class="row" style="margin-top: -40px">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="card">
-            <div class="card-body"></div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card">
-
+            <div class="card-body">
+                
+            </div>
         </div>
     </div>
 </div>
 
-<div class="row" style="margin-top: 40px;">
+<div class="row" style="margin-top: 10px;">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
