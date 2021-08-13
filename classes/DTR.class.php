@@ -48,12 +48,12 @@ class DTR{
     }
 
     public static function addRecordWithScanner(){
-        $tbl_overtime_query = Db::fetch('tbl_overtime', '', '','', '', '', '');
+        $tbl_overtime_query = Db::fetch('tbl_overtime', 'max_working_hours', '','', '', '', '');
         $tbl_overtime = Db::assoc($tbl_overtime_query);
 
         if(isset($_POST['card_id'])){
             $card_id        = $_POST['card_id'];
-            $tbl_employees_query = Db::fetch('tbl_employees', '', 'card_id = ?', $card_id, '', '', '');
+            $tbl_employees_query = Db::fetch('tbl_employees', 'employee_number, first_name, last_name', 'card_id = ?', $card_id, '', '', '');
             $tbl_employees = Db::assoc($tbl_employees_query);
 
             $employee_id        = $tbl_employees['employee_number'];
@@ -125,12 +125,8 @@ class DTR{
                 }
             }
 
-            $tbl_dtr_query = Db::fetch(self::$tbl_dtr, '', 'employee_id = ? AND start_date = ?', array($employee_id, $date), '', '', '');
+            $tbl_dtr_query = Db::fetch(self::$tbl_dtr, 'id', 'employee_id = ? AND start_date = ?', array($employee_id, $date), '', '', '');
  
-
-            $tbl_shifting_hours_query = Db::fetch('tbl_shifting_hours s JOIN tbl_employees e ON s.shifting_type_name = e.shifting_type_name', '', 'employee_number = ?', $employee_id, '', '', '');
-            $tbl_shifting_hours = Db::assoc($tbl_shifting_hours_query);
-
             if(Db::count($tbl_dtr_query) == 0){
                 $tbl_shifting_hours_query = Db::fetch('tbl_shifting_hours s JOIN tbl_employees e ON s.shifting_type_name = e.shifting_type_name', '', 'employee_number = ?', $employee_id, '', '', '');
                 $tbl_shifting_hours = Db::assoc($tbl_shifting_hours_query);

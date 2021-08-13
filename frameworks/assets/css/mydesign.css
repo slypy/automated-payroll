@@ -24,12 +24,12 @@ h6,
 }
 
 table thead {
-	background-color: rgb(243, 243, 243);
+    background-color: rgb(243, 243, 243);
 }
 
-#payroll-report-table th{
-	border-top: 1px solid rgb(177, 177, 177);
-	border-bottom: 1px solid rgb(177, 177, 177);
+#payroll-report-table th {
+    border-top: 1px solid rgb(177, 177, 177);
+    border-bottom: 1px solid rgb(177, 177, 177);
 }
 
 @font-face {
@@ -58,6 +58,227 @@ table thead {
 
 img {
     background-repeat: no-repeat;
+}
+
+#payroll-switch {
+    position: relative;
+}
+
+#payroll-switch input {
+    position: relative;
+    height: 30px;
+    width: 55px;
+    background-color: #dddddd;
+    border-radius: 80px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    -webkit-appearance: none;
+    outline: none;
+    transition: all 0.5s ease-in-out;
+}
+
+#payroll-switch input:checked {
+    background-color: #8bc435;
+}
+
+#payroll-switch input::before {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    transform: scale(0.9);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+#payroll-switch input:checked::before {
+    left: 25px;
+}
+
+.mouth {
+    width: 7px;
+    height: 4.5px;
+    border-radius: 5px 5px 0 0;
+    background-color: black;
+    position: absolute;
+    top: 19px;
+    left: 12px;
+    transition: all 0.3s ease;
+}
+
+.mouth.happy {
+    left: 37px;
+    border-radius: 0 0 5px 5px;
+}
+
+.eye1,
+.eye2 {
+    height: 1px;
+    width: 5px;
+    background-color: black;
+    position: absolute;
+    top: 13px;
+    left: 5.5px;
+    border-radius: 1px;
+    transition: all 0.3s ease;
+    transform: rotate(20deg);
+}
+
+.eye1::after,
+.eye2::after {
+    content: "";
+    height: 1px;
+    width: 5px;
+    background-color: black;
+    position: absolute;
+    top: 2px;
+    left: 1px;
+    border-radius: 1px;
+    transition: all 0.3s ease;
+    transform: rotate(-40deg);
+}
+
+.eye2 {
+    left: 20px;
+    transform: rotate(-20deg);
+}
+
+.eye2::after {
+    transform: rotate(40deg);
+    left: -1px;
+}
+
+.eye1.happy,
+.eye2.happy {
+    height: 4px;
+    width: 4px;
+    border-radius: 50%;
+    left: 31px;
+}
+
+.eye2.happy {
+    left: 45px;
+}
+
+.eye1.happy::after,
+.eye2.happy::after {
+    opacity: 0;
+}
+
+.tounge {
+    height: 2px;
+    width: 4.5px;
+    border-radius: 100%;
+    position: absolute;
+    top: 2.5px;
+    left: 1.5px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.tounge.happy {
+    background-color: red;
+    opacity: 1;
+}
+
+
+/* Form Progress */
+.payroll-progress {
+    margin-left: 50px;
+    width: 100vw;
+    text-align: center;
+    align-items: center;
+}
+
+
+.payroll-progress .circle {
+    position: relative;
+    display: inline-block;
+    top: 11px;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    border-radius: 50px;
+    border: 1px solid #d5d5da;
+    align-items: center;
+}
+.payroll-progress .label {
+    position: relative;
+    display: flex;
+}
+
+.payroll-progress .bar {
+    position: relative;
+    width: 10%;
+    height: 4px;
+    top: -15px;
+    margin-left: -5px;
+    margin-right: -5px; 
+    border-left: none;
+    border-right: none;
+    display: inline-block;
+    background: #fff; 
+    border-top: 1px solid #d5d5da;
+    border-bottom: 1px solid #d5d5da;
+    z-index: 1;
+}
+
+.payroll-progress .label {
+    position: relative;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    top: 0px;
+    border-radius: 50px;
+    color: #b5b5ba;
+    font-size: 0.9em;
+}
+
+.payroll-progress .circle .title {
+    display: inline-block;
+    color: #b5b5ba;
+    font-size: 1em;
+    width: auto;
+    margin-left: -2px;
+}
+
+/* Done / Active */
+.payroll-progress .bar.done,
+.payroll-progress .circle.done {
+    background: #eee;
+    border-radius: 50px;
+}
+.payroll-progress .bar.active {
+    background: linear-gradient(to right, #eee 40%, #fff 60%);
+}
+.payroll-progress .circle.done .label {
+    position: relative;
+    top: 1.2px;
+    border-radius: 50px;
+    color: #fff;
+    background: #8bc435;
+    width: 18px;
+    height: 18px;
+    /* box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2); */
+}
+.payroll-progress .circle.done .title {
+    color: #444;
+}
+.payroll-progress .circle.active .label {
+    position: relative;
+    top: 1.2px;
+    color: #fff;
+    background: #0c95be;
+    border-radius: 50px;
+    width: 18px;
+    height: 18px;
+    /* box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2); */
+}
+.payroll-progress .circle.active .title {
+    color: #0c95be;
 }
 
 .material-icons {

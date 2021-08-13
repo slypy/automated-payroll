@@ -32,17 +32,17 @@ class Account{
     }
 
     public static function login($username, $password){
-        self::$query = Db::fetch("tbl_accounts", "","username = ? AND password = ?", array($username, $password), "", "", "");
+        self::$query = Db::fetch("tbl_accounts", "id, firstname, lastname,username, role","username = ? AND password = ?", array($username, $password), "", "", "");
 
         @session_start();
 
         if(Db::count(self::$query)){
-            $idToken = Db::num(self::$query);
-            self::$id = $idToken[0];
-            $role = $idToken[5];
+            $idToken = Db::assoc(self::$query);
+            self::$id = $idToken['id'];
+            $role = $idToken['role'];
 
             setcookie("usr", self::$id, time()+(60*60*24*7*30),"/", "","",TRUE);
-            $_SESSION['username'] = self::$id = $idToken[3];
+            setcookie("username", $idToken['username'], time()+(60*60*24*7*30),"/", "","",TRUE);
 
             switch($role){
                 case "admin":

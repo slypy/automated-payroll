@@ -132,7 +132,7 @@
                 <div class="modal-footer" style="height: 75px">
                     <input id="dtr_id" type="hidden" name="dtr_id">
                     <div class="material-textfield" style="margin-right: 0px;">
-                        <input id="acc_username" placeholder=" " name="acc_username" type="text" required style="width: 200px;" readonly value="<?php echo $_SESSION['username']; ?>">
+                        <input id="acc_username" placeholder=" " name="acc_username" type="text" required style="width: 200px;" readonly value="<?php echo $_COOKIE['username']; ?>">
                         <label>Edited By</label>
                     </div>
                     <div class="material-textfield" style="margin-right: 0px;">

@@ -11,6 +11,7 @@ switch($action){
         // destroy all sessions and cookies
         @session_destroy(); 
         setcookie("usr", "" ,time()-(60*60*24*7*30),"/", "","",TRUE);
+        setcookie("username", "" ,time()-(60*60*24*7*30),"/", "","",TRUE);
         Page::redir("../index.php");
         break;
 

@@ -215,7 +215,123 @@ $(document).ready(function () {
         return age;
     }
     
+    //
+    // Pipelining function for DataTables. To be used to the `ajax` option of DataTables
+    //
+    $.fn.dataTable.pipeline = function ( opts ) {
+        // Configuration options
+        var conf = $.extend( {
+            pages: 5,     // number of pages to cache
+            url: '',      // script url
+            data: null,   // function or object with parameters to send to the server
+                          // matching how `ajax.data` works in DataTables
+            method: 'GET' // Ajax HTTP method
+        }, opts );
+    
+        // Private variables for storing the cache
+        var cacheLower = -1;
+        var cacheUpper = null;
+        var cacheLastRequest = null;
+        var cacheLastJson = null;
+    
+        return function ( request, drawCallback, settings ) {
+            var ajax          = false;
+            var requestStart  = request.start;
+            var drawStart     = request.start;
+            var requestLength = request.length;
+            var requestEnd    = requestStart + requestLength;
+            
+            if ( settings.clearCache ) {
+                // API requested that the cache be cleared
+                ajax = true;
+                settings.clearCache = false;
+            }
+            else if ( cacheLower < 0 || requestStart < cacheLower || requestEnd > cacheUpper ) {
+                // outside cached data - need to make a request
+                ajax = true;
+            }
+            else if ( JSON.stringify( request.order )   !== JSON.stringify( cacheLastRequest.order ) ||
+                    JSON.stringify( request.columns ) !== JSON.stringify( cacheLastRequest.columns ) ||
+                    JSON.stringify( request.search )  !== JSON.stringify( cacheLastRequest.search )
+            ) {
+                // properties changed (ordering, columns, searching)
+                ajax = true;
+            }
+            
+            // Store the request for checking next time around
+            cacheLastRequest = $.extend( true, {}, request );
+    
+            if ( ajax ) {
+                // Need data from the server
+                if ( requestStart < cacheLower ) {
+                    requestStart = requestStart - (requestLength*(conf.pages-1));
+    
+                    if ( requestStart < 0 ) {
+                        requestStart = 0;
+                    }
+                }
+                
+                cacheLower = requestStart;
+                cacheUpper = requestStart + (requestLength * conf.pages);
+    
+                request.start = requestStart;
+                request.length = requestLength*conf.pages;
+    
+                // Provide the same `data` options as DataTables.
+                if ( typeof conf.data === 'function' ) {
+                    // As a function it is executed with the data object as an arg
+                    // for manipulation. If an object is returned, it is used as the
+                    // data object to submit
+                    var d = conf.data( request );
+                    if ( d ) {
+                        $.extend( request, d );
+                    }
+                }
+                else if ( $.isPlainObject( conf.data ) ) {
+                    // As an object, the data given extends the default
+                    $.extend( request, conf.data );
+                }
+    
+                return $.ajax( {
+                    "type":     conf.method,
+                    "url":      conf.url,
+                    "data":     request,
+                    "dataType": "json",
+                    "cache":    false,
+                    "success":  function ( json ) {
+                        cacheLastJson = $.extend(true, {}, json);
+    
+                        if ( cacheLower != drawStart ) {
+                            json.data.splice( 0, drawStart-cacheLower );
+                        }
+                        if ( requestLength >= -1 ) {
+                            json.data.splice( requestLength, json.data.length );
+                        }
+                        
+                        drawCallback( json );
+                    }
+                } );
+            }
+            else {
+                json = $.extend( true, {}, cacheLastJson );
+                json.draw = request.draw; // Update the echo for each response
+                json.data.splice( 0, requestStart-cacheLower );
+                json.data.splice( requestLength, json.data.length );
+    
+                drawCallback(json);
+            }
+        }
+    };
+    
+    // Register an API method that will empty the pipelined data, forcing an Ajax
+    // fetch on the next draw (i.e. `table.clearPipeline().draw()`)
+    $.fn.dataTable.Api.register( 'clearPipeline()', function () {
+        return this.iterator( 'table', function ( settings ) {
+            settings.clearCache = true;
+        });
+    });
 
+    $.ajaxSetup({ cache: true });
     
     $('#employee-dtr-table').DataTable({
         serverSide: true,
@@ -252,7 +368,7 @@ $(document).ready(function () {
 
     setInterval(() => {
         $('#employee-dtr-table').DataTable().draw();
-    },5000);
+    },1000);
 
     $('#employee-dtr-record-table').DataTable({
         serverSide: true,
@@ -271,7 +387,7 @@ $(document).ready(function () {
             },
             dataType: 'json',
             complete: (data) => {
-                $('#EmployeeName').text(data['responseJSON'].data[0][2])
+                $('#EmployeeName').text(data['responseJSON'].data[0][2]);
             }
         },
         retrieve: true,
@@ -480,121 +596,110 @@ $(document).ready(function () {
         }
     });
 
-    //
-    // Pipelining function for DataTables. To be used to the `ajax` option of DataTables
-    //
-    $.fn.dataTable.pipeline = function ( opts ) {
-        // Configuration options
-        var conf = $.extend( {
-            pages: 5,     // number of pages to cache
-            url: '',      // script url
-            data: null,   // function or object with parameters to send to the server
-                          // matching how `ajax.data` works in DataTables
-            method: 'GET' // Ajax HTTP method
-        }, opts );
-    
-        // Private variables for storing the cache
-        var cacheLower = -1;
-        var cacheUpper = null;
-        var cacheLastRequest = null;
-        var cacheLastJson = null;
-    
-        return function ( request, drawCallback, settings ) {
-            var ajax          = false;
-            var requestStart  = request.start;
-            var drawStart     = request.start;
-            var requestLength = request.length;
-            var requestEnd    = requestStart + requestLength;
+    const mouth = document.querySelector(".mouth");
+    const leftEye = document.querySelector(".eye1");
+    const rightEye = document.querySelector(".eye2");
+    const switchBtn = document.querySelector(".switchBtn");
+    const tounge = document.querySelector(".tounge");
+    const allElemnts = [mouth, leftEye, rightEye, switchBtn, tounge];
+
+    $('.switchBtn').on('click', function(){
+        allElemnts.forEach(element => {
+            element.classList.toggle("happy");
+        });
+        if($(this).prop('checked')){
+            $.ajax({
+
+            });
+        } else {
+            $.ajax({
+
+            });
+        }
+    })
+
+    function TimeNow() {
+        var dateInfo = new Date();
+        dateInfo.toLocaleString('en-US', {timeZone: 'Asia/Manila'});
+        /* time */
+        var hrs,
+            _min = (dateInfo.getMinutes() < 10) ? "0" + dateInfo.getMinutes() : dateInfo.getMinutes(),
+            sec = (dateInfo.getSeconds() < 10) ? "0" + dateInfo.getSeconds() : dateInfo.getSeconds(),
+            ampm = (dateInfo.getHours() >= 12) ? "PM" : "AM";
+        // replace 0 with 12 at midnight, subtract 12 from hour if 13–23
+        if (dateInfo.getHours() == 0) {
+            hrs = 12;
+        } else if (dateInfo.getHours() > 12) {
+            converted_hrs = dateInfo.getHours() - 12;
+            hrs = (converted_hrs < 10) ? "0" + converted_hrs : dateInfo.getHours() - 12;
+        } else {
+            hrs = (dateInfo.getHours() < 10) ? "0" + dateInfo.getHours() : dateInfo.getHours();
+        }
+        return hrs + ":" + _min + ":" + sec  + " " + ampm;
+    }
+    var i = 1;
+    $('.payroll-progress .circle').removeClass().addClass('circle');
+    $('.payroll-progress .bar').removeClass().addClass('bar');
+
+    setInterval(function() {
+        if(TimeNow() === '04:03:00 AM'){
+            $('.payroll-progress .circle:nth-of-type(' + i + ')').addClass('active');
+            $('.payroll-progress .circle:nth-of-type(' + (i-1) + ')').removeClass('active').addClass('done');
+            $('.payroll-progress .circle:nth-of-type(' + (i-1) + ') .label').html('&#10003;');
+            $('.payroll-progress .bar:nth-of-type(' + (i-1) + ')').addClass('active');
+            $('.payroll-progress .bar:nth-of-type(' + (i-2) + ')').removeClass('active').addClass('done');
+            i++;
             
-            if ( settings.clearCache ) {
-                // API requested that the cache be cleared
-                ajax = true;
-                settings.clearCache = false;
+            if (i==0) {
+                $('.payroll-progress .bar').removeClass().addClass('bar');
+                $('.payroll-progress div.circle').removeClass().addClass('circle');
+                i = 1;
             }
-            else if ( cacheLower < 0 || requestStart < cacheLower || requestEnd > cacheUpper ) {
-                // outside cached data - need to make a request
-                ajax = true;
-            }
-            else if ( JSON.stringify( request.order )   !== JSON.stringify( cacheLastRequest.order ) ||
-                    JSON.stringify( request.columns ) !== JSON.stringify( cacheLastRequest.columns ) ||
-                    JSON.stringify( request.search )  !== JSON.stringify( cacheLastRequest.search )
-            ) {
-                // properties changed (ordering, columns, searching)
-                ajax = true;
+            if(i >= 9){
+                i = 1;
+                $('.payroll-progress .circle').each(function(){
+                    $(this).removeClass('active').removeClass('done');
+                });
+                $('.payroll-progress .bar').each(function(){
+                    $(this).removeClass('active').removeClass('done');
+                })
+                $('.payroll-progress .label').each(function(){
+                    $(this).html(i);
+                    i++;
+                })
+                i = 0;
             }
             
-            // Store the request for checking next time around
-            cacheLastRequest = $.extend( true, {}, request );
-    
-            if ( ajax ) {
-                // Need data from the server
-                if ( requestStart < cacheLower ) {
-                    requestStart = requestStart - (requestLength*(conf.pages-1));
-    
-                    if ( requestStart < 0 ) {
-                        requestStart = 0;
-                    }
-                }
-                
-                cacheLower = requestStart;
-                cacheUpper = requestStart + (requestLength * conf.pages);
-    
-                request.start = requestStart;
-                request.length = requestLength*conf.pages;
-    
-                // Provide the same `data` options as DataTables.
-                if ( typeof conf.data === 'function' ) {
-                    // As a function it is executed with the data object as an arg
-                    // for manipulation. If an object is returned, it is used as the
-                    // data object to submit
-                    var d = conf.data( request );
-                    if ( d ) {
-                        $.extend( request, d );
-                    }
-                }
-                else if ( $.isPlainObject( conf.data ) ) {
-                    // As an object, the data given extends the default
-                    $.extend( request, conf.data );
-                }
-    
-                return $.ajax( {
-                    "type":     conf.method,
-                    "url":      conf.url,
-                    "data":     request,
-                    "dataType": "json",
-                    "cache":    false,
-                    "success":  function ( json ) {
-                        cacheLastJson = $.extend(true, {}, json);
-    
-                        if ( cacheLower != drawStart ) {
-                            json.data.splice( 0, drawStart-cacheLower );
-                        }
-                        if ( requestLength >= -1 ) {
-                            json.data.splice( requestLength, json.data.length );
-                        }
-                        
-                        drawCallback( json );
-                    }
-                } );
+        }
+        if(TimeNow() === '04:03:10 AM'){
+            $('.payroll-progress .circle:nth-of-type(' + i + ')').addClass('active');
+            $('.payroll-progress .circle:nth-of-type(' + (i-1) + ')').removeClass('active').addClass('done');
+            $('.payroll-progress .circle:nth-of-type(' + (i-1) + ') .label').html('&#10003;');
+            $('.payroll-progress .bar:nth-of-type(' + (i-1) + ')').addClass('active');
+            $('.payroll-progress .bar:nth-of-type(' + (i-2) + ')').removeClass('active').addClass('done');
+            i++;
+            
+            if (i==0) {
+                $('.payroll-progress .bar').removeClass().addClass('bar');
+                $('.payroll-progress div.circle').removeClass().addClass('circle');
+                i = 1;
             }
-            else {
-                json = $.extend( true, {}, cacheLastJson );
-                json.draw = request.draw; // Update the echo for each response
-                json.data.splice( 0, requestStart-cacheLower );
-                json.data.splice( requestLength, json.data.length );
-    
-                drawCallback(json);
+            if(i >= 9){
+                i = 1;
+                $('.payroll-progress .circle').each(function(){
+                    $(this).removeClass('active').removeClass('done');
+                });
+                $('.payroll-progress .bar').each(function(){
+                    $(this).removeClass('active').removeClass('done');
+                })
+                $('.payroll-progress .label').each(function(){
+                    $(this).html(i);
+                    i++;
+                })
+                i = 0;
             }
         }
-    };
-    
-    // Register an API method that will empty the pipelined data, forcing an Ajax
-    // fetch on the next draw (i.e. `table.clearPipeline().draw()`)
-    $.fn.dataTable.Api.register( 'clearPipeline()', function () {
-        return this.iterator( 'table', function ( settings ) {
-            settings.clearCache = true;
-        } );
-    } );
+    }, 1000); //86400000
 
     function checkedBoxRemove(){
         let length=$('.checked_remove_employee').length,
@@ -628,7 +733,7 @@ $(document).ready(function () {
     // Data Table for Active employees
     $("#active-employee-table").DataTable({
         serverSide: true,
-        ajax: $.fn.dataTable.pipeline({
+        ajax: {
             url: 'controller.php',
             type: 'GET',
             data: (d) => {
@@ -641,10 +746,7 @@ $(document).ready(function () {
                 }
             },
             dataType: "json",
-            pages: (d) => {
-                return Math.ceil(d.length / 10);
-            }
-        }),
+        },
         retrieve: true,
         dom: "ftipr",
         bAutoWidth: false,
@@ -1207,7 +1309,7 @@ $(document).ready(function () {
                 $("#shifting_type").append(data);
             },
         });
-    });
+    }).trigger('show.bs.modal');
 
     $('#check_all').change(function(){
         $('.checked_remove_employee').prop('checked', $(this).prop('checked'));
@@ -1235,7 +1337,7 @@ $(document).ready(function () {
                 $("#updateEmployee #shifting_type").append(data);
             },
         });
-    });
+    }).trigger('show.bs.modal');
 
     $("#update-employee-form").on("shown.bs.modal", function () {
         if ($("#updateEmployee #worker_type").val() === "Regular" || $("#updateEmployee #worker_type").val() === "Contractual") {
@@ -1443,7 +1545,7 @@ $(document).ready(function () {
                 $("#employeeInfo #shifting_type").append(data);
             },
         });
-    })
+    }).trigger('show.bs.modal');
 
     $("#info-employee-form").on("shown.bs.modal", function () {
         if ($("#employeeInfo #worker_type").val() === "Regular" || $("#employeeInfo #worker_type").val() === "Contractual") {

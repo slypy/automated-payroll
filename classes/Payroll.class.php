@@ -3,7 +3,6 @@
 class Payroll {
     private static $tbl_payroll = 'tbl_payroll';
     private static $tbl_dtr = 'tbl_dtr';
-    
     private static $tbl_positions = 'tbl_positions';
     private static $tbl_employees = 'tbl_employees';
     private static $tbl_employee_misc = 'tbl_employee_misc';
@@ -34,6 +33,16 @@ class Payroll {
     private function checkHoliday(){
         
         return; //returns a value to be added if there is a work day that is holiday
+    }
+
+    private function calcNetPay(){
+
+        return; //returns total Deductions
+    }
+
+    private function calcGrossPay(){
+
+        return; //returns the total of subract(initial salary - NetPay)
     }
 
 

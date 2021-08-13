@@ -11,6 +11,7 @@ switch($action){
         //case logout destroy all sessions and cookies so that the login session will not having error
         @session_destroy(); 
         setcookie("usr", "" ,time()-(60*60*24*7*30),"/", "","",TRUE);
+        setcookie("username", "" ,time()-(60*60*24*7*30),"/", "","",TRUE);
         Page::redir("../index.php");
         break;
 
