@@ -16,7 +16,7 @@ switch($action){
         Page::redir("../index.php");
         break;
 
-    case 'automaticAdd':
+    case 'startCalculatePayroll':
         autoAddPayroll();
         break;
 
@@ -24,6 +24,13 @@ switch($action){
         autoUpdatePayroll();
         break;
 
+    case 'getPayrollSettings':
+        getPayrollSettings();
+        break;
+    
+    case 'setPayrollSettings':
+        setPayrollSettings();
+        break;
 }
 
 function autoAddPayroll(){
@@ -32,7 +39,19 @@ function autoAddPayroll(){
 }
 
 function autoUpdatePayroll(){
-    Payroll::autoUpdate();
+   
+    return;
+}
+
+function getPayrollSettings(){
+    $json_data = file_get_contents('settings.json');
+    Payroll::getPayrollSettings($json_data);
+    return;
+}
+
+function setPayrollSettings(){
+    $json_data = file_get_contents('settings.json');
+    Payroll::setPayrollSettings($json_data);
     return;
 }
 

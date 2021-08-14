@@ -405,6 +405,8 @@ $(document).ready(function () {
         }]
     });
 
+    
+
     $('#search_data').keyup(function(){
         $('#employee-dtr-record-table').DataTable().search($(this).val()).draw();
     });
@@ -576,7 +578,7 @@ $(document).ready(function () {
         searching: true,
         bFilter: true,
         pageLength: 15,
-        drawCallback: function(settings){
+        drawCallback: function(){
             var api = this.api(), data;
 
             var floatval = function(i){
@@ -596,6 +598,26 @@ $(document).ready(function () {
         }
     });
 
+
+    $.ajax({
+        url: 'controller.php',
+        type: 'GET',
+        data: {
+            action: 'getPayrollSettings'
+        },
+        dataType: 'json',
+        success: (data) => {
+            $('#payroll-type').val(data[0].payroll_type);
+            $('#payroll-day').val(data[0].payroll_day);
+            $('.switchBtn').prop('checked', JSON.parse(data[0].payroll_switch));
+            if($('.switchBtn').prop('checked') == true){
+                allElemnts.forEach(element => {
+                    element.classList.toggle("happy");
+                });
+            }
+        }
+    });
+
     const mouth = document.querySelector(".mouth");
     const leftEye = document.querySelector(".eye1");
     const rightEye = document.querySelector(".eye2");
@@ -609,15 +631,44 @@ $(document).ready(function () {
         });
         if($(this).prop('checked')){
             $.ajax({
-
+                url: 'controller.php',
+                type: 'GET',
+                data: {
+                    action: 'setPayrollSettings',
+                    payroll_type: $('#payroll-type').val(),
+                    payroll_day: $('#payroll-day').val(),
+                    payroll_switch: $(this).prop('checked')
+                },
+                dataType: 'json',
+                success: () => {
+                    $.ajax({
+                        url: 'controller.php',
+                        type: 'GET',
+                        data: {
+                            action: 'startCalculatePayroll'
+                        },
+                    })
+                }
             });
         } else {
             $.ajax({
-
+                url: 'controller.php',
+                type: 'GET',
+                data: {
+                    action: 'setPayrollSettings',
+                    payroll_type: $('#payroll-type').val(),
+                    payroll_day: $('#payroll-day').val(),
+                    payroll_switch: false
+                }
             });
+            // alert('you cant set the date');
+            // $(this).prop('checked', true);
+            // allElemnts.forEach(element => {
+            //     element.classList.toggle("happy");
+            // });
         }
-    })
-
+    });
+    
     function TimeNow() {
         var dateInfo = new Date();
         dateInfo.toLocaleString('en-US', {timeZone: 'Asia/Manila'});

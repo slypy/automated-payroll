@@ -6,15 +6,17 @@
                     <div style="display: flex; align-items: center;">
                         <div class="select">
                             <select id="payroll-type" class="select-text" name="payroll-type" required>
-                                <option value="weekly" selected>Weekly</option>
+                                <option value="" selected></option>
+                                <option value="weekly">Weekly</option>
                                 <option value="15th">15th - 30th</option>
                                 <option value="monthly">Monthly</option>
                             </select>
                             <label class="select-label">Payroll Type</label>
                         </div>
                         <div class="select" style="margin-left: 20px;">
-                            <select id="payroll-type" class="select-text" name="payroll-type" required>
-                                <option value="monday" selected>Monday</option>
+                            <select id="payroll-day" class="select-text" name="payroll-day" required>
+                                <option value="" selected></option>
+                                <option value="monday">Monday</option>
                                 <option value="tuesday">Tuesday</option>
                                 <option value="wednesday">Wednesday</option>
                                 <option value="thursday">Thursday</option>
@@ -26,7 +28,7 @@
                         </div>
 
                         <div id="payroll-switch" style="top: 3px; left: 15px;">
-                            <input type="checkbox" id="switch" class="switchBtn" />
+                            <input type="checkbox" id="switch" class="switchBtn" name="payroll-switch"/>
                             <div class="mouth">
                                 <div class="tounge"></div>
                             </div>

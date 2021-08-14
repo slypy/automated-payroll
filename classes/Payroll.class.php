@@ -48,16 +48,28 @@ class Payroll {
 
     public static function autoAdd(){
         $dtr_query = Db::fetch(self::$tbl_dtr, 'start_date', 'start_date = ?', '', '', '', '');
-
-        $listData = array();
-        while($tbl_DTR = Db::assoc($dtr_query)){
-            $listData[] = $tbl_DTR['start_date'];
-        }
-
-        print_r($listData);
     }
 
-    public static function autoUpdate(){
-        
+    public static function getPayrollSettings($data){
+        $settings = json_decode($data);
+        echo json_encode($settings);
+    }
+
+    public static function setPayrollSettings($data){
+        if(isset($_GET['payroll_switch'])){
+            $ptype = $_GET['payroll_type'];
+            $pday  = $_GET['payroll_day'];
+            $enabled = $_GET['payroll_switch'];
+            $settings = json_decode($data);
+
+            foreach($settings as $key => $value){
+                $value->payroll_type = $ptype;
+                $value->payroll_day = $pday;
+                $value->payroll_switch = $enabled;
+            }
+
+            $updateSettings = json_encode($settings);
+            file_put_contents('settings.json', $updateSettings);
+        }
     }
 }
