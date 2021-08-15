@@ -35,42 +35,84 @@ class Payroll {
         return; //returns a value to be added if there is a work day that is holiday
     }
 
-    private function calcNetPay(){
-
-        return; //returns total Deductions
+    private static function calcGrossPay($total_worked_hours, $salary){
+        return doubleval(floatval($total_worked_hours) * floatval($salary));
     }
 
-    private function calcGrossPay(){
-
-        return; //returns the total of subract(initial salary - NetPay)
+    private static function calcNetPay(array $deductions, $gross_pay){
+        $total_deduction = 0.0;
+        for($i = 0; $i < count($deductions); $i += 1){
+            $total_deduction += floatval($deductions[$i]);
+        }
+        return doubleval($gross_pay - $total_deduction);
     }
 
 
     public static function startCalculate(){
-        $dtr_query = Db::fetch(self::$tbl_dtr, 'start_date', 'start_date = ?', '', '', '', '');
+        $employee_query = Db::fetch('tbl_employees e
+        LEFT OUTER JOIN tbl_positions p ON
+	        p.position_name = e.job_position
+        LEFT OUTER JOIN tbl_staffCA sc ON
+            sc.employee_number = e.employee_number AND sc.salary_deduction != 0
+        LEFT OUTER JOIN tbl_staffLoan sl ON
+            sl.employee_number = e.employee_number AND sl.loan_balance != 0
+        LEFT OUTER JOIN tbl_staffDamages sd ON
+            sd.employee_number = e.employee_number AND sd.salary_deduction != 0', 'e.worker_type,
+            e.employee_number,
+            e.job_position,
+            e.shifting_type_name,
+            e.first_name,
+            e.last_name,
+            p.wage_salary,
+            e.employee_er,
+            e.employee_ee,
+            e.sss_active_loan,
+            e.philhealth_per_month,
+            e.pag_ibig_per_month,
+            e.pag_ibig_active_loan,
+            IFNULL(sc.salary_deduction, 0) as cash_advance,
+            IFNULL(sl.loan_balance, 0) as loan_bal,
+            IFNULL(sd.salary_deduction, 0) as total_damages', 'e.employee_status = ?', 'active', '', '', '');
+
+       
+        while($tbl_employee = Db::assoc($employee_query)){
+            $dtr_query = Db::fetch(self::$tbl_dtr, 'start_date, end_date, total_work_hours', 'employee_id = ?', $tbl_employee['employee_number'], '', '', '');
+            $total_worked_hours = 0;
+            while($tbl_dtr = Db::assoc($dtr_query)){
+                $total_worked_hours += $tbl_dtr['total_work_hours'];
+            }
+
+            echo json_encode($tbl_employee);
+            
+            Db::insert('tbl_payroll', array('employee_id','employee_name', 'job_position', 'shifting_type_name', 'total_worked_hours', 'wage_salary', 'employee_er', 'employee_ee', 'sss_active_loan', 'philhealth_per_month', 'pag_ibig_per_month', 'pag_ibig_active_loan', 'cash_advance', 'loan', 'damages', 'gross_pay', 'net_pay'), array($tbl_employee['employee_number'],$tbl_employee['first_name'].' '.$tbl_employee['last_name'], $tbl_employee['job_position'], $tbl_employee['shifting_type_name'], $total_worked_hours, $tbl_employee['wage_salary'], $tbl_employee['employee_er'], $tbl_employee['employee_ee'], $tbl_employee['sss_active_loan'], $tbl_employee['philhealth_per_month'], $tbl_employee['pag_ibig_per_month'], $tbl_employee['pag_ibig_active_loan'], $tbl_employee['cash_advance'], $tbl_employee['loan_bal'], $tbl_employee['total_damages'], self::calcGrossPay($total_worked_hours, $tbl_employee['wage_salary']), self::calcNetPay(array( $tbl_employee['employee_er'], $tbl_employee['employee_ee'], $tbl_employee['sss_active_loan'], $tbl_employee['philhealth_per_month'], $tbl_employee['pag_ibig_per_month'], $tbl_employee['pag_ibig_active_loan'], $tbl_employee['cash_advance'], $tbl_employee['loan_bal'], $tbl_employee['total_damages']), self::calcGrossPay($total_worked_hours, $tbl_employee['wage_salary']))));
+        }
     }
 
     public static function getReport(){
-        $employee_query = Db::fetch('tbl_employees', 'employee_number, first_name, last_name', '','', '', '', '');
+        $employee_query = Db::fetch('tbl_payroll', '', '','', '', '', '');
         $limit = $_GET['start'].', '.$_GET['length'];
         if($_GET['length'] != -1){
-            $employee_query = Db::fetch('tbl_employees', 'employee_number, first_name, last_name', "", "", "", $limit, "");
+            $employee_query = Db::fetch('tbl_payroll', '', "", "", "", $limit, "");
         }
-
         if(!empty($_GET['search']['value'])){
             $like_val = $_GET['search']['value'];
-            $employee_query = Db::fetch('tbl_employees', 'employee_number, first_name, last_name', 'employee_id = ? OR employee_name = ? OR start_date = ?', array($like_val, $like_val, $like_val), '', '', '');
+            $employee_query = Db::fetch('tbl_payroll', '', 'employee_id = ? OR employee_name = ?', array($like_val, $like_val), '', '', '');
         }
         $list_data = array();
+        $total_gross_pay = 0.0;
+        $total_net_pay = 0.0;
         while($tbl_employee = Db::assoc($employee_query)){
             $dataRow = array();
-            $dataRow[] = $tbl_employee['employee_number'];
-            $dataRow[] = $tbl_employee['first_name'].' '.$tbl_employee['last_name'];
+            $dataRow[] = $tbl_employee['employee_id'];
+            $dataRow[] = $tbl_employee['employee_name'];
             $dataRow[] = 'Week 1';
-            $dataRow[] = '₱1000';
-            $dataRow[] ='₱1000';
+            $dataRow[] = '₱ '.$tbl_employee['gross_pay'];
+            $dataRow[] = '₱ '.$tbl_employee['net_pay'];
             $dataRow[] = '<button type="button" name="info" id="'.$tbl_employee['id'].'" class="btn btn-info payroll-info"><i class="material-icons">info</i></button>';
             $list_data[] = $dataRow;
+
+            $total_gross_pay += $tbl_employee['gross_pay'];
+            $total_net_pay += $tbl_employee['net_pay'];
         }
         $query2 = Db::fetch(self::$tbl_dtr, '', '', '', '', '', '');
         $numRows = Db::count($query2);
@@ -79,8 +121,8 @@ class Payroll {
             'recordsTotal'      => $numRows,
             'recordsFiltered'   => $numRows,
             'data'              => $list_data,
-            'netpayTotal'       => 20000,
-            'grosspayTotal'     => 15000, 
+            'netpayTotal'       => $total_net_pay,
+            'grosspayTotal'     => $total_gross_pay, 
         );
         echo json_encode($result_data);
     }

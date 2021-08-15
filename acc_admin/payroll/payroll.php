@@ -105,20 +105,21 @@
                             <th>
                                 Week
                             </th>
-                            <th class="text-center">
-                                Net Pay
-                            </th>
-                            <th class="text-center">
+                            
+                            <th class="text-start">
                                 Gross Pay
+                            </th>
+                            <th class="text-start">
+                                Net Pay
                             </th>
                             <th class="td-center" width="50">View</th>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th colspan="3" style="text-align:right">Total: </th>
-                                <th class="text-center"></th>
-                                <th class="text-center"></th>
-                                <th class="text-center"></th>
+                                <th class="text-start"></th>
+                                <th class="text-start"></th>
+                                <th class="text-start"></th>
                             </tr>
                         </tfoot>
                     </table>

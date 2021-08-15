@@ -110,7 +110,7 @@
 
                         $listData[] = $dataRow;
                     }
-                    $query2 = Db::fetch(self::$tbl_employees, "id", "", "", "", "", "");
+                    $query2 = Db::fetch(self::$tbl_employees, "id", "employee_status = ?", "active", "", "", "");
                     $numRows = Db::count($query2);
                     $result_data = array (
                         'draw'              => intval($_GET['draw']),

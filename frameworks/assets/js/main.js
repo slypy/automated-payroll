@@ -625,7 +625,7 @@ $(document).ready(function () {
         columnDefs: [
             {
                 targets: [3,4],
-                className: 'text-center'
+                className: 'text-start'
             },
             {
                 targets: 5,
@@ -730,7 +730,9 @@ $(document).ready(function () {
                                 url: 'controller.php',
                                 type: 'GET',
                                 data: {
-                                    action: 'startCalculatePayroll'
+                                    action: 'startCalculatePayroll',
+                                    payroll_type: $('#payroll-type').val(),
+                                    payroll_day: $('#payroll-day').val(),
                                 },
                                 success: () => {
                                     console.log('done');
