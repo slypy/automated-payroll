@@ -17,11 +17,11 @@ switch($action){
         break;
 
     case 'startCalculatePayroll':
-        autoAddPayroll();
+        startCalculate();
         break;
-
-    case 'autoUpdate':
-        autoUpdatePayroll();
+    
+    case 'getPayrollReport':
+        getPayrollReport();
         break;
 
     case 'getPayrollSettings':
@@ -33,13 +33,13 @@ switch($action){
         break;
 }
 
-function autoAddPayroll(){
-    Payroll::autoAdd();
+function startCalculate(){
+    Payroll::startCalculate();
     return;
 }
 
-function autoUpdatePayroll(){
-   
+function getPayrollReport(){
+    Payroll::getReport();
     return;
 }
 

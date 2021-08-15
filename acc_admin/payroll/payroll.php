@@ -85,12 +85,13 @@
             <div class="card-body">
                 <div class="header-title">
                     <h3>
-                        Payroll
+                        Payroll Report
                     </h3>
-                    <h4>Week 1</h4>
-                </div>
-                <div class="header-line">
-                    <hr>
+                    <div style="display: flex; align-items: center; text-align: center">
+                        <h4 style="margin-top:10px">Week 1 </h4>
+                        <button class="btn btn-success btn-sm print-payroll" style="margin-left: 10px; padding: 10px"><i class="material-icons" style="font-size: 20px;">print</i></button>
+                    </div>
+                    
                 </div>
                 <div class="table-responsive">
                     <table id="payroll-report-table" class="table table-hover" cellspacing="0">
@@ -104,37 +105,20 @@
                             <th>
                                 Week
                             </th>
-                            <th>
+                            <th class="text-center">
                                 Net Pay
                             </th>
-                            <th>
+                            <th class="text-center">
                                 Gross Pay
                             </th>
+                            <th class="td-center" width="50">View</th>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    20210301
-                                </td>
-                                <td>
-                                    Sly Kint Bacalso
-                                </td>
-                                <td>
-                                    Week 1
-                                </td>
-                                <td>
-                                    $1,000
-                                </td>
-                                <td>
-                                    $5,000
-                                </td>
-                            </tr>
-                        </tbody>
                         <tfoot>
                             <tr>
                                 <th colspan="3" style="text-align:right">Total: </th>
-                                <th></th>
-                                <th></th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
                             </tr>
                         </tfoot>
                     </table>

@@ -18,6 +18,7 @@
 <!-- JavaScript Functions and Plugins -->
 <!-- -------------------------------- -->
 
+
 <script src="<?php echo $web_root; ?>frameworks/assets/js/core/jquery.min.js"></script>
 <script src="<?php echo $web_root; ?>frameworks/assets/js/core/popper.min.js"></script>
 <script src="<?php echo $web_root; ?>frameworks/assets/js/plugins/moment.min.js"></script>
@@ -26,6 +27,7 @@
 <script src="<?php echo $web_root; ?>frameworks/assets/js/plugins/dataTables.bootstrap5.min.js" type="text/javascript"></script>
 <script src="<?php echo $web_root; ?>frameworks/assets/js/plugins/chartist.min.js"></script>
 <script src="<?php echo $web_root; ?>frameworks/assets/js/material-dashboard.js" type="text/javascript"></script>
+<script src="<?php echo $web_root; ?>frameworks/assets/js/sweetalert.js?v=1" type="text/javascript" defer></script>
 
 <!-- <script defer src="<?php echo $web_root; ?>frameworks/assets/js/main.js" type="text/javascript"></script> -->
 

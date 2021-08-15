@@ -143,6 +143,26 @@ $(document).ready(function () {
         $(this).attr("data-date", moment($(this).val(), "YYYY-MM-DD").format(this.getAttribute("data-date-format")));
     }).trigger("change");
 
+    function TimeNow() {
+        var dateInfo = new Date();
+        dateInfo.toLocaleString('en-US', {timeZone: 'Asia/Manila'});
+        /* time */
+        var hrs,
+            _min = (dateInfo.getMinutes() < 10) ? "0" + dateInfo.getMinutes() : dateInfo.getMinutes(),
+            sec = (dateInfo.getSeconds() < 10) ? "0" + dateInfo.getSeconds() : dateInfo.getSeconds(),
+            ampm = (dateInfo.getHours() >= 12) ? "PM" : "AM";
+        // replace 0 with 12 at midnight, subtract 12 from hour if 13–23
+        if (dateInfo.getHours() == 0) {
+            hrs = 12;
+        } else if (dateInfo.getHours() > 12) {
+            converted_hrs = dateInfo.getHours() - 12;
+            hrs = (converted_hrs < 10) ? "0" + converted_hrs : dateInfo.getHours() - 12;
+        } else {
+            hrs = (dateInfo.getHours() < 10) ? "0" + dateInfo.getHours() : dateInfo.getHours();
+        }
+        return hrs + ":" + _min + ":" + sec  + " " + ampm;
+    }
+
     /**
      * Returns join string of time containing AM or PM
      * @param {string} time 
@@ -568,7 +588,27 @@ $(document).ready(function () {
         })
     });
 
-    $('#payroll-report-table').DataTable({
+    var totalNetPay, totalGrossPay
+    var payrollTable = $('#payroll-report-table').DataTable({
+        serverSide: true,
+        ajax: {
+            url: 'controller.php',
+            type: 'GET',
+            data: (d) => { //set custom post data to avoid slow query
+                return {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    'search[value]': d.search['value'],
+                    action: 'getPayrollReport'
+                }
+            },
+            dataSrc: (d)=>{
+                totalNetPay = d.netpayTotal;
+                totalGrossPay = d.grosspayTotal;
+                return d.data
+            }
+        },
         dom: "ftipr",
         bAutoWidth: false,
         paging: true,
@@ -577,26 +617,50 @@ $(document).ready(function () {
         bInfo: false,
         searching: true,
         bFilter: true,
-        pageLength: 15,
         drawCallback: function(){
-            var api = this.api(), data;
-
-            var floatval = function(i){
-                return typeof(i) === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof(i) === 'number' ? i : 0;
+            var api = this.api();
+            $(api.column(3).footer()).html('₱' + totalNetPay);
+            $(api.column(4).footer()).html('₱' + totalGrossPay);
+        },
+        columnDefs: [
+            {
+                targets: [3,4],
+                className: 'text-center'
+            },
+            {
+                targets: 5,
+                className: 'td-actions text-center'
             }
+        ]
+    });
 
-            var NetPay_total = api.column(3).data().reduce(function(a, b){
-                return floatval(a) + floatval(b);
-            }, 0);
+    function format ( d ) {
+        return '<div class="table-responsive"><table id="employee-record-dtr-table" class="table table-sm table-bordered" cellspacing="0" style="width: 700px"><thead class="text-primary text-sm"><th>Day</th><th>Shift</th><th>Time-In</th><th>Time-Out</th><th>Overtime-In</th><th>Overtime-Out</th><th>Total Hrs</th></thead><tbody> <tr><td>Sat</td><td>Day</td><td>08:00 AM</td><td>08:02 PM</td><td></td><td></td><td>11</td></tr> <tr><td>Sun</td><td>Day</td><td>08:00 AM</td><td>08:02 PM</td><td></td><td></td><td>11</td></tr></tbody></table></div>'
+    }
+    
+    var detailRows = [];
+    $('#payroll-report-table tbody').on('click', '.payroll-info', function(){
+        var PAYROLL_ID = $(this).attr('id');
+        var tr = $(this).closest('tr');
+        var row = payrollTable.row(tr);
+        var idx = $.inArray(PAYROLL_ID, detailRows);
 
-            var GrossPay_total = api.column(4).data().reduce(function(a, b){
-                return floatval(a) + floatval(b);
-            }, 0)
-
-            $(api.column(3).footer()).html('$' + NetPay_total);
-            $(api.column(4).footer()).html('$' + GrossPay_total);
+        if(row.child.isShown()){
+            row.child.hide();
+            detailRows.splice(idx, 1);
+        } else {
+            row.child(format(row.data())).show();
+            if(idx === -1){
+                detailRows.push(PAYROLL_ID);
+            }
         }
     });
+
+    payrollTable.on('draw', function(){
+        $.each(detailRows, function(i, id){
+            $('#'+id+'.payroll-info').trigger('click')
+        })
+    })
 
 
     $.ajax({
@@ -630,26 +694,71 @@ $(document).ready(function () {
             element.classList.toggle("happy");
         });
         if($(this).prop('checked')){
-            $.ajax({
-                url: 'controller.php',
-                type: 'GET',
-                data: {
-                    action: 'setPayrollSettings',
-                    payroll_type: $('#payroll-type').val(),
-                    payroll_day: $('#payroll-day').val(),
-                    payroll_switch: $(this).prop('checked')
-                },
-                dataType: 'json',
-                success: () => {
-                    $.ajax({
-                        url: 'controller.php',
-                        type: 'GET',
-                        data: {
-                            action: 'startCalculatePayroll'
+            Swal.fire({
+                title: 'Condition',
+                text: "You can only change this after payroll release.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#33b3a6',
+                cancelButtonColor: 'red',
+                confirmButtonText: 'continue'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                    Swal.fire({
+                        title: 'Initializing Payroll',
+                        text: "Payroll will start calculating untill cut off",
+                        allowOutsideClick: false,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            $.ajax({
+                                url: 'controller.php',
+                                type: 'GET',
+                                data: {
+                                    action: 'setPayrollSettings',
+                                    payroll_type: $('#payroll-type').val(),
+                                    payroll_day: $('#payroll-day').val(),
+                                    payroll_switch: $(this).prop('checked')
+                                },
+                                dataType: 'json',
+                                success: () => {
+                                    console.log('Payroll set')
+                                }
+                            });
+                            $.ajax({
+                                url: 'controller.php',
+                                type: 'GET',
+                                data: {
+                                    action: 'startCalculatePayroll'
+                                },
+                                success: () => {
+                                    console.log('done');
+                                }
+                            });
+                            setTimeout(function () {
+                                Swal.fire({
+                                    title: 'All set!',
+                                    icon: 'success',
+                                    timer: 2500,
+                                    width: '300',
+                                    allowOutsideClick: false,
+                                    showConfirmButton: false
+                                })
+                            }, 2000)
                         },
-                    })
+                        
+                    });
+                } else {
+                    $('.switchBtn').prop('checked', false);
+                    if($('.switchBtn').prop('checked') == false){
+                        allElemnts.forEach(element => {
+                            element.classList.toggle("happy");
+                        });
+                    }
                 }
             });
+            
         } else {
             $.ajax({
                 url: 'controller.php',
@@ -661,39 +770,16 @@ $(document).ready(function () {
                     payroll_switch: false
                 }
             });
-            // alert('you cant set the date');
-            // $(this).prop('checked', true);
-            // allElemnts.forEach(element => {
-            //     element.classList.toggle("happy");
-            // });
         }
     });
     
-    function TimeNow() {
-        var dateInfo = new Date();
-        dateInfo.toLocaleString('en-US', {timeZone: 'Asia/Manila'});
-        /* time */
-        var hrs,
-            _min = (dateInfo.getMinutes() < 10) ? "0" + dateInfo.getMinutes() : dateInfo.getMinutes(),
-            sec = (dateInfo.getSeconds() < 10) ? "0" + dateInfo.getSeconds() : dateInfo.getSeconds(),
-            ampm = (dateInfo.getHours() >= 12) ? "PM" : "AM";
-        // replace 0 with 12 at midnight, subtract 12 from hour if 13–23
-        if (dateInfo.getHours() == 0) {
-            hrs = 12;
-        } else if (dateInfo.getHours() > 12) {
-            converted_hrs = dateInfo.getHours() - 12;
-            hrs = (converted_hrs < 10) ? "0" + converted_hrs : dateInfo.getHours() - 12;
-        } else {
-            hrs = (dateInfo.getHours() < 10) ? "0" + dateInfo.getHours() : dateInfo.getHours();
-        }
-        return hrs + ":" + _min + ":" + sec  + " " + ampm;
-    }
+    
     var i = 1;
     $('.payroll-progress .circle').removeClass().addClass('circle');
     $('.payroll-progress .bar').removeClass().addClass('bar');
 
     setInterval(function() {
-        if(TimeNow() === '04:03:00 AM'){
+        if(TimeNow() === '12:00:00 PM'){
             $('.payroll-progress .circle:nth-of-type(' + i + ')').addClass('active');
             $('.payroll-progress .circle:nth-of-type(' + (i-1) + ')').removeClass('active').addClass('done');
             $('.payroll-progress .circle:nth-of-type(' + (i-1) + ') .label').html('&#10003;');
@@ -722,7 +808,7 @@ $(document).ready(function () {
             }
             
         }
-        if(TimeNow() === '04:03:10 AM'){
+        if(TimeNow() === '12:00:00 AM'){
             $('.payroll-progress .circle:nth-of-type(' + i + ')').addClass('active');
             $('.payroll-progress .circle:nth-of-type(' + (i-1) + ')').removeClass('active').addClass('done');
             $('.payroll-progress .circle:nth-of-type(' + (i-1) + ') .label').html('&#10003;');
@@ -1421,6 +1507,11 @@ $(document).ready(function () {
                 $("#addEmployee")[0].reset();
                 $("#add-employee-form").modal("hide");
                 $("#active-employee-table").DataTable().draw();
+                Swal.fire(
+                    'Great!',
+                    'Employee was added',
+                    'success'
+                );
             },
         });
     });
@@ -1481,22 +1572,36 @@ $(document).ready(function () {
 
     $("#active-employee-table").on("click", ".delete", function () {
         var EmployeeID = $(this).attr("id");
-        if (confirm("Are you sure you want to remove this Employee?")) {
-            $.ajax({
-                url: "controller.php",
-                method: "GET",
-                data: {
-                    employee_id: EmployeeID,
-                    action: "remove_employee_data",
-                },
-                success: function () {
-                    $("#active-employee-table").DataTable().draw();
-                    $('#removed-employee-table').DataTable().draw();
-                },
-            });
-        } else {
-            return false;
-        }
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#33b3a6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, remove it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "controller.php",
+                    method: "GET",
+                    data: {
+                        employee_id: EmployeeID,
+                        action: "remove_employee_data",
+                    },
+                    success: function () {
+                        $("#active-employee-table").DataTable().draw();
+                        $('#removed-employee-table').DataTable().draw();
+                    },
+                });
+                Swal.fire(
+                    'Removed!',
+                    'Employee has been remove.',
+                    'success'
+                )
+            }
+        });
     });
     $("#removed-employee-table").on("click", ".delete", function () {
         var EmployeeID = $(this).attr("id");

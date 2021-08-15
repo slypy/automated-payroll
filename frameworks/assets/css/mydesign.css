@@ -32,6 +32,16 @@ table thead {
     border-bottom: 1px solid rgb(177, 177, 177);
 }
 
+
+#employee-record-dtr-table td {
+    padding: 5px;
+}
+
+#employee-record-dtr-table th {
+    padding: 5px;
+}
+
+
 @font-face {
     font-family: "Material Icons";
     font-style: normal;
@@ -1020,3 +1030,4 @@ input[type="number"] {
     box-shadow: 0 0 3px 0 rgb(180, 180, 180);
     padding: 20px;
 }
+

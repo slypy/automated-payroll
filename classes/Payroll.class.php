@@ -46,8 +46,43 @@ class Payroll {
     }
 
 
-    public static function autoAdd(){
+    public static function startCalculate(){
         $dtr_query = Db::fetch(self::$tbl_dtr, 'start_date', 'start_date = ?', '', '', '', '');
+    }
+
+    public static function getReport(){
+        $employee_query = Db::fetch('tbl_employees', 'employee_number, first_name, last_name', '','', '', '', '');
+        $limit = $_GET['start'].', '.$_GET['length'];
+        if($_GET['length'] != -1){
+            $employee_query = Db::fetch('tbl_employees', 'employee_number, first_name, last_name', "", "", "", $limit, "");
+        }
+
+        if(!empty($_GET['search']['value'])){
+            $like_val = $_GET['search']['value'];
+            $employee_query = Db::fetch('tbl_employees', 'employee_number, first_name, last_name', 'employee_id = ? OR employee_name = ? OR start_date = ?', array($like_val, $like_val, $like_val), '', '', '');
+        }
+        $list_data = array();
+        while($tbl_employee = Db::assoc($employee_query)){
+            $dataRow = array();
+            $dataRow[] = $tbl_employee['employee_number'];
+            $dataRow[] = $tbl_employee['first_name'].' '.$tbl_employee['last_name'];
+            $dataRow[] = 'Week 1';
+            $dataRow[] = '₱1000';
+            $dataRow[] ='₱1000';
+            $dataRow[] = '<button type="button" name="info" id="'.$tbl_employee['id'].'" class="btn btn-info payroll-info"><i class="material-icons">info</i></button>';
+            $list_data[] = $dataRow;
+        }
+        $query2 = Db::fetch(self::$tbl_dtr, '', '', '', '', '', '');
+        $numRows = Db::count($query2);
+        $result_data = array(
+            'draw'              => intval($_GET['draw']),
+            'recordsTotal'      => $numRows,
+            'recordsFiltered'   => $numRows,
+            'data'              => $list_data,
+            'netpayTotal'       => 20000,
+            'grosspayTotal'     => 15000, 
+        );
+        echo json_encode($result_data);
     }
 
     public static function getPayrollSettings($data){
