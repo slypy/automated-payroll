@@ -28,7 +28,7 @@
                         </div>
 
                         <div id="payroll-switch" style="top: 3px; left: 15px;">
-                            <input type="checkbox" id="switch" class="switchBtn" name="payroll-switch"/>
+                            <input type="checkbox" id="switch" class="switchBtn" name="payroll-switch" />
                             <div class="mouth">
                                 <div class="tounge"></div>
                             </div>
@@ -91,7 +91,7 @@
                         <h4 style="margin-top:10px">Week 1 </h4>
                         <button class="btn btn-success btn-sm print-payroll" style="margin-left: 10px; padding: 10px"><i class="material-icons" style="font-size: 20px;">print</i></button>
                     </div>
-                    
+
                 </div>
                 <div class="table-responsive">
                     <table id="payroll-report-table" class="table table-hover" cellspacing="0">
@@ -105,11 +105,11 @@
                             <th>
                                 Week
                             </th>
-                            
-                            <th class="text-start">
+
+                            <th class="text-start text-warning">
                                 Gross Pay
                             </th>
-                            <th class="text-start">
+                            <th class="text-start text-success">
                                 Net Pay
                             </th>
                             <th class="td-center" width="50">View</th>

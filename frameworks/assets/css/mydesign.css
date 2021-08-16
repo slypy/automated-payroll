@@ -41,6 +41,15 @@ table thead {
     padding: 5px;
 }
 
+.invoice-payroll {
+    width: 100%;
+}
+
+.invoice-payroll td{
+    padding: 0px 20px 0px 0px;
+    border: none;
+}
+
 
 @font-face {
     font-family: "Material Icons";

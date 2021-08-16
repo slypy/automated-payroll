@@ -617,6 +617,7 @@ $(document).ready(function () {
         bInfo: false,
         searching: true,
         bFilter: true,
+        pageLength: 10,
         drawCallback: function(){
             var api = this.api();
             $(api.column(3).footer()).html('₱' + totalNetPay);
@@ -634,8 +635,147 @@ $(document).ready(function () {
         ]
     });
 
-    function format ( d ) {
-        return '<div class="table-responsive"><table id="employee-record-dtr-table" class="table table-sm table-bordered" cellspacing="0" style="width: 700px"><thead class="text-primary text-sm"><th>Day</th><th>Shift</th><th>Time-In</th><th>Time-Out</th><th>Overtime-In</th><th>Overtime-Out</th><th>Total Hrs</th></thead><tbody> <tr><td>Sat</td><td>Day</td><td>08:00 AM</td><td>08:02 PM</td><td></td><td></td><td>11</td></tr> <tr><td>Sun</td><td>Day</td><td>08:00 AM</td><td>08:02 PM</td><td></td><td></td><td>11</td></tr></tbody></table></div>'
+    function format (d) {
+        var GrossPay = parseFloat(d[6]) * parseFloat(d[7]);
+
+        var NetPay = GrossPay - (parseFloat(d[8]) + parseFloat(d[9])+ parseFloat(d[10])+ parseFloat(d[11]) + parseFloat(d[12]) + parseFloat(d[13]));
+
+        console.log(d);
+        return `<div class="row">
+            <div class="col-lg-7">
+                <div class="table-responsive">
+                    <table id="employee-record-dtr-table" class="table table-sm table-bordered" cellspacing="0">
+                        <thead class="text-primary text-sm">
+                            <th>Day</th>
+                            <th>Shift</th>
+                            <th>Time-In</th>
+                            <th>Time-Out</th>
+                            <th>Overtime-In</th>
+                            <th>Overtime-Out</th>
+                            <th>Total Hrs</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sat</td>
+                                <td>Day</td>
+                                <td>08:00 AM</td>
+                                <td>08:02 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td>11</td>
+                            </tr>
+                            <tr>
+                                <td>Sun</td>
+                                <td>Day</td>
+                                <td>08:00 AM</td>
+                                <td>08:02 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td>11</td>
+                            </tr>
+                            <tr>
+                                <td>Sun</td>
+                                <td>Day</td>
+                                <td>08:00 AM</td>
+                                <td>08:02 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td>11</td>
+                            </tr>
+                            <tr>
+                                <td>Sun</td>
+                                <td>Day</td>
+                                <td>08:00 AM</td>
+                                <td>08:02 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td>11</td>
+                            </tr>
+                            <tr>
+                                <td>Sun</td>
+                                <td>Day</td>
+                                <td>08:00 AM</td>
+                                <td>08:02 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td>11</td>
+                            </tr>
+                            <tr>
+                                <td>Sun</td>
+                                <td>Day</td>
+                                <td>08:00 AM</td>
+                                <td>08:02 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td>11</td>
+                            </tr>
+                            <tr>
+                                <td>Sun</td>
+                                <td>Day</td>
+                                <td>08:00 AM</td>
+                                <td>08:02 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td>11</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div style="padding: 0px; margin: 0px">
+                    <table class="invoice-payroll" style="margin: 20px 0px 5px 0px">
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: bold">Wage Per/hr Salary</td>
+                                <td align="right">₱ ${d[6]}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Total Worked Hours</td>
+                                <td align="right">x ${d[7]}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td width=200 align="right" style="border-top: solid 1px gray; font-weight: bold"><span class="text-warning"> Gross Pay: </span> &emsp;&emsp; ₱ ${GrossPay}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="invoice-payroll">
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: bold">SSS Contribution</td>
+                                <td align="right">-₱ ${d[8]}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Philhealth</td>
+                                <td align="right">-₱ ${d[9]}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Pag-Ibig</td>
+                                <td align="right">-₱ ${d[10]}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Cash Advance</td>
+                                <td align="right">-₱ ${d[11]}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Loan</td>
+                                <td align="right">-₱ ${d[12]}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Damage Cost</td>
+                                <td align="right">-₱ ${d[13]}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td width=200 align="right" style="border-top: solid 1px gray; font-weight: bold"> <span class="text-success"> Net Pay: </span> &emsp;&emsp; ₱ ${NetPay}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>`;
     }
     
     var detailRows = [];
@@ -643,24 +783,41 @@ $(document).ready(function () {
         var PAYROLL_ID = $(this).attr('id');
         var tr = $(this).closest('tr');
         var row = payrollTable.row(tr);
-        var idx = $.inArray(PAYROLL_ID, detailRows);
+        var open = row.child.isShown();
+       
 
-        if(row.child.isShown()){
-            row.child.hide();
-            detailRows.splice(idx, 1);
-        } else {
-            row.child(format(row.data())).show();
-            if(idx === -1){
-                detailRows.push(PAYROLL_ID);
+        // this style will hide the previosly open row on show another row view
+        payrollTable.rows().every(function(rowIdx, tableLoop, rowLoop){
+            if(this.child.isShown()){
+                this.child.hide();
+                $(this.node()).removeClass('shown');
             }
+        });
+
+        if(!open){
+            row.child(format(row.data())).show();
+            tr.addClass('shown');
         }
+
+        // this style of showing view data is not closing the previous row.node
+        //  var idx = $.inArray(PAYROLL_ID, detailRows);
+        // if(row.child.isShown()){
+        //     row.child.hide();
+        //     detailRows.splice(idx, 1);
+        // } else {
+        //     row.child(format(row.data())).show();
+        //     if(idx === -1){
+        //         detailRows.push(PAYROLL_ID);
+        //     }
+        // }
     });
 
-    payrollTable.on('draw', function(){
-        $.each(detailRows, function(i, id){
-            $('#'+id+'.payroll-info').trigger('click')
-        })
-    })
+     // this style of showing view data is not closing the previous row.node
+    // payrollTable.on('draw', function(){
+    //     $.each(detailRows, function(i, id){
+    //         $('#'+id+'.payroll-info').trigger('click')
+    //     })
+    // })
 
 
     $.ajax({
@@ -735,7 +892,7 @@ $(document).ready(function () {
                                     payroll_day: $('#payroll-day').val(),
                                 },
                                 success: () => {
-                                    console.log('done');
+                                    $('#payroll-report-table').DataTable().draw();
                                 }
                             });
                             setTimeout(function () {
@@ -747,7 +904,7 @@ $(document).ready(function () {
                                     allowOutsideClick: false,
                                     showConfirmButton: false
                                 })
-                            }, 2000)
+                            }, 300)
                         },
                         
                     });
@@ -1505,15 +1662,24 @@ $(document).ready(function () {
             url: "controller.php?action=add_employee",
             method: "POST",
             data: newEmployeeData,
-            success: function () {
-                $("#addEmployee")[0].reset();
-                $("#add-employee-form").modal("hide");
-                $("#active-employee-table").DataTable().draw();
-                Swal.fire(
-                    'Great!',
-                    'Employee was added',
-                    'success'
-                );
+            success: function (response) {
+                if(response === 'true'){
+                    $("#addEmployee")[0].reset();
+                    $("#add-employee-form").modal("hide");
+                    $("#active-employee-table").DataTable().draw();
+                    Swal.fire(
+                        'Great!',
+                        'Employee was added',
+                        'success'
+                    );
+                } else {
+                    Swal.fire(
+                        'Error!',
+                        'Error to add this employee please try again or try another input value',
+                        'error'
+                    );
+                }
+                
             },
         });
     });

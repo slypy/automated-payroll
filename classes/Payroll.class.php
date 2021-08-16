@@ -92,7 +92,7 @@ class Payroll {
         $employee_query = Db::fetch('tbl_payroll', '', '','', '', '', '');
         $limit = $_GET['start'].', '.$_GET['length'];
         if($_GET['length'] != -1){
-            $employee_query = Db::fetch('tbl_payroll', '', "", "", "", $limit, "");
+            $employee_query = Db::fetch('tbl_payroll', '', '', '', '', $limit, '');
         }
         if(!empty($_GET['search']['value'])){
             $like_val = $_GET['search']['value'];
@@ -109,12 +109,20 @@ class Payroll {
             $dataRow[] = '₱ '.$tbl_employee['gross_pay'];
             $dataRow[] = '₱ '.$tbl_employee['net_pay'];
             $dataRow[] = '<button type="button" name="info" id="'.$tbl_employee['id'].'" class="btn btn-info payroll-info"><i class="material-icons">info</i></button>';
+            $dataRow[] = $tbl_employee['wage_salary'];#6
+            $dataRow[] = $tbl_employee['total_worked_hours'];#7
+            $dataRow[] = $tbl_employee['employee_ee'];#8
+            $dataRow[] = $tbl_employee['philhealth_per_month'];#9
+            $dataRow[] = $tbl_employee['pag_ibig_active_loan'];#10
+            $dataRow[] = $tbl_employee['cash_advance'];#11
+            $dataRow[] = $tbl_employee['loan'];#12
+            $dataRow[] = $tbl_employee['damages'];#13
             $list_data[] = $dataRow;
 
             $total_gross_pay += $tbl_employee['gross_pay'];
             $total_net_pay += $tbl_employee['net_pay'];
         }
-        $query2 = Db::fetch(self::$tbl_dtr, '', '', '', '', '', '');
+        $query2 = Db::fetch('tbl_payroll', '', '', '', '', '', '');
         $numRows = Db::count($query2);
         $result_data = array(
             'draw'              => intval($_GET['draw']),
