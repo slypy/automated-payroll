@@ -1,1 +1,1 @@
-# You can only read this file but you cannot fork, edit and copy.
+# Please read the LICENSE.md to avoid putting yourself in jail.
