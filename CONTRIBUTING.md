@@ -1,1 +1,1 @@
-# only selected members can contribute this
+# Only selected contributors can contribute this
